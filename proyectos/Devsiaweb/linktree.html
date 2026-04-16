@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Isabella Voss — Maquilladora</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Gilda+Display&family=Nunito:wght@300;400;500;600&family=Pinyon+Script&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream:    #fdf8f3;
+    --rose-1:   #fce9e9;
+    --rose-2:   #f5d0d0;
+    --rose-3:   #e8b4b8;
+    --blush:    #f9eeee;
+    --mauve:    #c4848c;
+    --mauve-d:  #a06068;
+    --gold:     #c9a05a;
+    --gold-l:   #e8cfa0;
+    --text:     #3d2828;
+    --text-m:   #7a5050;
+    --text-l:   #b08888;
+    --white:    #ffffff;
+    --border:   rgba(196,132,140,0.18);
+  }
+
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── BACKGROUND BLOBS ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse 60% 50% at 10% 20%, rgba(245,208,208,0.45) 0%, transparent 65%),
+      radial-gradient(ellipse 50% 60% at 90% 80%, rgba(232,180,184,0.35) 0%, transparent 65%),
+      radial-gradient(ellipse 40% 40% at 50% 50%, rgba(252,233,233,0.2) 0%, transparent 70%);
+  }
+
+  /* ── MAIN WRAPPER ── */
+  .page {
+    position: relative; z-index: 1;
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 5rem;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 0;
+  }
+
+  /* ── PROFILE HEADER ── */
+  .profile {
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center; margin-bottom: 2.2rem;
+    animation: fadeDown 0.9s ease both;
+  }
+
+  .avatar-wrap {
+    position: relative; margin-bottom: 1.2rem;
+  }
+  .avatar-ring {
+    position: absolute; inset: -5px;
+    border-radius: 50%;
+    background: conic-gradient(var(--rose-3), var(--gold-l), var(--rose-3), var(--mauve), var(--gold-l), var(--rose-3));
+    animation: spinRing 8s linear infinite;
+    z-index: 0;
+  }
+  .avatar-ring-mask {
+    position: absolute; inset: 3px;
+    border-radius: 50%; background: var(--cream);
+    z-index: 1;
+  }
+  .avatar {
+    width: 110px; height: 110px; border-radius: 50%;
+    object-fit: cover; display: block;
+    position: relative; z-index: 2;
+  }
+  .avatar-placeholder {
+    width: 110px; height: 110px; border-radius: 50%;
+    position: relative; z-index: 2; overflow: hidden;
+    background: var(--rose-2);
+  }
+  .avatar-placeholder img {
+    width: 100%; height: 100%; object-fit: cover;
+  }
+  .avatar-badge {
+    position: absolute; bottom: 2px; right: 2px;
+    z-index: 3;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--mauve); border: 2px solid var(--cream);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.85rem;
+  }
+
+  .profile-name {
+    font-family: 'Gilda Display', serif;
+    font-size: 1.85rem; color: var(--text);
+    letter-spacing: 0.02em; line-height: 1.1;
+    margin-bottom: 0.25rem;
+  }
+  .profile-script {
+    font-family: 'Pinyon Script', cursive;
+    font-size: 1.15rem; color: var(--mauve);
+    display: block; margin-top: -0.2rem; margin-bottom: 0.7rem;
+    letter-spacing: 0.03em;
+  }
+  .profile-bio {
+    font-size: 0.85rem; color: var(--text-m);
+    line-height: 1.65; font-weight: 400;
+    max-width: 340px;
+  }
+  .profile-tags {
+    display: flex; gap: 0.5rem; flex-wrap: wrap;
+    justify-content: center; margin-top: 0.9rem;
+  }
+  .tag {
+    background: var(--rose-1); color: var(--mauve-d);
+    border: 1px solid var(--border);
+    padding: 0.25rem 0.75rem; border-radius: 20px;
+    font-size: 0.7rem; letter-spacing: 0.08em; font-weight: 600;
+    text-transform: uppercase;
+  }
+  .profile-city {
+    font-size: 0.75rem; color: var(--text-l);
+    margin-top: 0.6rem; letter-spacing: 0.05em;
+  }
+  .profile-city span { color: var(--mauve); }
+
+  /* ── DIVIDER ── */
+  .divider {
+    width: 100%; display: flex; align-items: center; gap: 0.8rem;
+    margin: 0.4rem 0 1.4rem; color: var(--text-l);
+    font-size: 0.62rem; letter-spacing: 0.25em; text-transform: uppercase;
+  }
+  .divider::before, .divider::after {
+    content: ''; flex: 1; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--rose-3), transparent);
+  }
+
+  /* ── CAROUSEL ── */
+  .carousel-section {
+    width: 100%; margin-bottom: 2rem;
+    animation: fadeUp 0.8s ease 0.2s both;
+  }
+  .carousel-label {
+    font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--mauve); font-weight: 600; text-align: center;
+    margin-bottom: 0.9rem; display: flex; align-items: center;
+    justify-content: center; gap: 0.6rem;
+  }
+  .carousel-label::before, .carousel-label::after {
+    content: '✦'; font-size: 0.45rem; color: var(--gold);
+  }
+  .carousel-track-wrap {
+    position: relative; overflow: hidden;
+    border-radius: 18px;
+    box-shadow: 0 8px 40px rgba(196,132,140,0.18), 0 2px 8px rgba(196,132,140,0.1);
+  }
+  .carousel-track {
+    display: flex; transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .carousel-slide {
+    min-width: 100%; position: relative;
+  }
+  .carousel-slide img {
+    width: 100%; aspect-ratio: 4/3; object-fit: cover;
+    display: block;
+  }
+  .slide-placeholder {
+    width: 100%; aspect-ratio: 4/3;
+    position: relative; overflow: hidden;
+    background: var(--rose-1);
+  }
+  .slide-placeholder img {
+    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  }
+  .slide-caption {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(to top, rgba(61,40,40,0.55), transparent);
+    padding: 1.5rem 1.2rem 0.9rem;
+    color: rgba(255,255,255,0.92);
+    font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase;
+    font-weight: 600;
+  }
+  .carousel-dots {
+    display: flex; justify-content: center; gap: 0.45rem;
+    margin-top: 0.85rem;
+  }
+  .dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--rose-3); cursor: pointer;
+    transition: all 0.3s; border: none; padding: 0;
+  }
+  .dot.active { background: var(--mauve); width: 22px; border-radius: 4px; }
+  .carousel-nav {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    width: 34px; height: 34px; border-radius: 50%;
+    background: rgba(253,248,243,0.85); border: 1px solid var(--border);
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem; color: var(--mauve); transition: all 0.25s;
+    backdrop-filter: blur(4px); z-index: 2;
+    box-shadow: 0 2px 10px rgba(196,132,140,0.2);
+  }
+  .carousel-nav:hover { background: var(--white); box-shadow: 0 4px 16px rgba(196,132,140,0.3); }
+  .carousel-prev { left: 0.7rem; }
+  .carousel-next { right: 0.7rem; }
+
+  /* ── SOCIAL LINKS ── */
+  .socials-section {
+    width: 100%; display: flex; flex-direction: column; gap: 0.75rem;
+    margin-bottom: 0.5rem;
+    animation: fadeUp 0.8s ease 0.35s both;
+  }
+
+  .social-link {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 0.9rem 1.3rem;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    text-decoration: none; color: var(--text);
+    font-weight: 500; font-size: 0.92rem;
+    transition: all 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 2px 12px rgba(196,132,140,0.08);
+    position: relative; overflow: hidden;
+  }
+  .social-link::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, var(--rose-1), transparent);
+    opacity: 0; transition: opacity 0.28s;
+  }
+  .social-link:hover {
+    transform: translateY(-2px) scale(1.01);
+    box-shadow: 0 8px 28px rgba(196,132,140,0.22);
+    border-color: var(--rose-3);
+  }
+  .social-link:hover::before { opacity: 1; }
+  .social-link:active { transform: scale(0.98); }
+
+  .sl-icon {
+    width: 42px; height: 42px; border-radius: 11px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; flex-shrink: 0; position: relative; z-index: 1;
+  }
+  .sl-icon.ig  { background: linear-gradient(135deg, #f9ce54, #ee2a7b, #6228d7); }
+  .sl-icon.tt  { background: #010101; }
+  .sl-icon.fb  { background: #1877f2; }
+  .sl-icon.yt  { background: #ff0000; }
+  .sl-icon.wa  { background: linear-gradient(135deg, #25d366, #128c7e); }
+  .sl-icon.pi  { background: #e60023; }
+
+  .sl-text { flex: 1; position: relative; z-index: 1; }
+  .sl-name { font-weight: 600; font-size: 0.9rem; color: var(--text); }
+  .sl-handle { font-size: 0.74rem; color: var(--text-l); margin-top: 0.05rem; font-weight: 400; }
+  .sl-arrow {
+    font-size: 0.75rem; color: var(--mauve); opacity: 0.5;
+    position: relative; z-index: 1;
+    transition: transform 0.25s, opacity 0.25s;
+  }
+  .social-link:hover .sl-arrow { transform: translateX(3px); opacity: 1; }
+
+  /* FOLLOWER BADGE */
+  .sl-badge {
+    font-size: 0.65rem; background: var(--rose-1);
+    color: var(--mauve-d); padding: 0.18rem 0.55rem;
+    border-radius: 20px; font-weight: 700;
+    position: relative; z-index: 1; white-space: nowrap;
+    border: 1px solid var(--rose-2);
+  }
+
+  /* ── SECTION HEADER ── */
+  .sec-header {
+    width: 100%; text-align: center; margin-bottom: 1.2rem;
+  }
+  .sec-title {
+    font-family: 'Gilda Display', serif;
+    font-size: 1.5rem; color: var(--text); font-weight: 400;
+  }
+  .sec-sub {
+    font-size: 0.8rem; color: var(--text-l); margin-top: 0.25rem; font-weight: 400;
+  }
+
+  /* ── PACKAGES ── */
+  .packages-section {
+    width: 100%; margin-bottom: 0.5rem;
+    animation: fadeUp 0.8s ease 0.5s both;
+  }
+  .packages-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 0.7rem;
+  }
+  .pkg-card {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 16px; padding: 1.4rem 1rem 1.2rem;
+    text-align: center; position: relative;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 2px 12px rgba(196,132,140,0.07);
+  }
+  .pkg-card.hot {
+    border-color: var(--mauve);
+    background: linear-gradient(160deg, #fff5f5 0%, var(--white) 100%);
+    box-shadow: 0 4px 24px rgba(196,132,140,0.18);
+  }
+  .pkg-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 35px rgba(196,132,140,0.2);
+  }
+  .pkg-popular {
+    position: absolute; top: -11px; left: 50%; transform: translateX(-50%);
+    background: var(--mauve); color: white;
+    font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 0.22rem 0.8rem; border-radius: 20px; font-weight: 700;
+    white-space: nowrap;
+  }
+  .pkg-emoji { font-size: 1.6rem; margin-bottom: 0.5rem; display: block; }
+  .pkg-name {
+    font-family: 'Gilda Display', serif;
+    font-size: 0.98rem; color: var(--text); margin-bottom: 0.3rem;
+  }
+  .pkg-price {
+    font-size: 1.2rem; color: var(--mauve); font-weight: 700;
+    margin-bottom: 0.7rem;
+  }
+  .pkg-price small { font-size: 0.65rem; font-weight: 400; color: var(--text-l); display: block; margin-top: -0.1rem; }
+  .pkg-features {
+    list-style: none; margin-bottom: 1rem;
+    border-top: 1px solid var(--rose-1); padding-top: 0.7rem;
+  }
+  .pkg-features li {
+    font-size: 0.72rem; color: var(--text-m); padding: 0.22rem 0;
+    display: flex; align-items: center; gap: 0.35rem; justify-content: center;
+    font-weight: 400;
+  }
+  .pkg-features li::before { content: '✦'; color: var(--gold); font-size: 0.45rem; }
+  .pkg-btn {
+    width: 100%; padding: 0.6rem 0.5rem;
+    border-radius: 10px; border: 1.5px solid var(--rose-3);
+    background: transparent; color: var(--mauve);
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.72rem; font-weight: 700;
+    letter-spacing: 0.06em; cursor: pointer;
+    transition: all 0.25s; text-decoration: none; display: block;
+    text-align: center; text-transform: uppercase;
+  }
+  .pkg-btn.solid {
+    background: var(--mauve); color: white; border-color: var(--mauve);
+  }
+  .pkg-btn:hover { background: var(--mauve); color: white; border-color: var(--mauve); }
+  .pkg-btn.solid:hover { background: var(--mauve-d); }
+
+  /* ── WHATSAPP MAIN BTN ── */
+  .wa-main {
+    width: 100%; margin: 1.2rem 0 0.5rem;
+    animation: fadeUp 0.8s ease 0.6s both;
+  }
+  .wa-main a {
+    display: flex; align-items: center; justify-content: center; gap: 0.8rem;
+    width: 100%; padding: 1.1rem 1.5rem;
+    background: linear-gradient(135deg, #25d366 0%, #1ea952 100%);
+    color: white; text-decoration: none;
+    border-radius: 16px; font-weight: 700;
+    font-size: 0.95rem; letter-spacing: 0.04em;
+    box-shadow: 0 6px 25px rgba(37,211,102,0.35);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .wa-main a:hover {
+    transform: translateY(-2px) scale(1.01);
+    box-shadow: 0 12px 35px rgba(37,211,102,0.45);
+  }
+  .wa-main a:active { transform: scale(0.98); }
+
+  /* ── CONTACT FORM ── */
+  .contact-section {
+    width: 100%;
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 20px;
+    padding: 2rem 1.8rem;
+    box-shadow: 0 4px 24px rgba(196,132,140,0.1);
+    margin-bottom: 0.5rem;
+    animation: fadeUp 0.8s ease 0.65s both;
+  }
+  .contact-section .sec-header { margin-bottom: 1.5rem; }
+  .form { display: flex; flex-direction: column; gap: 0.9rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+  .fg { display: flex; flex-direction: column; gap: 0.35rem; }
+  .fg label {
+    font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--text-l); font-weight: 600;
+  }
+  .fg input, .fg select, .fg textarea {
+    padding: 0.8rem 1rem;
+    border: 1.5px solid var(--rose-2);
+    border-radius: 10px;
+    background: var(--blush);
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.88rem; color: var(--text);
+    outline: none; transition: border-color 0.25s, background 0.25s;
+    font-weight: 400;
+  }
+  .fg input:focus, .fg select:focus, .fg textarea:focus {
+    border-color: var(--mauve); background: var(--white);
+  }
+  .fg input::placeholder, .fg textarea::placeholder { color: var(--text-l); }
+  .fg select option { background: var(--white); }
+  .fg textarea { resize: vertical; min-height: 90px; }
+  .form-submit {
+    padding: 0.95rem;
+    background: linear-gradient(135deg, var(--mauve), var(--mauve-d));
+    color: white; border: none; border-radius: 12px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.88rem; font-weight: 700; cursor: pointer;
+    transition: all 0.3s; letter-spacing: 0.05em;
+    box-shadow: 0 4px 18px rgba(196,132,140,0.35);
+  }
+  .form-submit:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 28px rgba(196,132,140,0.45);
+  }
+  .form-submit:active { transform: scale(0.99); }
+
+  /* ── FOOTER ── */
+  .foot {
+    text-align: center;
+    font-size: 0.72rem; color: var(--text-l);
+    line-height: 1.7; margin-top: 1rem;
+    font-weight: 400;
+  }
+  .foot a { color: var(--mauve); text-decoration: none; }
+  .foot-heart { color: var(--mauve); }
+
+  /* ── WA FLOAT ── */
+  .wa-float {
+    position: fixed; bottom: 1.8rem; right: 1.8rem; z-index: 999;
+  }
+  .wa-float a {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: linear-gradient(135deg, #25d366, #128c7e);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 6px 22px rgba(37,211,102,0.4);
+    text-decoration: none; transition: all 0.3s;
+  }
+  .wa-float a:hover { transform: scale(1.1); box-shadow: 0 10px 30px rgba(37,211,102,0.5); }
+  .wa-float a::before {
+    content: 'Agenda tu cita';
+    position: absolute; right: 66px; top: 50%; transform: translateY(-50%);
+    background: var(--white); color: var(--text);
+    padding: 0.45rem 0.9rem; font-size: 0.72rem; font-weight: 600;
+    white-space: nowrap; border-radius: 8px;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 16px rgba(196,132,140,0.18);
+    opacity: 0; transition: opacity 0.3s; pointer-events: none;
+  }
+  .wa-float a:hover::before { opacity: 1; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(22px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes spinRing {
+    to { transform: rotate(360deg); }
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 480px) {
+    .page { padding: 2.2rem 1.1rem 5rem; }
+    .packages-grid { grid-template-columns: 1fr; }
+    .pkg-card.hot { order: -1; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- PROFILE -->
+  <div class="profile">
+    <div class="avatar-wrap">
+      <div class="avatar-ring"></div>
+      <div class="avatar-ring-mask"></div>
+      <div class="avatar-placeholder">
+        <img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=300&q=80" alt="Isabella Voss">
+      </div>
+      <div class="avatar-badge">💄</div>
+    </div>
+    <h1 class="profile-name">Isabella Voss</h1>
+    <span class="profile-script">Maquilladora Profesional</span>
+    <p class="profile-bio">Transformo miradas y creo looks que duran todo el día ✨ Especialista en novias, eventos y sesiones de fotos. Cada rostro es una obra de arte.</p>
+    <div class="profile-tags">
+      <span class="tag">Novias</span>
+      <span class="tag">Eventos</span>
+      <span class="tag">Editorial</span>
+      <span class="tag">A domicilio</span>
+    </div>
+    <p class="profile-city">📍 <span>Ciudad de México</span> · Servicio a domicilio disponible</p>
+  </div>
+
+  <!-- CAROUSEL -->
+  <div class="carousel-section">
+    <div class="carousel-label">Mi trabajo</div>
+    <div class="carousel-track-wrap">
+      <div class="carousel-track" id="track">
+
+        <div class="carousel-slide">
+          <div class="slide-placeholder">
+            <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&q=80" alt="Novia">
+          </div>
+          <div class="slide-caption">💍 Maquillaje Nupcial</div>
+        </div>
+
+        <div class="carousel-slide">
+          <div class="slide-placeholder">
+            <img src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=800&q=80" alt="Glam">
+          </div>
+          <div class="slide-caption">✨ Look Glam · Evento de gala</div>
+        </div>
+
+        <div class="carousel-slide">
+          <div class="slide-placeholder">
+            <img src="https://images.unsplash.com/photo-1560574188-6a6774965120?w=800&q=80" alt="Natural">
+          </div>
+          <div class="slide-caption">🌸 Maquillaje Natural</div>
+        </div>
+
+        <div class="carousel-slide">
+          <div class="slide-placeholder">
+            <img src="https://images.unsplash.com/photo-1503236823255-94609f598e71?w=800&q=80" alt="Editorial">
+          </div>
+          <div class="slide-caption">📸 Sesión Editorial</div>
+        </div>
+
+        <div class="carousel-slide">
+          <div class="slide-placeholder">
+            <img src="https://images.unsplash.com/photo-1596704017248-ab244b945c9a?w=800&q=80" alt="Fiesta">
+          </div>
+          <div class="slide-caption">🥂 Maquillaje para Fiesta</div>
+        </div>
+
+        <div class="carousel-slide">
+          <div class="slide-placeholder">
+            <img src="https://images.unsplash.com/photo-1519699047748-de8e457a634e?w=800&q=80" alt="Sesion">
+          </div>
+          <div class="slide-caption">🎞️ Sesión de Fotos</div>
+        </div>
+
+      </div>
+      <button class="carousel-nav carousel-prev" id="prev" aria-label="Anterior">‹</button>
+      <button class="carousel-nav carousel-next" id="next" aria-label="Siguiente">›</button>
+    </div>
+    <div class="carousel-dots" id="dots"></div>
+  </div>
+
+  <!-- DIVIDER -->
+  <div class="divider">Sígueme</div>
+
+  <!-- SOCIAL LINKS -->
+  <div class="socials-section">
+
+    <a href="https://instagram.com" target="_blank" class="social-link">
+      <div class="sl-icon ig">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      </div>
+      <div class="sl-text">
+        <div class="sl-name">Instagram</div>
+        <div class="sl-handle">@isabella.voss.makeup</div>
+      </div>
+      <span class="sl-badge">12.4k</span>
+      <span class="sl-arrow">›</span>
+    </a>
+
+    <a href="https://tiktok.com" target="_blank" class="social-link">
+      <div class="sl-icon tt">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.32 6.32 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/></svg>
+      </div>
+      <div class="sl-text">
+        <div class="sl-name">TikTok</div>
+        <div class="sl-handle">@isabellav.makeup</div>
+      </div>
+      <span class="sl-badge">8.7k</span>
+      <span class="sl-arrow">›</span>
+    </a>
+
+    <a href="https://facebook.com" target="_blank" class="social-link">
+      <div class="sl-icon fb">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      </div>
+      <div class="sl-text">
+        <div class="sl-name">Facebook</div>
+        <div class="sl-handle">Isabella Voss Makeup</div>
+      </div>
+      <span class="sl-badge">5.2k</span>
+      <span class="sl-arrow">›</span>
+    </a>
+
+    <a href="https://youtube.com" target="_blank" class="social-link">
+      <div class="sl-icon yt">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M23.495 6.205a3.007 3.007 0 00-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 00.527 6.205a31.247 31.247 0 00-.522 5.805 31.247 31.247 0 00.522 5.783 3.007 3.007 0 002.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 002.088-2.088 31.247 31.247 0 00.5-5.783 31.247 31.247 0 00-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+      </div>
+      <div class="sl-text">
+        <div class="sl-name">YouTube</div>
+        <div class="sl-handle">Isabella Voss — Tutoriales</div>
+      </div>
+      <span class="sl-badge">3.1k</span>
+      <span class="sl-arrow">›</span>
+    </a>
+
+    <a href="https://pinterest.com" target="_blank" class="social-link">
+      <div class="sl-icon pi">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 01.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>
+      </div>
+      <div class="sl-text">
+        <div class="sl-name">Pinterest</div>
+        <div class="sl-handle">isabella.voss.beauty</div>
+      </div>
+      <span class="sl-arrow">›</span>
+    </a>
+
+  </div>
+
+  <!-- WA BUTTON -->
+  <div class="wa-main">
+    <a href="https://wa.me/5215500000000?text=Hola%20Isabella!%20Vi%20tu%20página%20y%20me%20gustaría%20agendar%20una%20cita%20💄" target="_blank">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Agendar cita por WhatsApp
+    </a>
+  </div>
+
+  <!-- DIVIDER -->
+  <div class="divider" style="margin-top:1.8rem">Paquetes</div>
+
+  <!-- PACKAGES -->
+  <div class="packages-section">
+    <div class="packages-grid">
+
+      <div class="pkg-card">
+        <span class="pkg-emoji">✨</span>
+        <div class="pkg-name">Social</div>
+        <div class="pkg-price">$1,500 <small>60 min</small></div>
+        <ul class="pkg-features">
+          <li>Maquillaje completo</li>
+          <li>Productos premium</li>
+          <li>1 retoque</li>
+          <li>6-8 hrs duración</li>
+        </ul>
+        <a href="https://wa.me/5215500000000?text=Hola!%20Me%20interesa%20el%20paquete%20Social" class="pkg-btn" target="_blank">Reservar</a>
+      </div>
+
+      <div class="pkg-card hot">
+        <div class="pkg-popular">★ Popular</div>
+        <span class="pkg-emoji">💍</span>
+        <div class="pkg-name">Novia</div>
+        <div class="pkg-price">$3,500 <small>Día completo</small></div>
+        <ul class="pkg-features">
+          <li>Prueba previa</li>
+          <li>Asesoría look</li>
+          <li>Día del evento</li>
+          <li>2 retoques</li>
+        </ul>
+        <a href="https://wa.me/5215500000000?text=Hola!%20Me%20interesa%20el%20paquete%20Novia" class="pkg-btn solid" target="_blank">Reservar</a>
+      </div>
+
+      <div class="pkg-card">
+        <span class="pkg-emoji">👑</span>
+        <div class="pkg-name">Premium</div>
+        <div class="pkg-price">$5,200 <small>Todo incluido</small></div>
+        <ul class="pkg-features">
+          <li>Maquillaje + peinado</li>
+          <li>Cortejo (1 persona)</li>
+          <li>Presencia recepción</li>
+          <li>Retoques ilimitados</li>
+        </ul>
+        <a href="https://wa.me/5215500000000?text=Hola!%20Me%20interesa%20el%20paquete%20Premium" class="pkg-btn" target="_blank">Reservar</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- DIVIDER -->
+  <div class="divider" style="margin-top:1.8rem">Contacto</div>
+
+  <!-- CONTACT FORM -->
+  <div class="contact-section">
+    <div class="sec-header">
+      <div class="sec-title">¿Tienes una fecha?</div>
+      <div class="sec-sub">Cuéntame sobre tu evento y te respondo en menos de 24 horas</div>
+    </div>
+    <form class="form" onsubmit="submitForm(event)">
+      <div class="form-row">
+        <div class="fg">
+          <label>Nombre</label>
+          <input type="text" placeholder="Tu nombre" required>
+        </div>
+        <div class="fg">
+          <label>WhatsApp</label>
+          <input type="tel" placeholder="+52 55 0000 0000" required>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="fg">
+          <label>Servicio</label>
+          <select required>
+            <option value="">Elegir...</option>
+            <option>Maquillaje Novia</option>
+            <option>Maquillaje Social</option>
+            <option>Evento / Gala</option>
+            <option>Sesión de Fotos</option>
+            <option>Quinceaños</option>
+            <option>Graduación</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Fecha</label>
+          <input type="date" required>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Mensaje</label>
+        <textarea placeholder="Cuéntame sobre el look que tienes en mente 💄"></textarea>
+      </div>
+      <button type="submit" class="form-submit" id="submitBtn">Enviar mensaje 💌</button>
+    </form>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="foot">
+    <p>© 2025 Isabella Voss · Maquilladora Profesional</p>
+    <p>📍 Ciudad de México · <a href="https://wa.me/5215500000000">+52 55 0000 0000</a></p>
+    <p style="margin-top:0.4rem">Hecho con <span class="foot-heart">♥</span> para resaltar tu belleza</p>
+  </div>
+
+</div><!-- end .page -->
+
+<!-- WA FLOAT -->
+<div class="wa-float">
+  <a href="https://wa.me/5215500000000" target="_blank" aria-label="WhatsApp">
+    <svg viewBox="0 0 24 24" width="26" height="26" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+</div>
+
+<script>
+  // ── CAROUSEL ──
+  const track   = document.getElementById('track');
+  const dotsWrap= document.getElementById('dots');
+  const slides  = track.querySelectorAll('.carousel-slide');
+  let current   = 0;
+  let timer;
+
+  // Build dots
+  slides.forEach((_, i) => {
+    const d = document.createElement('button');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.addEventListener('click', () => goTo(i));
+    dotsWrap.appendChild(d);
+  });
+
+  function goTo(n) {
+    current = (n + slides.length) % slides.length;
+    track.style.transform = `translateX(-${current * 100}%)`;
+    dotsWrap.querySelectorAll('.dot').forEach((d, i) =>
+      d.classList.toggle('active', i === current)
+    );
+  }
+
+  function next() { goTo(current + 1); }
+  function prev() { goTo(current - 1); }
+
+  document.getElementById('next').addEventListener('click', () => { next(); resetTimer(); });
+  document.getElementById('prev').addEventListener('click', () => { prev(); resetTimer(); });
+
+  function resetTimer() { clearInterval(timer); timer = setInterval(next, 3800); }
+  resetTimer();
+
+  // Touch swipe
+  let startX = 0;
+  track.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
+  track.addEventListener('touchend',   e => {
+    const dx = e.changedTouches[0].clientX - startX;
+    if (Math.abs(dx) > 40) { dx < 0 ? next() : prev(); resetTimer(); }
+  });
+
+  // ── FORM ──
+  function submitForm(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn');
+    btn.textContent = '¡Enviado! Te contactaré pronto 🌸';
+    btn.style.background = 'linear-gradient(135deg, #25d366, #1ea952)';
+    setTimeout(() => {
+      btn.textContent = 'Enviar mensaje 💌';
+      btn.style.background = '';
+      e.target.reset();
+    }, 3500);
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FUSSION GIRLS RG</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --accent: #E24B4A;
+      --ink: #111;
+      --muted: #888;
+      --surface: #f5f5f5;
+      --border: #e0e0e0;
+      --bg: #fff;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+    }
+
+    .gym-app {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 1.5rem 4rem;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5rem 0 1rem;
+      border-bottom: 0.5px solid var(--border);
+      margin-bottom: 2.5rem;
+    }
+
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: 2px;
+      color: var(--ink);
+    }
+    .logo span { color: var(--accent); }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links li {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      cursor: pointer;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      transition: color 0.15s;
+    }
+    .nav-links li:hover,
+    .nav-links li.active { color: var(--accent); }
+
+    section { display: none; }
+    section.active { display: block; }
+
+    .hero { margin-bottom: 2rem; }
+    .hero-label {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 72px;
+      line-height: 1;
+      color: var(--ink);
+      margin-bottom: 1rem;
+    }
+    .hero-title span { color: var(--accent); }
+    .hero-sub {
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 480px;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+    .btn-primary {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 14px 32px;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+    .btn-primary:hover { opacity: 0.85; }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 0.5px solid var(--border);
+      margin-top: 3rem;
+    }
+    .stat-box {
+      background: var(--bg);
+      padding: 1.5rem;
+    }
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 42px;
+      color: var(--ink);
+      line-height: 1;
+    }
+    .stat-num span { color: var(--accent); }
+    .stat-label {
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 40px;
+      color: var(--ink);
+      margin-bottom: 0.25rem;
+    }
+    .section-lead {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+
+    .classes-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 0.5px solid var(--border);
+    }
+    .class-card {
+      background: var(--bg);
+      padding: 1.5rem;
+      cursor: pointer;
+      transition: background 0.1s;
+    }
+    .class-card:hover { background: var(--surface); }
+    .class-tag {
+      display: inline-block;
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 0.5px solid var(--accent);
+      padding: 3px 8px;
+      border-radius: 2px;
+      margin-bottom: 0.75rem;
+    }
+    .class-name {
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 0.5rem;
+    }
+    .class-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+      margin-bottom: 1rem;
+    }
+    .class-meta {
+      display: flex;
+      gap: 1rem;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .schedule-table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 0.5px solid var(--border);
+    }
+    .schedule-table th {
+      text-align: left;
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 12px 16px;
+      border-bottom: 0.5px solid var(--border);
+      background: var(--surface);
+      font-weight: 400;
+    }
+    .schedule-table td {
+      padding: 14px 16px;
+      font-size: 14px;
+      color: var(--ink);
+      border-bottom: 0.5px solid var(--border);
+    }
+    .schedule-table tr:last-child td { border-bottom: none; }
+    .schedule-table tr:hover td { background: var(--surface); }
+    .tag-level {
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 2px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .tag-all  { background: #EAF3DE; color: #3B6D11; }
+    .tag-int  { background: #FAEEDA; color: #854F0B; }
+    .tag-adv  { background: #FCEBEB; color: #A32D2D; }
+
+    .trainers-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 0.5px solid var(--border);
+    }
+    .trainer-card {
+      background: var(--bg);
+      padding: 1.5rem;
+    }
+    .trainer-avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px;
+      letter-spacing: 1px;
+      margin-bottom: 1rem;
+      color: #fff;
+    }
+    .av-red  { background: #E24B4A; }
+    .av-dark { background: #2C2C2A; }
+    .av-mid  { background: #5F5E5A; }
+    .trainer-name {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 2px;
+    }
+    .trainer-spec {
+      font-size: 12px;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 0.75rem;
+    }
+    .trainer-bio {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .plans-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .plan-card {
+      border: 0.5px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      background: var(--bg);
+      position: relative;
+    }
+    .plan-card.featured { border: 2px solid var(--accent); }
+    .plan-badge {
+      position: absolute;
+      top: -1px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      background: var(--accent);
+      color: #fff;
+      padding: 3px 12px;
+      border-radius: 0 0 4px 4px;
+      white-space: nowrap;
+    }
+    .plan-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      color: var(--ink);
+      margin-bottom: 0.25rem;
+      margin-top: 0.5rem;
+    }
+    .plan-price {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 44px;
+      color: var(--ink);
+      line-height: 1;
+    }
+    .plan-price sup { font-size: 20px; vertical-align: super; }
+    .plan-price sub { font-size: 14px; color: var(--muted); }
+    .plan-features {
+      list-style: none;
+      margin: 1.25rem 0 1.5rem;
+    }
+    .plan-features li {
+      font-size: 13px;
+      color: var(--muted);
+      padding: 6px 0;
+      border-bottom: 0.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .plan-features li:last-child { border-bottom: none; }
+    .check { color: var(--accent); font-weight: 500; }
+    .btn-plan {
+      width: 100%;
+      padding: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: opacity 0.15s;
+      border: none;
+    }
+    .btn-outline {
+      background: transparent;
+      border: 0.5px solid var(--border);
+      color: var(--ink);
+    }
+    .btn-outline:hover { background: var(--surface); }
+    .btn-fill { background: var(--accent); color: #fff; }
+    .btn-fill:hover { opacity: 0.85; }
+
+    @media (max-width: 600px) {
+      .nav-links { gap: 1rem; }
+      .hero-title { font-size: 52px; }
+      .classes-grid, .trainers-grid, .plans-grid { grid-template-columns: 1fr; }
+      .stats-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="gym-app">
+    <nav>
+      <div class="logo">FUSSION<span> GIRLS RG</span></div>
+      <ul class="nav-links">
+        <li class="active" onclick="goTo('home', this)">Inicio</li>
+        <li onclick="goTo('clases', this)">Clases</li>
+        <li onclick="goTo('horarios', this)">Horarios</li>
+        <li onclick="goTo('entrenadores', this)">Equipo</li>
+        <li onclick="goTo('membresias', this)">Membresías</li>
+      </ul>
+    </nav>
+
+    <!-- INICIO -->
+    <section id="home" class="active">
+      <div class="hero">
+        <div class="hero-label">Tu transformación comienza hoy</div>
+        <div class="hero-title">Entrena<br>sin<br><span>límites.</span></div>
+        <p class="hero-sub">FUSSION GIRLS RG es el espacio donde el esfuerzo se convierte en resultados. Clases guiadas, entrenadores de élite y el ambiente que necesitas para superar tus metas.</p>
+        <button class="btn-primary" onclick="goToById('membresias')">Ver membresías</button>
+      </div>
+      <div class="stats-row">
+        <div class="stat-box">
+          <div class="stat-num">12<span>+</span></div>
+          <div class="stat-label">Tipos de clases</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">8</div>
+          <div class="stat-label">Entrenadores certificados</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">6<span>am</span></div>
+          <div class="stat-label">Abrimos todos los días</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CLASES -->
+    <section id="clases">
+      <div class="section-title">Clases</div>
+      <div class="section-lead">Diseñadas para todos los niveles. Elige la que se adapta a tu objetivo.</div>
+      <div class="classes-grid">
+        <div class="class-card">
+          <div class="class-tag">Cardio</div>
+          <div class="class-name">HIIT Express</div>
+          <div class="class-desc">Intervalos de alta intensidad que queman grasa y mejoran tu resistencia en 45 minutos.</div>
+          <div class="class-meta"><span>45 min</span><span>Todos los niveles</span></div>
+        </div>
+        <div class="class-card">
+          <div class="class-tag">Fuerza</div>
+          <div class="class-name">Power Lifting</div>
+          <div class="class-desc">Técnica y progresión en los levantamientos básicos: sentadilla, press y peso muerto.</div>
+          <div class="class-meta"><span>60 min</span><span>Intermedio–Avanzado</span></div>
+        </div>
+        <div class="class-card">
+          <div class="class-tag">Movilidad</div>
+          <div class="class-name">Stretch & Flow</div>
+          <div class="class-desc">Recuperación activa, movilidad articular y control postural para complementar tu entrenamiento.</div>
+          <div class="class-meta"><span>50 min</span><span>Todos los niveles</span></div>
+        </div>
+        <div class="class-card">
+          <div class="class-tag">Funcional</div>
+          <div class="class-name">Functional Core</div>
+          <div class="class-desc">Movimientos compuestos enfocados en el núcleo y la estabilidad para mejorar tu rendimiento.</div>
+          <div class="class-meta"><span>40 min</span><span>Principiante–Intermedio</span></div>
+        </div>
+        <div class="class-card">
+          <div class="class-tag">Boxeo</div>
+          <div class="class-name">Box Training</div>
+          <div class="class-desc">Combinaciones de boxeo, trabajo en saco y agilidad. Sin pelea de contacto.</div>
+          <div class="class-meta"><span>55 min</span><span>Todos los niveles</span></div>
+        </div>
+        <div class="class-card">
+          <div class="class-tag">Mente & Cuerpo</div>
+          <div class="class-name">Yoga Power</div>
+          <div class="class-desc">Yoga dinámico que combina fuerza, equilibrio y respiración consciente.</div>
+          <div class="class-meta"><span>60 min</span><span>Principiante</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HORARIOS -->
+    <section id="horarios">
+      <div class="section-title">Horarios</div>
+      <div class="section-lead">Semana actual — todas las clases en vivo con instructor.</div>
+      <table class="schedule-table">
+        <thead>
+          <tr><th>Hora</th><th>Clase</th><th>Instructor</th><th>Nivel</th><th>Cupos</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>06:00</td><td>HIIT Express</td><td>Ana Reyes</td><td><span class="tag-level tag-all">Todos</span></td><td>8 / 15</td></tr>
+          <tr><td>07:30</td><td>Functional Core</td><td>Luis Mora</td><td><span class="tag-level tag-all">Todos</span></td><td>12 / 15</td></tr>
+          <tr><td>09:00</td><td>Stretch & Flow</td><td>Sofía Vega</td><td><span class="tag-level tag-all">Todos</span></td><td>5 / 10</td></tr>
+          <tr><td>11:00</td><td>Yoga Power</td><td>Sofía Vega</td><td><span class="tag-level tag-all">Todos</span></td><td>3 / 10</td></tr>
+          <tr><td>13:00</td><td>Box Training</td><td>Carlos Ríos</td><td><span class="tag-level tag-int">Intermedio</span></td><td>10 / 12</td></tr>
+          <tr><td>17:00</td><td>Power Lifting</td><td>Marco Silva</td><td><span class="tag-level tag-adv">Avanzado</span></td><td>4 / 8</td></tr>
+          <tr><td>18:30</td><td>HIIT Express</td><td>Ana Reyes</td><td><span class="tag-level tag-all">Todos</span></td><td>2 / 15</td></tr>
+          <tr><td>20:00</td><td>Functional Core</td><td>Luis Mora</td><td><span class="tag-level tag-int">Intermedio</span></td><td>7 / 15</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ENTRENADORES -->
+    <section id="entrenadores">
+      <div class="section-title">Equipo</div>
+      <div class="section-lead">Especialistas que diseñan tu progreso.</div>
+      <div class="trainers-grid">
+        <div class="trainer-card">
+          <div class="trainer-avatar av-red">AR</div>
+          <div class="trainer-name">Ana Reyes</div>
+          <div class="trainer-spec">HIIT · Cardio</div>
+          <div class="trainer-bio">Certificada en entrenamiento funcional y HIIT. 6 años formando atletas de todos los niveles.</div>
+        </div>
+        <div class="trainer-card">
+          <div class="trainer-avatar av-dark">LM</div>
+          <div class="trainer-name">Luis Mora</div>
+          <div class="trainer-spec">Funcional · Core</div>
+          <div class="trainer-bio">Especialista en biomecánica y movimiento funcional. Ex-jugador de fútbol profesional.</div>
+        </div>
+        <div class="trainer-card">
+          <div class="trainer-avatar av-mid">SV</div>
+          <div class="trainer-name">Sofía Vega</div>
+          <div class="trainer-spec">Yoga · Movilidad</div>
+          <div class="trainer-bio">200hr RYT certificada. Combina yoga terapéutico y entrenamiento de movilidad para la recuperación.</div>
+        </div>
+        <div class="trainer-card">
+          <div class="trainer-avatar av-dark">CR</div>
+          <div class="trainer-name">Carlos Ríos</div>
+          <div class="trainer-spec">Box Training</div>
+          <div class="trainer-bio">Entrenador de boxeo amateur con 10 años de experiencia. Enfoque en técnica, agilidad y potencia.</div>
+        </div>
+        <div class="trainer-card">
+          <div class="trainer-avatar av-red">MS</div>
+          <div class="trainer-name">Marco Silva</div>
+          <div class="trainer-spec">Fuerza · Powerlifting</div>
+          <div class="trainer-bio">Competidor nacional en powerlifting. Experto en programación de fuerza y periodización.</div>
+        </div>
+        <div class="trainer-card">
+          <div class="trainer-avatar av-mid">DP</div>
+          <div class="trainer-name">Diana Peña</div>
+          <div class="trainer-spec">Nutrición · Coaching</div>
+          <div class="trainer-bio">Nutrióloga deportiva certificada. Diseña planes alimenticios personalizados para maximizar resultados.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MEMBRESÍAS -->
+    <section id="membresias">
+      <div class="section-title">Membresías</div>
+      <div class="section-lead">Sin permanencia. Sin letra pequeña.</div>
+      <div class="plans-grid">
+        <div class="plan-card">
+          <div class="plan-name">Básico</div>
+          <div class="plan-price"><sup>$</sup>499<sub>/mes</sub></div>
+          <ul class="plan-features">
+            <li><span class="check">+</span>Acceso al gimnasio</li>
+            <li><span class="check">+</span>2 clases grupales / semana</li>
+            <li><span class="check">+</span>Vestidores y lockers</li>
+            <li><span class="check">+</span>App de seguimiento</li>
+          </ul>
+          <button class="btn-plan btn-outline">Elegir Básico</button>
+        </div>
+        <div class="plan-card featured">
+          <div class="plan-badge">Más popular</div>
+          <div class="plan-name">Pro</div>
+          <div class="plan-price"><sup>$</sup>799<sub>/mes</sub></div>
+          <ul class="plan-features">
+            <li><span class="check">+</span>Acceso ilimitado</li>
+            <li><span class="check">+</span>Clases grupales ilimitadas</li>
+            <li><span class="check">+</span>1 sesión personal / mes</li>
+            <li><span class="check">+</span>Plan nutricional inicial</li>
+            <li><span class="check">+</span>Priority booking</li>
+          </ul>
+          <button class="btn-plan btn-fill">Elegir Pro</button>
+        </div>
+        <div class="plan-card">
+          <div class="plan-name">Elite</div>
+          <div class="plan-price"><sup>$</sup>1299<sub>/mes</sub></div>
+          <ul class="plan-features">
+            <li><span class="check">+</span>Todo lo del plan Pro</li>
+            <li><span class="check">+</span>4 sesiones personales / mes</li>
+            <li><span class="check">+</span>Seguimiento nutricional</li>
+            <li><span class="check">+</span>Acceso a zona VIP</li>
+            <li><span class="check">+</span>Invitado gratis / mes</li>
+          </ul>
+          <button class="btn-plan btn-outline">Elegir Elite</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    function goTo(id, el) {
+      document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.nav-links li').forEach(l => l.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      if (el) el.classList.add('active');
+    }
+    function goToById(id) {
+      document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.nav-links li').forEach(l => l.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      document.querySelectorAll('.nav-links li').forEach(l => {
+        if (l.textContent.trim() === 'Membresías') l.classList.add('active');
+      });
+    }
+  </script>
+</body>
+</html>

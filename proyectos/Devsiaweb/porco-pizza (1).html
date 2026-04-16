@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Porco Pizza — Pizzas Estilo Napolitano</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink: #E91E8C; --pink-light: #F472B6; --pink-dark: #C0186E;
+    --yellow: #FFE066; --yellow-dark: #F5C800;
+    --dark: #1A0A2E; --dark2: #2D1247; --dark3: #3D1A5C;
+    --white: #FFF8F0; --text-muted: #C9A0D4;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { font-family:'Nunito',sans-serif; background:var(--dark); color:var(--white); overflow-x:hidden; }
+  body::before { content:''; position:fixed; inset:0; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events:none; z-index:0; opacity:0.5; }
+
+  /* HERO */
+  .hero { position:relative; min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:2rem 1rem 5rem; overflow:hidden; }
+  .hero-bg { position:absolute; inset:0; background:radial-gradient(ellipse 80% 60% at 50% 30%,#5a0f6e,var(--dark)); z-index:0; }
+  .hero-blob { position:absolute; border-radius:50%; filter:blur(80px); opacity:.35; z-index:0; }
+  .hero-blob.b1 { width:500px; height:500px; background:var(--pink); top:-150px; left:-100px; animation:float1 8s ease-in-out infinite; }
+  .hero-blob.b2 { width:400px; height:400px; background:#7B2FBE; bottom:-100px; right:-80px; animation:float2 10s ease-in-out infinite; }
+  .hero-blob.b3 { width:300px; height:300px; background:var(--yellow); top:40%; left:60%; animation:float1 12s ease-in-out infinite reverse; opacity:.15; }
+  @keyframes float1 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(30px,-40px) scale(1.05)} }
+  @keyframes float2 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-20px,30px) scale(.95)} }
+  .hero-content { position:relative; z-index:1; }
+
+  /* PIG LOGO */
+  .logo-circle { width:130px; height:130px; border-radius:50%; background:var(--pink); border:5px solid var(--yellow); display:flex; align-items:center; justify-content:center; margin:0 auto 1.5rem; font-size:4rem; cursor:pointer; box-shadow:0 0 60px rgba(233,30,140,.6),0 0 0 10px rgba(233,30,140,.15); animation:pulse-logo 3s ease-in-out infinite; transition:transform .3s,box-shadow .3s; user-select:none; }
+  .logo-circle:hover { transform:scale(1.12) rotate(-5deg); box-shadow:0 0 100px rgba(233,30,140,1),0 0 0 20px rgba(233,30,140,.2); animation:none; }
+  @keyframes pulse-logo { 0%,100%{box-shadow:0 0 60px rgba(233,30,140,.6),0 0 0 10px rgba(233,30,140,.15)} 50%{box-shadow:0 0 90px rgba(233,30,140,.9),0 0 0 20px rgba(233,30,140,.1)} }
+
+  .hero h1 { font-family:'Fredoka One',cursive; font-size:clamp(3rem,10vw,7rem); color:var(--pink); line-height:.95; text-shadow:4px 4px 0 var(--dark),0 0 60px rgba(233,30,140,.5); letter-spacing:-1px; }
+  .hero h1 span { color:var(--yellow); display:block; }
+  .hero-sub { margin-top:1rem; font-size:clamp(.85rem,2.5vw,1.1rem); font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--text-muted); }
+  .hero-tags { display:flex; flex-wrap:wrap; gap:.6rem; justify-content:center; margin-top:1.5rem; }
+  .hero-tag { background:rgba(233,30,140,.2); border:1.5px solid var(--pink); border-radius:999px; padding:.3rem 1rem; font-size:.8rem; font-weight:700; color:var(--pink-light); letter-spacing:1px; text-transform:uppercase; }
+  .cta-btn { display:inline-block; margin-top:2rem; background:var(--pink); color:white; font-family:'Fredoka One',cursive; font-size:1.2rem; padding:.9rem 2.5rem; border-radius:999px; text-decoration:none; box-shadow:0 8px 30px rgba(233,30,140,.5),inset 0 1px 0 rgba(255,255,255,.2); transition:transform .2s,box-shadow .2s; letter-spacing:1px; }
+  .cta-btn:hover { transform:translateY(-3px) scale(1.03); box-shadow:0 14px 40px rgba(233,30,140,.7); }
+  .phone-hero { margin-top:1.2rem; font-size:1rem; color:var(--yellow); font-weight:800; letter-spacing:1px; }
+  .scroll-down { position:absolute; bottom:2rem; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:.4rem; z-index:1; color:var(--text-muted); font-size:.75rem; letter-spacing:2px; text-transform:uppercase; animation:bounce 2s ease-in-out infinite; cursor:pointer; }
+  .scroll-down::after { content:'↓'; font-size:1.3rem; color:var(--pink); }
+  @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+
+  /* NAV */
+  nav { position:sticky; top:0; z-index:100; background:rgba(26,10,46,.95); backdrop-filter:blur(20px); border-bottom:2px solid rgba(233,30,140,.3); padding:.7rem 1rem; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  .nav-inner { display:flex; gap:.5rem; justify-content:center; min-width:max-content; margin:0 auto; }
+  .nav-btn { background:transparent; border:2px solid rgba(233,30,140,.4); border-radius:999px; color:var(--text-muted); font-family:'Fredoka One',cursive; font-size:.85rem; padding:.35rem 1rem; cursor:pointer; transition:all .2s; white-space:nowrap; letter-spacing:.5px; }
+  .nav-btn:hover, .nav-btn.active { background:var(--pink); border-color:var(--pink); color:white; box-shadow:0 4px 15px rgba(233,30,140,.4); }
+
+  /* SECTIONS */
+  .section { padding:3rem 1rem 4rem; max-width:1100px; margin:0 auto; }
+  .section-title { font-family:'Fredoka One',cursive; font-size:clamp(2rem,6vw,3.5rem); text-align:center; margin-bottom:.5rem; position:relative; display:inline-block; left:50%; transform:translateX(-50%); }
+  .section-title.pink { color:var(--pink); text-shadow:3px 3px 0 rgba(233,30,140,.2); }
+  .section-title.yellow { color:var(--yellow); text-shadow:3px 3px 0 rgba(255,224,102,.2); }
+  .section-subtitle { text-align:center; color:var(--text-muted); font-size:.9rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; margin-bottom:2.5rem; }
+  .divider { width:60px; height:4px; background:linear-gradient(90deg,var(--pink),var(--yellow)); border-radius:999px; margin:.6rem auto .4rem; }
+  .badge-new { display:inline-block; background:var(--yellow); color:var(--dark); font-family:'Fredoka One',cursive; font-size:.65rem; padding:.1rem .5rem; border-radius:999px; letter-spacing:1px; vertical-align:middle; margin-left:.4rem; animation:blink-badge 2s ease-in-out infinite; }
+  @keyframes blink-badge { 0%,100%{opacity:1} 50%{opacity:.6} }
+  .extras-note { background:rgba(233,30,140,.1); border:1.5px dashed rgba(233,30,140,.4); border-radius:14px; padding:1rem 1.5rem; text-align:center; margin-bottom:2.5rem; font-size:.9rem; color:var(--pink-light); font-weight:700; }
+  .category-label { display:inline-block; background:rgba(233,30,140,.15); border:1px solid rgba(233,30,140,.4); color:var(--pink-light); font-size:.7rem; font-weight:800; letter-spacing:1.5px; text-transform:uppercase; padding:.2rem .7rem; border-radius:999px; margin-bottom:1.2rem; }
+
+  /* IMG SLOT - GRANDE */
+  .card-img-slot { width:100%; height:140px; border-radius:12px; overflow:hidden; margin-bottom:1rem; background:rgba(255,255,255,.05); border:2px dashed rgba(233,30,140,.35); display:flex; flex-direction:column; align-items:center; justify-content:center; position:relative; transition:border-color .2s,background .2s; }
+  .card-img-slot:hover { border-color:var(--pink); background:rgba(233,30,140,.08); }
+  .card-img-slot img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; border-radius:10px; }
+  .card-img-slot img.loaded { display:block; }
+  .card-img-slot .slot-label { display:flex; flex-direction:column; align-items:center; gap:.3rem; color:rgba(201,160,212,.55); font-size:.72rem; font-weight:700; letter-spacing:1px; text-transform:uppercase; pointer-events:none; z-index:1; }
+  .card-img-slot .slot-label span { font-size:1.7rem; opacity:.5; }
+  .card-img-slot input[type=file] { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; z-index:2; }
+  .card-img-slot.has-img .slot-label { display:none; }
+
+  /* IMG SLOT - PEQUEÑO */
+  .comp-img-slot { width:72px; height:72px; border-radius:10px; overflow:hidden; flex-shrink:0; background:rgba(255,255,255,.05); border:2px dashed rgba(233,30,140,.35); display:flex; align-items:center; justify-content:center; position:relative; transition:border-color .2s; }
+  .comp-img-slot:hover { border-color:var(--pink); }
+  .comp-img-slot img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
+  .comp-img-slot img.loaded { display:block; }
+  .comp-img-slot .slot-icon { font-size:1.3rem; opacity:.35; pointer-events:none; z-index:1; }
+  .comp-img-slot input[type=file] { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; z-index:2; }
+  .comp-img-slot.has-img .slot-icon { display:none; }
+
+  /* PIZZA CARDS */
+  .pizza-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:1.2rem; }
+  .pizza-card { background:linear-gradient(135deg,var(--dark2),var(--dark3)); border:1.5px solid rgba(233,30,140,.25); border-radius:20px; padding:1.4rem; transition:transform .25s,border-color .25s,box-shadow .25s; position:relative; overflow:hidden; }
+  .pizza-card::before { content:''; position:absolute; top:-1px;left:-1px;right:-1px; height:3px; background:linear-gradient(90deg,var(--pink),var(--yellow),var(--pink)); opacity:0; transition:opacity .25s; border-radius:20px 20px 0 0; }
+  .pizza-card:hover { transform:translateY(-5px); border-color:rgba(233,30,140,.6); box-shadow:0 16px 40px rgba(233,30,140,.2); }
+  .pizza-card:hover::before { opacity:1; }
+  .pizza-card-header { display:flex; justify-content:space-between; align-items:flex-start; gap:.5rem; margin-bottom:.5rem; }
+  .pizza-name { font-family:'Fredoka One',cursive; font-size:1.1rem; color:var(--white); line-height:1.2; flex:1; }
+  .pizza-price { background:var(--yellow); color:var(--dark); font-family:'Fredoka One',cursive; font-size:.95rem; padding:.25rem .7rem; border-radius:10px; white-space:nowrap; flex-shrink:0; }
+  .pizza-ingredients { font-size:.82rem; color:var(--text-muted); font-weight:600; line-height:1.5; }
+
+  /* NUEVAS */
+  .nuevas-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:1.4rem; }
+  .nueva-card { background:linear-gradient(135deg,#3D0A4F,#5A0F6E); border:2px solid var(--pink); border-radius:24px; padding:1.8rem; position:relative; overflow:hidden; box-shadow:0 8px 40px rgba(233,30,140,.25); transition:transform .25s,box-shadow .25s; }
+  .nueva-card:hover { transform:translateY(-6px); box-shadow:0 20px 60px rgba(233,30,140,.4); }
+  .nueva-card::after { content:'🍕'; position:absolute; bottom:-10px; right:-5px; font-size:5rem; opacity:.08; pointer-events:none; }
+  .nueva-title { font-family:'Fredoka One',cursive; font-size:1.5rem; color:var(--pink); margin-bottom:.5rem; }
+  .nueva-desc { font-size:.9rem; color:#ddc5ea; font-weight:600; margin-bottom:1rem; line-height:1.5; }
+  .nueva-price { font-family:'Fredoka One',cursive; font-size:1.6rem; color:var(--yellow); }
+
+  /* COMPLEMENTOS */
+  .complementos-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:1rem; }
+  .comp-card { background:var(--dark2); border:1.5px solid rgba(255,255,255,.08); border-radius:16px; padding:1.2rem; transition:transform .2s,border-color .2s; display:flex; flex-direction:column; gap:.8rem; }
+  .comp-card:hover { transform:translateY(-3px); border-color:rgba(233,30,140,.4); }
+  .comp-card-body { display:flex; justify-content:space-between; align-items:flex-start; gap:.8rem; }
+  .comp-info { flex:1; }
+  .comp-name { font-family:'Fredoka One',cursive; font-size:1.05rem; margin-bottom:.3rem; color:var(--white); }
+  .comp-desc { font-size:.78rem; color:var(--text-muted); font-weight:600; line-height:1.4; }
+  .comp-price { background:var(--yellow); color:var(--dark); font-family:'Fredoka One',cursive; font-size:.9rem; padding:.2rem .6rem; border-radius:8px; white-space:nowrap; flex-shrink:0; height:fit-content; }
+
+  /* PROMOS */
+  .promos-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:1.2rem; }
+  .promo-card { background:linear-gradient(135deg,var(--dark2),var(--dark3)); border:2px solid rgba(255,224,102,.25); border-radius:20px; padding:1.4rem; position:relative; overflow:hidden; transition:transform .25s,box-shadow .25s; }
+  .promo-card:hover { transform:translateY(-4px); box-shadow:0 12px 35px rgba(255,224,102,.15); }
+  .promo-number { font-family:'Fredoka One',cursive; font-size:.85rem; color:var(--yellow); letter-spacing:2px; text-transform:uppercase; margin-bottom:.3rem; }
+  .promo-items { font-size:.88rem; color:var(--text-muted); font-weight:600; line-height:1.6; margin-bottom:1rem; }
+  .promo-price { font-family:'Fredoka One',cursive; font-size:1.8rem; color:var(--yellow); }
+  .promo-badge { position:absolute; top:1rem; right:1rem; background:linear-gradient(135deg,var(--pink),#7B2FBE); color:white; font-family:'Fredoka One',cursive; font-size:.7rem; padding:.2rem .6rem; border-radius:999px; letter-spacing:1px; }
+
+  /* PORQUITO */
+  .porquito-card { max-width:400px; margin:0 auto; background:linear-gradient(135deg,#2D1247,#5A0F6E); border:2px solid var(--yellow); border-radius:24px; padding:2rem; text-align:center; box-shadow:0 8px 40px rgba(255,224,102,.2); }
+  .porquito-card h3 { font-family:'Fredoka One',cursive; font-size:1.5rem; color:var(--yellow); margin-bottom:.8rem; }
+  .porquito-card .porquito-price { font-family:'Fredoka One',cursive; font-size:3rem; color:var(--yellow); }
+  .porquito-card ul { list-style:none; margin-top:.8rem; }
+  .porquito-card li { font-size:.9rem; color:#ddc5ea; font-weight:600; padding:.2rem 0; }
+  .porquito-card li::before { content:'🐷 '; }
+
+  /* CONTACTO + MAPA */
+  .info-section { background:linear-gradient(135deg,#1A0A2E,#2D1247); border-top:2px solid rgba(233,30,140,.3); padding:4rem 1rem; }
+  .info-section-inner { max-width:1100px; margin:0 auto; }
+  .info-section h2 { font-family:'Fredoka One',cursive; font-size:clamp(1.8rem,5vw,3rem); color:var(--pink); text-align:center; margin-bottom:.5rem; }
+  .info-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1.5rem; margin:2.5rem 0; }
+  .info-card { background:rgba(255,255,255,.04); border:1.5px solid rgba(233,30,140,.25); border-radius:20px; padding:1.8rem; text-align:center; transition:border-color .2s,transform .2s; }
+  .info-card:hover { border-color:var(--pink); transform:translateY(-3px); }
+  .info-card .icon { font-size:2.5rem; margin-bottom:.8rem; display:block; }
+  .info-card h3 { font-family:'Fredoka One',cursive; font-size:1.2rem; color:var(--yellow); margin-bottom:.5rem; }
+  .info-card p { font-size:.9rem; color:var(--text-muted); font-weight:600; line-height:1.6; }
+  .info-card a { color:var(--pink-light); text-decoration:none; font-weight:800; }
+  .info-card a:hover { color:var(--pink); }
+  .big-phone { font-family:'Fredoka One',cursive; font-size:1.6rem; color:white; display:block; margin-top:.3rem; }
+  .map-wrapper { border-radius:20px; overflow:hidden; border:2px solid rgba(233,30,140,.4); box-shadow:0 8px 40px rgba(233,30,140,.2); margin-top:2rem; }
+  .map-wrapper iframe { width:100%; height:380px; border:none; display:block; }
+
+  /* FOOTER */
+  footer { background:#0D0520; padding:2.5rem 1rem; text-align:center; border-top:2px solid rgba(233,30,140,.2); }
+  footer .logo-sm { font-family:'Fredoka One',cursive; font-size:1.8rem; color:var(--pink); margin-bottom:.5rem; }
+  footer p { font-size:.85rem; color:var(--text-muted); font-weight:600; margin-top:.3rem; }
+  footer .social { margin-top:1rem; display:inline-flex; align-items:center; gap:.4rem; background:rgba(233,30,140,.15); border:1.5px solid var(--pink); padding:.4rem 1.2rem; border-radius:999px; color:var(--pink-light); font-weight:800; font-size:.9rem; text-decoration:none; }
+
+  /* SCROLL TOP */
+  #scrollTop { position:fixed; bottom:1.5rem; right:1.5rem; z-index:200; background:var(--pink); color:white; border:none; width:46px; height:46px; border-radius:50%; font-size:1.2rem; cursor:pointer; display:none; align-items:center; justify-content:center; box-shadow:0 4px 20px rgba(233,30,140,.5); transition:transform .2s; }
+  #scrollTop:hover { transform:scale(1.1); }
+  #scrollTop.show { display:flex; }
+
+  /* FADE IN */
+  .fade-in { opacity:0; transform:translateY(30px); transition:opacity .6s ease,transform .6s ease; }
+  .fade-in.visible { opacity:1; transform:translateY(0); }
+
+  @media(max-width:600px){
+    .pizza-grid,.nuevas-grid,.promos-grid { grid-template-columns:1fr; }
+    .complementos-grid { grid-template-columns:1fr; }
+    .info-grid { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<!-- HERO -->
+<section class="hero" id="inicio">
+  <div class="hero-bg"></div>
+  <div class="hero-blob b1"></div>
+  <div class="hero-blob b2"></div>
+  <div class="hero-blob b3"></div>
+  <div class="hero-content">
+    <div class="logo-circle" id="pigLogo"
+         onmouseenter="document.getElementById('pigEmoji').textContent='🐽'"
+         onmouseleave="document.getElementById('pigEmoji').textContent='🐷'">
+      <span id="pigEmoji">🐷</span>
+    </div>
+    <h1>Porco<span>Pizza</span></h1>
+    <p class="hero-sub">Pizzas estilo napolitano · Masa delgada · 35 cm</p>
+    <div class="hero-tags">
+      <span class="hero-tag">🍕 Masa artesanal</span>
+      <span class="hero-tag">🐷 Desde $120</span>
+      <span class="hero-tag">🛵 A domicilio</span>
+      <span class="hero-tag">⭐ Nuevas pizzas</span>
+    </div>
+    <a href="tel:5545652215" class="cta-btn">📞 Pedir ahora</a>
+    <p class="phone-hero">55 4565 2215</p>
+  </div>
+  <div class="scroll-down" onclick="navScrollTo('nuevas',null)">Ver menú</div>
+</section>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <button class="nav-btn" onclick="navScrollTo('nuevas',this)">🔥 Nuevas</button>
+    <button class="nav-btn" onclick="navScrollTo('clasicas',this)">Clásicas</button>
+    <button class="nav-btn" onclick="navScrollTo('favoritas',this)">Favoritas</button>
+    <button class="nav-btn" onclick="navScrollTo('monchis',this)">Para el Monchis</button>
+    <button class="nav-btn" onclick="navScrollTo('complementos',this)">Complementos</button>
+    <button class="nav-btn" onclick="navScrollTo('promos',this)">🎉 Promos</button>
+    <button class="nav-btn" onclick="navScrollTo('contacto',this)">📍 Contacto</button>
+  </div>
+</nav>
+
+<!-- NUEVAS -->
+<div id="nuevas">
+  <div class="section">
+    <p class="section-title yellow">🔥 Nuevas Pizzas <span class="badge-new">NEW</span></p>
+    <div class="divider"></div>
+    <p class="section-subtitle">Las últimas creaciones del cerdito</p>
+
+    <div class="nuevas-grid">
+
+      <div class="nueva-card fade-in">
+        <div class="card-img-slot">
+          <img src="pizza muestra.png" alt="Tocinator">
+        </div>
+        <div class="nueva-title">Tocinator</div>
+        <div class="nueva-desc">Cheddar, Tocino, topping de Tocino crujiente, BBQ</div>
+        <div class="nueva-price">$170</div>
+      </div>
+
+      <div class="nueva-card fade-in">
+        <div class="card-img-slot">
+          <img src="pizza muestra.png" alt="Pepperoni Suprema">
+        </div>
+        <div class="nueva-title">Pepperoni Suprema</div>
+        <div class="nueva-desc">Pepperoni, topping de papas a la francesa</div>
+        <div class="nueva-price">$170</div>
+      </div>
+
+      <div class="nueva-card fade-in">
+        <div class="card-img-slot">
+          <img src="pizza muestra.png" alt="Carnívora">
+        </div>
+        <div class="nueva-title">Carnívora</div>
+        <div class="nueva-desc">Pepperoni, chorizo, jamón, salchicha y carne Angus molida</div>
+        <div class="nueva-price">$190</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- CLÁSICAS -->
+<div id="clasicas">
+  <div class="section">
+    <p class="section-title pink">Menú de Pizzas</p>
+    <div class="divider"></div>
+    <p class="section-subtitle">Pizzas napolitanas, masa delgada, 35 cm</p>
+    <div class="extras-note">🧀 Orilla de queso mozzarella <strong>+$40</strong> &nbsp;|&nbsp; 🍄 Ingrediente extra <strong>+$25</strong></div>
+
+    <div class="category-label">Clásicas</div>
+    <div class="pizza-grid fade-in">
+
+      <div class="pizza-card"><div class="card-img-slot"><img src="pizza muestra.png"></div><div class="pizza-card-header"><div class="pizza-name">Pizza Margarita</div><div class="pizza-price">$120</div></div><div class="pizza-ingredients">Mozzarella</div></div>
+
+      <div class="pizza-card"><div class="card-img-slot"><img src="pizza muestra.png"></div><div class="pizza-card-header"><div class="pizza-name">Pizza Vegetariana</div><div class="pizza-price">$130</div></div><div class="pizza-ingredients">Mozzarella, Pimiento, Champiñones, Cebolla</div></div>
+
+      <div class="pizza-card"><div class="card-img-slot"><img src="pizza muestra.png"></div><div class="pizza-card-header"><div class="pizza-name">Pizza Pepperoni</div><div class="pizza-price">$130</div></div><div class="pizza-ingredients">Mozzarella, Pepperoni</div></div>
+
+      <div class="pizza-card"><div class="card-img-slot"><img src="pizza muestra.png"></div><div class="pizza-card-header"><div class="pizza-name">Pizza Pepperoni Especial</div><div class="pizza-price">$160</div></div><div class="pizza-ingredients">Mozzarella, Pepperoni, Champiñones</div></div>
+
+      <div class="pizza-card"><div class="card-img-slot"><img src="pizza muestra.png"></div><div class="pizza-card-header"><div class="pizza-name">Pizza Pepperoni Suprema</div><div class="pizza-price">$170</div></div><div class="pizza-ingredients">Mozzarella, Pepperoni, Topping de Papas a la Francesa</div></div>
+
+      <div class="pizza-card"><div class="card-img-slot"><img src="pizza muestra.png"></div><div class="pizza-card-header"><div class="pizza-name">Pizza Hawaiana</div><div class="pizza-price">$150</div></div><div class="pizza-ingredients">Mozzarella, Jamón, Piña Caramelizada</div></div>
+
+      <div class="pizza-card"><div class="card-img-slot"><img src="pizza muestra.png"></div><div class="pizza-card-header"><div class="pizza-name">Pizza Hawaiana Especial</div><div class="pizza-price">$160</div></div><div class="pizza-ingredients">Mozzarella, Tocino, Piña Caramelizada</div></div>
+
+      <div class="pizza-card"><div class="card-img-slot"><img src="pizza muestra.png"></div><div class="pizza-card-header"><div class="pizza-name">Pizza Mexicana</div><div class="pizza-price">$150</div></div><div class="pizza-ingredients">Mozzarella, Cebolla, Chorizo, Jalapeños</div></div>
+
+      <div class="pizza-card"><div class="card-img-slot"><img src="pizza muestra.png"></div><div class="pizza-card-header"><div class="pizza-name">Pizza Mexicana Especial</div><div class="pizza-price">$170</div></div><div class="pizza-ingredients">Mozzarella, Cebolla, Chorizo, Jalapeños, Tocino, Pimiento</div></div>
+
+      <div class="pizza-card"><div class="card-img-slot"><img src="pizza muestra.png"></div><div class="pizza-card-header"><div class="pizza-name">Pizza Funghi</div><div class="pizza-price">$150</div></div><div class="pizza-ingredients">Mozzarella, Hongos, Tocino Madurado</div></div>
+
+      <div class="pizza-card"><div class="card-img-slot"><img src="pizza muestra.png"></div><div class="pizza-card-header"><div class="pizza-name">Pizza 4 Quesos</div><div class="pizza-price">$160</div></div><div class="pizza-ingredients">Mozzarella, Crema, Cheddar, Parmesano</div></div>
+
+      <div class="pizza-card"><div class="card-img-slot"><img src="pizza muestra.png"></div><div class="pizza-card-header"><div class="pizza-name">Pizza 4 Estaciones</div><div class="pizza-price">$160</div></div><div class="pizza-ingredients">Pepperoni, Hawaiana, Mexicana, Vegetariana</div></div>
+
+      <div class="pizza-card"><div class="card-img-slot"><img src="pizza muestra.png"></div><div class="pizza-card-header"><div class="pizza-name">Pizza Primavera</div><div class="pizza-price">$160</div></div><div class="pizza-ingredients">Mozzarella, Jamón, Pepperoni, Pimiento, Cebolla, Hongos</div></div>
+
+    </div>
+
+    <!-- FAVORITAS -->
+    <div id="favoritas" style="margin-top:3rem">
+      <div class="category-label">⭐ Favoritas del Cerdito</div>
+      <div class="pizza-grid fade-in">
+
+        <div class="pizza-card"><div class="card-img-slot"><img src="pizza muestra.png"></div><div class="pizza-card-header"><div class="pizza-name">Pizza Porco</div><div class="pizza-price">$160</div></div><div class="pizza-ingredients">Mozzarella, Tocino, Salchicha, Pepperoni</div></div>
+
+        <div class="pizza-card"><div class="card-img-slot"><img src="pizza muestra.png"></div><div class="pizza-card-header"><div class="pizza-name">Pizza al Pastor</div><div class="pizza-price">$180</div></div><div class="pizza-ingredients">Mozzarella, Carne al Pastor, Cebolla, Piña</div></div>
+
+        <div class="pizza-card"><div class="card-img-slot"><img src="pizza muestra.png"></div><div class="pizza-card-header"><div class="pizza-name">Pizza Sweet Tocino</div><div class="pizza-price">$160</div></div><div class="pizza-ingredients">Mozzarella, Tocino, Queso Crema, Cebolla Caramelizada</div></div>
+
+        <div class="pizza-card"><div class="card-img-slot"><img src="pizza muestra.png"></div><div class="pizza-card-header"><div class="pizza-name">Campechana</div><div class="pizza-price">$180</div></div><div class="pizza-ingredients">La de degustación — una rebanada de cada una 🤤</div></div>
+
+      </div>
+    </div>
+
+    <!-- MONCHIS -->
+    <div id="monchis" style="margin-top:3rem">
+      <div class="category-label">🔥 Para el Monchis</div>
+      <div class="pizza-grid fade-in">
+
+        <div class="pizza-card"><div class="card-img-slot"><img src="pizza muestra.png"></div><div class="pizza-card-header"><div class="pizza-name">Pizza Chicken Chipotle</div><div class="pizza-price">$170</div></div><div class="pizza-ingredients">Mozzarella, Pollo, BBQ Chipotle</div></div>
+
+        <div class="pizza-card"><div class="card-img-slot"><img src="pizza muestra.png"></div><div class="pizza-card-header"><div class="pizza-name">Pizza Alambre</div><div class="pizza-price">$170</div></div><div class="pizza-ingredients">Mozzarella, Alambre de Pollo</div></div>
+
+        <div class="pizza-card"><div class="card-img-slot"><img src="pizza muestra.png"></div><div class="pizza-card-header"><div class="pizza-name">Pizza Deliciosa</div><div class="pizza-price">$170</div></div><div class="pizza-ingredients">Mozzarella, Tocino, Pepperoni</div></div>
+
+        <div class="pizza-card"><div class="card-img-slot"><img src="pizza muestra.png"></div><div class="pizza-card-header"><div class="pizza-name">Pizza Tocinator <span class="badge-new">NEW</span></div><div class="pizza-price">$170</div></div><div class="pizza-ingredients">Cheddar, Tocino, BBQ</div></div>
+
+        <div class="pizza-card"><div class="card-img-slot"><img src="pizza muestra.png"></div><div class="pizza-card-header"><div class="pizza-name">Pizza Ranchera</div><div class="pizza-price">$170</div></div><div class="pizza-ingredients">Chorizo, Frijoles, Aguacate</div></div>
+
+        <div class="pizza-card"><div class="card-img-slot"><img src="pizza muestra.png"></div><div class="pizza-card-header"><div class="pizza-name">Pizza Carnívora <span class="badge-new">NEW</span></div><div class="pizza-price">$190</div></div><div class="pizza-ingredients">Pepperoni, Carne, Jamón</div></div>
+
+      </div>
+    </div>
+
+    <!-- PORQUITO -->
+    <div style="margin-top:3rem;text-align:center">
+      <div class="category-label">🐷 Menú Porquito</div>
+
+      <div class="porquito-card fade-in">
+        <div class="card-img-slot" style="max-width:300px;margin:0 auto 1.2rem">
+          <img src="pizza muestra.png">
+        </div>
+
+        <h3>Menú Porquito</h3>
+        <div class="porquito-price">$100</div>
+
+        <ul>
+          <li>Mini pizza (pepperoni o hawaiana)</li>
+          <li>Mozzarella Sticks</li>
+          <li>Papas a la Francesa</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- COMPLEMENTOS -->
+<div id="complementos" style="background:rgba(45,18,71,.5)">
+  <div class="section">
+    <p class="section-title pink">Complementos</p>
+    <div class="divider"></div>
+    <p class="section-subtitle">Para acompañar tu pizza perfecta</p>
+  <div class="complementos-grid fade-in">
+
+    <div class="comp-card">
+      <div class="comp-img-slot"><img src="pizza muestra.png"></div>
+      <div class="comp-card-body">
+        <div class="comp-info">
+          <div class="comp-name">Mozzarella Sticks</div>
+          <div class="comp-desc">Dedos de mozzarella empanizados con especias</div>
+        </div>
+        <div class="comp-price">$70</div>
+      </div>
+    </div>
+
+    <div class="comp-card">
+      <div class="comp-img-slot"><img src="pizza muestra.png"></div>
+      <div class="comp-card-body">
+        <div class="comp-info">
+          <div class="comp-name">Papas a la Francesa</div>
+          <div class="comp-desc">Clásicas ($60) · Tocino con Queso Fundido · Pastor con Guacamole Picante</div>
+        </div>
+        <div class="comp-price">$70</div>
+      </div>
+    </div>
+
+    <div class="comp-card">
+      <div class="comp-img-slot"><img src="pizza muestra.png"></div>
+      <div class="comp-card-body">
+        <div class="comp-info">
+          <div class="comp-name">Alitas Porco</div>
+          <div class="comp-desc">Aderezo BBQ, Mango Habanero o Buffalo</div>
+        </div>
+        <div class="comp-price">$70</div>
+      </div>
+    </div>
+
+    <div class="comp-card">
+      <div class="comp-img-slot"><img src="pizza muestra.png"></div>
+      <div class="comp-card-body">
+        <div class="comp-info">
+          <div class="comp-name">Pizzadog</div>
+          <div class="comp-desc">Hotdog en masa de pizza — Clásico, Pepperoni o Hawaiano</div>
+        </div>
+        <div class="comp-price">$80 · 2×$140</div>
+      </div>
+    </div>
+
+    <div class="comp-card">
+      <div class="comp-img-slot"><img src="pizza muestra.png"></div>
+      <div class="comp-card-body">
+        <div class="comp-info">
+          <div class="comp-name">Banderillas con Papas</div>
+          <div class="comp-desc"></div>
+        </div>
+        <div class="comp-price">$60 · 2×$100</div>
+      </div>
+    </div>
+
+    <div class="comp-card">
+      <div class="comp-img-slot"><img src="pizza muestra.png"></div>
+      <div class="comp-card-body">
+        <div class="comp-info">
+          <div class="comp-name">Pasta Napolitana</div>
+          <div class="comp-desc">Salsa de tomate aromatizada con ajo y hierbas</div>
+        </div>
+        <div class="comp-price">$100</div>
+      </div>
+    </div>
+
+    <div class="comp-card">
+      <div class="comp-img-slot"><img src="pizza muestra.png"></div>
+      <div class="comp-card-body">
+        <div class="comp-info">
+          <div class="comp-name">Pasta Porco</div>
+          <div class="comp-desc">Salsa blanca cremosa con tocino</div>
+        </div>
+        <div class="comp-price">$110</div>
+      </div>
+    </div>
+
+    <div class="comp-card">
+      <div class="comp-img-slot"><img src="pizza muestra.png"></div>
+      <div class="comp-card-body">
+        <div class="comp-info">
+          <div class="comp-name">Lasaña Bolognesa</div>
+          <div class="comp-desc">Porción individual. Carne de res y cerdo, salsa bechamel</div>
+        </div>
+        <div class="comp-price">$90</div>
+      </div>
+    </div>
+
+    <div class="comp-card">
+      <div class="comp-img-slot"><img src="pizza muestra.png"></div>
+      <div class="comp-card-body">
+        <div class="comp-info">
+          <div class="comp-name">Empanadas (4 pzas)</div>
+          <div class="comp-desc">Pizza pepperoni, pizza hawaiana, Nutella</div>
+        </div>
+        <div class="comp-price">$70</div>
+      </div>
+    </div>
+
+  </div>
+  </div>
+</div>
+
+<!-- PROMOS -->
+<div id="promos">
+<div class="section">
+  <p class="section-title yellow">🎉 Promos</p>
+  <div class="divider"></div>
+  <p class="section-subtitle">Combos para compartir y ahorrar</p>
+  <div class="promos-grid">
+    <div class="promo-card fade-in"><div class="promo-number">Promo #1</div><div class="promo-items">Pizza Pepperoni + Pizza Porco + Mozzarella Sticks</div><div class="promo-price">$330</div><div class="promo-badge">🔥 Popular</div></div>
+    <div class="promo-card fade-in"><div class="promo-number">Promo #2</div><div class="promo-items">Pizza Primavera + Mozzarella Sticks</div><div class="promo-price">$200</div></div>
+    <div class="promo-card fade-in"><div class="promo-number">Promo #3</div><div class="promo-items">Pizza 4 Estaciones + Alitas + Papas Deluxe</div><div class="promo-price">$280</div></div>
+    <div class="promo-card fade-in"><div class="promo-number">Promo #4</div><div class="promo-items">Pizza Hawaiana + Pizza Porco + Papas Deluxe</div><div class="promo-price">$360</div></div>
+    <div class="promo-card fade-in"><div class="promo-number">Promo #5</div><div class="promo-items">Pizza Pepperoni + Pizza Pepperoni + Papas Clásicas</div><div class="promo-price">$300</div></div>
+    <div class="promo-card fade-in"><div class="promo-number">Promo #6</div><div class="promo-items">Pizza 4 Quesos + Pizza Hawaiana + Mozzarella Sticks</div><div class="promo-price">$360</div></div>
+    <div class="promo-card fade-in"><div class="promo-number">Promo #7</div><div class="promo-items">Pizza Hawaiana Especial + Mexicana Especial</div><div class="promo-price">$300</div></div>
+    <div class="promo-card fade-in"><div class="promo-number">Promo #8</div><div class="promo-items">Pizza Margarita + Pizza Pepperoni + Pizza Hawaiana + Pizza Mexicana + 2 Papas Clásicas</div><div class="promo-price">$650</div><div class="promo-badge">👨‍👩‍👧‍👦 Familiar</div></div>
+    <div class="promo-card fade-in"><div class="promo-number">Promo #9</div><div class="promo-items">Pizza Pepperoni + Pizza Hawaiana + Papas Clásicas</div><div class="promo-price">$320</div></div>
+    <div class="promo-card fade-in"><div class="promo-number">Promo #10</div><div class="promo-items">Pizza Vegetariana + Pizza Deliciosa + Pizza Carnívora + Mozzarella Sticks</div><div class="promo-price">$530</div></div>
+  </div>
+</div>
+</div>
+
+<!-- CONTACTO + MAPA -->
+<div id="contacto" class="info-section">
+  <div class="info-section-inner">
+    <h2>📍 Encuéntranos</h2>
+    <div class="divider"></div>
+    <p class="section-subtitle">Visítanos o pide a domicilio</p>
+    <div class="info-grid fade-in">
+      <div class="info-card">
+        <span class="icon">📌</span>
+        <h3>Dirección</h3>
+        <p>Calle Paseo Granada, Plaza Comercial 3era Sección<br>Fraccionamiento Real Granada</p>
+      </div>
+      <div class="info-card">
+        <span class="icon">🛵</span>
+        <h3>Pedidos a Domicilio</h3>
+        <p>Llámanos o escríbenos<br><a href="tel:5545652215" class="big-phone">55 4565 2215</a></p>
+      </div>
+      <div class="info-card">
+        <span class="icon">📱</span>
+        <h3>Síguenos</h3>
+        <p>Descuentos, novedades y más<br><a href="https://instagram.com/porcopizzamx" target="_blank">@porcopizzamx</a></p>
+      </div>
+    </div>
+    <div class="map-wrapper fade-in">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3761.03!2d-99.2215!3d19.4245!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d1f8b6b4f3e5f1%3A0x0!2sPaseo+Granada%2C+Real+Granada%2C+Puebla!5e0!3m2!1ses-419!2smx!4v1700000000000"
+        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+    <div style="text-align:center;margin-top:1.5rem">
+      <a href="https://maps.google.com/?q=Paseo+Granada+Plaza+Comercial+3era+Seccion+Real+Granada+Mexico"
+         target="_blank" class="cta-btn" style="font-size:1rem;padding:.7rem 2rem">
+        🗺️ Abrir en Google Maps
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo-sm">🐷 Porco Pizza</div>
+  <p>Calle Paseo Granada, Plaza Comercial 3era Sección, Fraccionamiento Real Granada</p>
+  <p style="margin-top:.5rem;color:var(--yellow);font-size:1rem">📞 55 4565 2215</p>
+  <a href="https://instagram.com/porcopizzamx" target="_blank" class="social">📸 @porcopizzamx</a>
+  <p style="margin-top:1.5rem;font-size:.75rem;opacity:.5">© 2025 Porco Pizza · Todos los derechos reservados</p>
+</footer>
+
+<script>
+  /* NAV SCROLL */
+  function navScrollTo(id, btn) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    var navH = document.querySelector('nav').offsetHeight + 10;
+    var top = el.getBoundingClientRect().top + window.pageYOffset - navH;
+    window.scrollTo({ top: top, behavior: 'smooth' });
+    if (btn) {
+      document.querySelectorAll('.nav-btn').forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+    }
+  }
+
+  /* FADE IN */
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-in').forEach(function(el){ obs.observe(el); });
+
+  /* SCROLL TOP */
+  var scrollBtn = document.getElementById('scrollTop');
+  window.addEventListener('scroll', function(){
+    scrollBtn.classList.toggle('show', window.pageYOffset > 400);
+  });
+
+  /* CARGAR IMAGEN EN CARD */
+  function loadImg(input) {
+    var file = input.files[0];
+    if (!file) return;
+    var slot = input.parentElement;
+    var img = slot.querySelector('img');
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      img.src = e.target.result;
+      img.classList.add('loaded');
+      slot.classList.add('has-img');
+    };
+    reader.readAsDataURL(file);
+  }
+</script>
+</body>
+</html>

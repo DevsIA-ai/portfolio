@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Isabella Voss — Maquillaje de Lujo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,600;1,400&family=DM+Serif+Display:ital@0;1&family=Outfit:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0806;
+    --dark: #141008;
+    --dark-mid: #1e180e;
+    --beige: #d4c5a9;
+    --beige-light: #ede3d3;
+    --beige-pale: #f5f0e8;
+    --gold: #b8952a;
+    --gold-bright: #d4ac3a;
+    --gold-pale: #e8d47a;
+    --white: #faf8f4;
+    --text-dim: rgba(212,197,169,0.65);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--black);
+    color: var(--beige);
+    overflow-x: hidden;
+  }
+
+  /* ── CURSOR ── */
+  body { cursor: none; }
+  .cursor {
+    position: fixed; top: 0; left: 0; z-index: 9999;
+    pointer-events: none;
+  }
+  .cursor-dot {
+    width: 8px; height: 8px; background: var(--gold-bright);
+    border-radius: 50%; position: absolute;
+    transform: translate(-50%, -50%);
+    transition: width 0.2s, height 0.2s;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(184,149,42,0.5);
+    border-radius: 50%; position: absolute;
+    transform: translate(-50%, -50%);
+    transition: all 0.12s ease;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 200;
+    padding: 2rem 4rem;
+    display: flex; justify-content: space-between; align-items: center;
+    mix-blend-mode: normal;
+    transition: all 0.5s;
+  }
+  nav::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, rgba(10,8,6,0.8), transparent);
+    pointer-events: none;
+  }
+  nav.scrolled {
+    padding: 1.2rem 4rem;
+    background: rgba(10,8,6,0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(184,149,42,0.15);
+  }
+  .nav-logo {
+    font-family: 'Bodoni Moda', serif;
+    font-size: 1.35rem; letter-spacing: 0.08em;
+    color: var(--white); position: relative; z-index: 1;
+  }
+  .nav-logo span { color: var(--gold-bright); font-style: italic; }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; position: relative; z-index: 1; }
+  .nav-links a {
+    font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--text-dim); text-decoration: none;
+    transition: color 0.3s; font-weight: 400;
+  }
+  .nav-links a:hover { color: var(--gold-bright); }
+  .nav-cta {
+    position: relative; z-index: 1;
+    background: transparent; border: 1px solid rgba(184,149,42,0.4);
+    color: var(--gold); padding: 0.6rem 1.5rem;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
+    cursor: pointer; transition: all 0.3s; text-decoration: none;
+  }
+  .nav-cta:hover { background: var(--gold); color: var(--black); }
+
+  /* ── HERO ── */
+  .hero {
+    height: 100vh; position: relative; overflow: hidden;
+    display: flex;
+  }
+  .hero-visual {
+    position: absolute; inset: 0;
+    background: url('https://images.unsplash.com/photo-1560574188-6a6774965120?w=1800&q=80') center/cover;
+  }
+  .hero-visual::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(
+      105deg,
+      rgba(10,8,6,0.92) 0%,
+      rgba(10,8,6,0.75) 40%,
+      rgba(10,8,6,0.3) 70%,
+      transparent 100%
+    );
+  }
+  .hero-content {
+    position: relative; z-index: 2;
+    padding: 0 4rem;
+    display: flex; flex-direction: column; justify-content: center;
+    max-width: 700px; padding-top: 5rem;
+  }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 0.8rem;
+    font-size: 0.65rem; letter-spacing: 0.35em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 2rem;
+    animation: slideIn 1s ease 0.2s both;
+  }
+  .hero-tag::before {
+    content: ''; width: 30px; height: 1px; background: var(--gold);
+  }
+  .hero-h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(3.2rem, 7vw, 6rem);
+    color: var(--white); line-height: 1.0;
+    animation: slideIn 1s ease 0.4s both;
+  }
+  .hero-h1 em {
+    font-style: italic;
+    background: linear-gradient(135deg, var(--gold-bright), var(--gold-pale));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-sub {
+    margin-top: 1.5rem; font-size: 1rem;
+    color: var(--text-dim); line-height: 1.7; font-weight: 200;
+    max-width: 420px;
+    animation: slideIn 1s ease 0.6s both;
+  }
+  .hero-actions {
+    margin-top: 3rem; display: flex; gap: 1.2rem; flex-wrap: wrap;
+    animation: slideIn 1s ease 0.8s both;
+  }
+  .btn-gold {
+    background: linear-gradient(135deg, var(--gold), var(--gold-bright));
+    color: var(--black); padding: 1rem 2.5rem;
+    font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+    text-decoration: none; font-weight: 500;
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    transition: all 0.3s; border: none; cursor: pointer;
+  }
+  .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(184,149,42,0.4); }
+  .btn-outline-gold {
+    background: transparent; color: var(--beige);
+    padding: 1rem 2.5rem; border: 1px solid rgba(212,197,169,0.3);
+    font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+    text-decoration: none; transition: all 0.3s;
+  }
+  .btn-outline-gold:hover { border-color: var(--gold); color: var(--gold); }
+  .hero-stats {
+    position: absolute; bottom: 3rem; right: 4rem;
+    display: flex; gap: 3rem; z-index: 2;
+    animation: fadeIn 1s ease 1.2s both;
+  }
+  .h-stat-num {
+    font-family: 'Bodoni Moda', serif;
+    font-size: 2.5rem; color: var(--gold-bright); line-height: 1;
+  }
+  .h-stat-label { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-dim); margin-top: 0.3rem; }
+  .hero-line {
+    position: absolute; left: 4rem; bottom: 0; width: 1px; height: 80px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: growLine 1s ease 1s both; z-index: 2;
+  }
+
+  /* ── SECTIONS ── */
+  section { padding: 8rem 0; }
+  .container { max-width: 1260px; margin: 0 auto; padding: 0 4rem; }
+  .eyebrow {
+    font-size: 0.65rem; letter-spacing: 0.4em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .eyebrow::before { content: ''; width: 30px; height: 1px; background: var(--gold); }
+  .h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.2rem, 4vw, 3.5rem);
+    color: var(--white); line-height: 1.1; font-weight: 400;
+  }
+  .h2 em { font-style: italic; color: var(--gold-bright); }
+
+  /* ── BENEFITS ── */
+  .benefits { background: var(--dark-mid); border-top: 1px solid rgba(184,149,42,0.12); }
+  .benefits-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
+    margin-top: 4rem;
+    border: 1px solid rgba(184,149,42,0.12);
+  }
+  .benefit {
+    padding: 3rem 2rem; text-align: center;
+    border-right: 1px solid rgba(184,149,42,0.12);
+    transition: background 0.4s;
+    position: relative; overflow: hidden;
+  }
+  .benefit:last-child { border-right: none; }
+  .benefit::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(184,149,42,0.05), transparent);
+    opacity: 0; transition: opacity 0.4s;
+  }
+  .benefit:hover::before { opacity: 1; }
+  .benefit-icon {
+    font-size: 2rem; margin-bottom: 1.2rem; display: block;
+    filter: sepia(1) saturate(2) hue-rotate(5deg);
+  }
+  .benefit-title {
+    font-family: 'Bodoni Moda', serif;
+    font-size: 1.05rem; color: var(--beige-light); margin-bottom: 0.5rem;
+  }
+  .benefit-desc { font-size: 0.82rem; color: var(--text-dim); line-height: 1.6; font-weight: 200; }
+
+  /* ── PORTFOLIO ── */
+  .portfolio { background: var(--black); }
+  .portfolio-header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 3rem;
+  }
+  .portfolio-filters {
+    display: flex; gap: 0.5rem;
+  }
+  .filter-btn {
+    padding: 0.5rem 1.2rem; border: 1px solid rgba(184,149,42,0.25);
+    background: transparent; color: var(--text-dim);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase;
+    cursor: pointer; transition: all 0.3s;
+  }
+  .filter-btn.active, .filter-btn:hover {
+    border-color: var(--gold); color: var(--gold); background: rgba(184,149,42,0.08);
+  }
+  .portfolio-masonry {
+    columns: 3; gap: 1rem;
+  }
+  .portfolio-item {
+    break-inside: avoid; margin-bottom: 1rem;
+    overflow: hidden; position: relative; cursor: pointer;
+    display: block;
+  }
+  .portfolio-item img {
+    width: 100%; display: block;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    filter: brightness(0.9) saturate(0.85);
+  }
+  .portfolio-item:hover img { transform: scale(1.04); filter: brightness(1) saturate(1); }
+  .portfolio-item-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(10,8,6,0.7) 0%, transparent 60%);
+    opacity: 0; transition: opacity 0.4s;
+    display: flex; align-items: flex-end; padding: 1.5rem;
+  }
+  .portfolio-item:hover .portfolio-item-overlay { opacity: 1; }
+  .portfolio-item-tag {
+    font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold-pale); padding: 0.3rem 0.8rem;
+    border: 1px solid var(--gold); background: rgba(10,8,6,0.5);
+  }
+  .portfolio-item-placeholder {
+    width: 100%;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden; color: var(--text-dim);
+  }
+  .portfolio-item-placeholder img {
+    position: absolute; width: 100%; height: 100%; object-fit: cover;
+  }
+
+  /* ── PACKAGES ── */
+  .packages { background: var(--dark-mid); }
+  .packages-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+    margin-top: 4rem;
+    background: rgba(184,149,42,0.12);
+    border: 1px solid rgba(184,149,42,0.12);
+  }
+  .pkg {
+    background: var(--dark); padding: 3.5rem 2.5rem;
+    position: relative; transition: all 0.4s ease;
+  }
+  .pkg:hover { background: var(--dark-mid); }
+  .pkg.center { background: var(--dark-mid); }
+  .pkg-crown {
+    position: absolute; top: -1px; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold-bright), transparent);
+  }
+  .pkg-level {
+    font-size: 0.65rem; letter-spacing: 0.35em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1.5rem;
+  }
+  .pkg-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2rem; color: var(--white); margin-bottom: 0.5rem;
+  }
+  .pkg-price {
+    font-family: 'Bodoni Moda', serif;
+    font-size: 3rem; color: var(--gold-bright);
+    margin: 1.5rem 0;
+  }
+  .pkg-price sup { font-size: 1.2rem; vertical-align: super; }
+  .pkg-divider {
+    height: 1px; background: rgba(184,149,42,0.2);
+    margin: 1.5rem 0;
+  }
+  .pkg-features { list-style: none; margin-bottom: 2.5rem; }
+  .pkg-feature {
+    padding: 0.6rem 0; font-size: 0.85rem; color: var(--text-dim);
+    display: flex; align-items: center; gap: 0.8rem; font-weight: 200;
+    border-bottom: 1px solid rgba(184,149,42,0.08);
+  }
+  .pkg-feature:last-child { border-bottom: none; }
+  .pkg-feature .check { color: var(--gold); font-size: 0.7rem; }
+  .pkg-feature.inactive { opacity: 0.35; text-decoration: line-through; }
+  .pkg-btn {
+    width: 100%; padding: 0.9rem;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+    cursor: pointer; transition: all 0.3s;
+    display: block; text-align: center; text-decoration: none;
+  }
+  .pkg-btn-outline {
+    background: transparent; color: var(--gold);
+    border: 1px solid rgba(184,149,42,0.4);
+  }
+  .pkg-btn-outline:hover { background: rgba(184,149,42,0.1); border-color: var(--gold); }
+  .pkg-btn-solid {
+    background: linear-gradient(135deg, var(--gold), var(--gold-bright));
+    color: var(--black); border: none; font-weight: 500;
+  }
+  .pkg-btn-solid:hover { box-shadow: 0 8px 25px rgba(184,149,42,0.4); transform: translateY(-1px); }
+
+  /* ── ABOUT ── */
+  .about { background: var(--black); }
+  .about-grid {
+    display: grid; grid-template-columns: 1.2fr 1fr; gap: 6rem; align-items: center;
+  }
+  .about-text .eyebrow { margin-bottom: 1.5rem; }
+  .about-desc {
+    margin-top: 2rem; font-size: 1rem; line-height: 1.8; color: var(--text-dim);
+    font-weight: 200;
+  }
+  .about-desc strong { color: var(--beige-light); font-weight: 400; }
+  .about-qualities {
+    margin-top: 2.5rem; display: flex; flex-direction: column; gap: 1rem;
+  }
+  .quality {
+    display: flex; align-items: flex-start; gap: 1rem;
+    padding: 1.2rem; border: 1px solid rgba(184,149,42,0.12);
+    background: rgba(184,149,42,0.03);
+    transition: all 0.3s;
+  }
+  .quality:hover { border-color: rgba(184,149,42,0.3); background: rgba(184,149,42,0.06); }
+  .quality-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 0.1rem; }
+  .quality-title { font-size: 0.9rem; color: var(--beige-light); margin-bottom: 0.2rem; font-weight: 400; }
+  .quality-desc { font-size: 0.8rem; color: var(--text-dim); line-height: 1.5; font-weight: 200; }
+  .about-visual {
+    position: relative;
+  }
+  .about-main-img {
+    width: 100%; aspect-ratio: 3/4; object-fit: cover;
+    filter: brightness(0.85) saturate(0.8);
+    display: block;
+  }
+  .about-main-placeholder {
+    width: 100%; aspect-ratio: 3/4;
+    position: relative; overflow: hidden;
+    background: var(--dark-mid);
+  }
+  .about-main-placeholder img {
+    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    filter: brightness(0.8) saturate(0.75);
+  }
+  .about-accent {
+    position: absolute; top: 2rem; right: -1.5rem;
+    width: 80%; height: 80%;
+    border: 1px solid rgba(184,149,42,0.2);
+    pointer-events: none;
+  }
+  .about-badge-dark {
+    position: absolute; bottom: -1.5rem; left: -1.5rem;
+    background: var(--gold);
+    padding: 1.5rem 2rem;
+    font-family: 'Bodoni Moda', serif;
+  }
+  .about-badge-dark strong { display: block; font-size: 2.5rem; color: var(--black); line-height: 1; }
+  .about-badge-dark span { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(10,8,6,0.7); }
+
+  /* ── TESTIMONIALS ── */
+  .testimonials { background: var(--dark-mid); overflow: hidden; }
+  .testimonials-track {
+    display: flex; gap: 2rem; margin-top: 4rem;
+    overflow-x: auto; padding-bottom: 1rem;
+    scrollbar-width: none;
+  }
+  .testimonials-track::-webkit-scrollbar { display: none; }
+  .testi {
+    min-width: 400px; padding: 3rem;
+    border: 1px solid rgba(184,149,42,0.12);
+    background: rgba(184,149,42,0.03);
+    position: relative; transition: all 0.4s;
+    flex-shrink: 0;
+  }
+  .testi:hover { border-color: rgba(184,149,42,0.3); background: rgba(184,149,42,0.06); }
+  .testi-quote {
+    font-family: 'DM Serif Display', serif;
+    font-size: 5rem; color: var(--gold); opacity: 0.25;
+    position: absolute; top: 1rem; left: 2rem; line-height: 1;
+  }
+  .testi-text {
+    font-family: 'Bodoni Moda', serif;
+    font-size: 1.05rem; color: var(--beige-light);
+    line-height: 1.7; font-style: italic; font-weight: 400;
+    margin-bottom: 2rem; position: relative; z-index: 1;
+  }
+  .testi-footer { display: flex; align-items: center; gap: 1rem; }
+  .testi-avatar {
+    width: 48px; height: 48px;
+    background: var(--dark-mid); border: 1px solid rgba(184,149,42,0.2);
+    border-radius: 50%; display: flex; align-items: center;
+    justify-content: center; font-size: 1.3rem; flex-shrink: 0;
+  }
+  .testi-name { font-size: 0.85rem; color: var(--beige-light); font-weight: 400; }
+  .testi-role { font-size: 0.72rem; color: var(--text-dim); margin-top: 0.1rem; }
+  .testi-stars { color: var(--gold); font-size: 0.75rem; margin-top: 0.2rem; }
+
+  /* ── CTA ── */
+  .cta-section {
+    position: relative; overflow: hidden;
+    padding: 8rem 0;
+    background: var(--dark);
+    text-align: center;
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: 
+      radial-gradient(ellipse at 20% 50%, rgba(184,149,42,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 50%, rgba(184,149,42,0.06) 0%, transparent 60%);
+  }
+  .cta-section .h2 { position: relative; z-index: 1; }
+  .cta-desc {
+    font-size: 1rem; color: var(--text-dim); max-width: 500px;
+    margin: 1.5rem auto 3rem; font-weight: 200; line-height: 1.7;
+    position: relative; z-index: 1;
+  }
+  .cta-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; position: relative; z-index: 1; }
+  .cta-line {
+    position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 200px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+
+  /* ── CONTACT ── */
+  .contact { background: var(--black); }
+  .contact-grid {
+    display: grid; grid-template-columns: 1fr 1.3fr; gap: 6rem; margin-top: 4rem; align-items: start;
+  }
+  .contact-left h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2rem; color: var(--white); margin-bottom: 1rem;
+  }
+  .contact-left p { font-size: 0.9rem; color: var(--text-dim); line-height: 1.7; font-weight: 200; margin-bottom: 2.5rem; }
+  .c-detail {
+    display: flex; gap: 1.2rem; margin-bottom: 1.2rem;
+    align-items: flex-start;
+  }
+  .c-detail-icon {
+    width: 44px; height: 44px; flex-shrink: 0;
+    border: 1px solid rgba(184,149,42,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+  }
+  .c-detail strong { display: block; font-size: 0.82rem; color: var(--beige-light); margin-bottom: 0.2rem; font-weight: 400; }
+  .c-detail span { font-size: 0.78rem; color: var(--text-dim); }
+  .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+  .cf-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .cf-group { display: flex; flex-direction: column; gap: 0.4rem; }
+  .cf-group label {
+    font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--text-dim); font-weight: 400;
+  }
+  .cf-group input,
+  .cf-group select,
+  .cf-group textarea {
+    padding: 0.9rem 1rem;
+    background: rgba(184,149,42,0.04);
+    border: 1px solid rgba(184,149,42,0.15);
+    color: var(--beige); font-family: 'Outfit', sans-serif;
+    font-size: 0.88rem; font-weight: 200; outline: none;
+    transition: border-color 0.3s; appearance: none;
+  }
+  .cf-group input:focus,
+  .cf-group select:focus,
+  .cf-group textarea:focus {
+    border-color: var(--gold); background: rgba(184,149,42,0.07);
+  }
+  .cf-group input::placeholder,
+  .cf-group textarea::placeholder { color: rgba(212,197,169,0.35); }
+  .cf-group select option { background: var(--dark); }
+  .cf-group textarea { resize: vertical; min-height: 110px; }
+  .btn-form-submit {
+    background: linear-gradient(135deg, var(--gold), var(--gold-bright));
+    color: var(--black); border: none; padding: 1.1rem;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase;
+    font-weight: 500; cursor: pointer; transition: all 0.3s; width: 100%;
+  }
+  .btn-form-submit:hover { box-shadow: 0 10px 30px rgba(184,149,42,0.35); transform: translateY(-1px); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--dark-mid);
+    border-top: 1px solid rgba(184,149,42,0.12);
+    padding: 5rem 0 2.5rem;
+  }
+  .footer-top {
+    display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 5rem;
+    padding-bottom: 4rem;
+    border-bottom: 1px solid rgba(184,149,42,0.08);
+    margin-bottom: 2.5rem;
+  }
+  .footer-logo {
+    font-family: 'Bodoni Moda', serif;
+    font-size: 1.8rem; color: var(--white);
+    margin-bottom: 1rem;
+  }
+  .footer-logo em { font-style: italic; color: var(--gold-bright); }
+  .footer-tagline { font-size: 0.82rem; color: var(--text-dim); line-height: 1.7; font-weight: 200; max-width: 320px; }
+  .footer-socials { display: flex; gap: 0.8rem; margin-top: 2rem; }
+  .fsocial {
+    width: 44px; height: 44px;
+    border: 1px solid rgba(184,149,42,0.2);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-dim); text-decoration: none; font-size: 1rem;
+    transition: all 0.3s;
+  }
+  .fsocial:hover { border-color: var(--gold); color: var(--gold); background: rgba(184,149,42,0.06); }
+  .footer-heading {
+    font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1.5rem; font-weight: 500;
+  }
+  .footer-list { list-style: none; }
+  .footer-list li { margin-bottom: 0.8rem; }
+  .footer-list a {
+    font-size: 0.83rem; color: var(--text-dim); text-decoration: none;
+    transition: color 0.3s; font-weight: 200;
+  }
+  .footer-list a:hover { color: var(--gold-bright); }
+  .footer-bottom {
+    text-align: center; font-size: 0.72rem; color: rgba(212,197,169,0.3);
+  }
+
+  /* ── WHATSAPP FLOAT ── */
+  .wa-float {
+    position: fixed; bottom: 2.5rem; right: 2.5rem; z-index: 999;
+  }
+  .wa-float a {
+    width: 58px; height: 58px; border-radius: 50%;
+    background: linear-gradient(135deg, #25D366, #128C7E);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 6px 25px rgba(37,211,102,0.35); text-decoration: none;
+    transition: all 0.3s; position: relative;
+  }
+  .wa-float a:hover { transform: scale(1.08); box-shadow: 0 10px 35px rgba(37,211,102,0.5); }
+  .wa-float a::before {
+    content: 'Reservar cita';
+    position: absolute; right: 68px; top: 50%; transform: translateY(-50%);
+    background: var(--dark); color: var(--gold);
+    padding: 0.5rem 1rem; font-size: 0.7rem; letter-spacing: 0.1em;
+    white-space: nowrap; border: 1px solid rgba(184,149,42,0.3);
+    opacity: 0; transition: opacity 0.3s; pointer-events: none;
+  }
+  .wa-float a:hover::before { opacity: 1; }
+
+  /* ── KEYFRAMES ── */
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(-30px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; } to { opacity: 1; }
+  }
+  @keyframes growLine {
+    from { height: 0; } to { height: 80px; }
+  }
+  .reveal {
+    opacity: 0; transform: translateY(35px);
+    transition: all 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-d1 { transition-delay: 0.1s; }
+  .reveal-d2 { transition-delay: 0.2s; }
+  .reveal-d3 { transition-delay: 0.3s; }
+  .reveal-d4 { transition-delay: 0.4s; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1024px) {
+    .benefits-grid { grid-template-columns: 1fr 1fr; }
+    .benefit { border-bottom: 1px solid rgba(184,149,42,0.12); }
+    .portfolio-masonry { columns: 2; }
+    .about-grid { grid-template-columns: 1fr; gap: 4rem; }
+    .about-badge-dark { left: 0; bottom: -1rem; }
+    .footer-top { grid-template-columns: 1fr; gap: 3rem; }
+  }
+  @media (max-width: 768px) {
+    nav { padding: 1.2rem 2rem; }
+    nav.scrolled { padding: 1rem 2rem; }
+    .nav-links, .nav-cta { display: none; }
+    .container { padding: 0 2rem; }
+    .hero-content { padding: 0 2rem; padding-top: 6rem; }
+    .hero-stats { right: 2rem; gap: 2rem; }
+    .packages-grid { grid-template-columns: 1fr; gap: 1px; }
+    .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .cf-row { grid-template-columns: 1fr; }
+    body { cursor: auto; }
+    .cursor { display: none; }
+  }
+  @media (max-width: 600px) {
+    .portfolio-masonry { columns: 1; }
+    .benefits-grid { grid-template-columns: 1fr; }
+    .hero-stats { display: none; }
+    section { padding: 5rem 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- CUSTOM CURSOR -->
+<div class="cursor" id="cursor">
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+</div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-logo">Isabella <span>Voss</span></div>
+  <ul class="nav-links">
+    <li><a href="#benefits">Servicios</a></li>
+    <li><a href="#portfolio">Portafolio</a></li>
+    <li><a href="#packages">Paquetes</a></li>
+    <li><a href="#about">Sobre mí</a></li>
+    <li><a href="#contact">Contacto</a></li>
+  </ul>
+  <a href="https://wa.me/5215500000000" class="nav-cta">Reservar →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-visual"></div>
+  <div class="hero-content">
+    <div class="hero-tag">Maquilladora de Lujo · CDMX</div>
+    <h1 class="hero-h1">Maquillaje para<br>momentos <em>inolvidables</em></h1>
+    <p class="hero-sub">Especialista en novias, eventos exclusivos y maquillaje de alta duración. Donde el arte meets la elegancia.</p>
+    <div class="hero-actions">
+      <a href="https://wa.me/5215500000000?text=Hola!%20Quiero%20reservar%20una%20cita" class="btn-gold">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Reservar cita
+      </a>
+      <a href="#portfolio" class="btn-outline-gold">Ver portafolio</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div>
+      <div class="h-stat-num">600+</div>
+      <div class="h-stat-label">Novias</div>
+    </div>
+    <div>
+      <div class="h-stat-num">10</div>
+      <div class="h-stat-label">Años</div>
+    </div>
+    <div>
+      <div class="h-stat-num">99%</div>
+      <div class="h-stat-label">Satisfacción</div>
+    </div>
+  </div>
+  <div class="hero-line"></div>
+</section>
+
+<!-- BENEFITS -->
+<section class="benefits" id="benefits">
+  <div class="container">
+    <p class="eyebrow reveal">Por qué elegirme</p>
+    <h2 class="h2 reveal">Experiencia que se <em>nota</em></h2>
+    <div class="benefits-grid">
+      <div class="benefit reveal">
+        <span class="benefit-icon">💎</span>
+        <div class="benefit-title">Productos Premium</div>
+        <p class="benefit-desc">Trabajo exclusivamente con marcas de alta gama como MAC, Charlotte Tilbury, NARS y Dior.</p>
+      </div>
+      <div class="benefit reveal reveal-d1">
+        <span class="benefit-icon">⏳</span>
+        <div class="benefit-title">Larga Duración</div>
+        <p class="benefit-desc">Técnicas especializadas que garantizan tu maquillaje perfecto por hasta 16 horas continuas.</p>
+      </div>
+      <div class="benefit reveal reveal-d2">
+        <span class="benefit-icon">🎯</span>
+        <div class="benefit-title">Atención Personalizada</div>
+        <p class="benefit-desc">Cada look es único, diseñado específicamente para tus rasgos, tono de piel y estilo personal.</p>
+      </div>
+      <div class="benefit reveal reveal-d3">
+        <span class="benefit-icon">🚗</span>
+        <div class="benefit-title">Servicio a Domicilio</div>
+        <p class="benefit-desc">Me desplazo donde necesites. Hoteles, casas, salones de eventos — donde estés, llego.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section class="portfolio" id="portfolio">
+  <div class="container">
+    <div class="portfolio-header">
+      <div>
+        <p class="eyebrow reveal">Portafolio</p>
+        <h2 class="h2 reveal">Mi <em>arte</em></h2>
+      </div>
+      <div class="portfolio-filters reveal">
+        <button class="filter-btn active">Todo</button>
+        <button class="filter-btn">Novias</button>
+        <button class="filter-btn">Glam</button>
+        <button class="filter-btn">Editorial</button>
+        <button class="filter-btn">Natural</button>
+      </div>
+    </div>
+    <div class="portfolio-masonry reveal">
+      <div class="portfolio-item">
+        <div class="portfolio-item-placeholder" style="aspect-ratio:3/4">
+          <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=700&q=80" alt="Novia">
+        </div>
+        <div class="portfolio-item-overlay"><span class="portfolio-item-tag">Novia</span></div>
+      </div>
+      <div class="portfolio-item">
+        <div class="portfolio-item-placeholder" style="aspect-ratio:1">
+          <img src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=600&q=80" alt="Glam">
+        </div>
+        <div class="portfolio-item-overlay"><span class="portfolio-item-tag">Glam</span></div>
+      </div>
+      <div class="portfolio-item">
+        <div class="portfolio-item-placeholder" style="aspect-ratio:4/5">
+          <img src="https://images.unsplash.com/photo-1503236823255-94609f598e71?w=700&q=80" alt="Evento">
+        </div>
+        <div class="portfolio-item-overlay"><span class="portfolio-item-tag">Evento</span></div>
+      </div>
+      <div class="portfolio-item">
+        <div class="portfolio-item-placeholder" style="aspect-ratio:1">
+          <img src="https://images.unsplash.com/photo-1560574188-6a6774965120?w=600&q=80" alt="Natural">
+        </div>
+        <div class="portfolio-item-overlay"><span class="portfolio-item-tag">Natural</span></div>
+      </div>
+      <div class="portfolio-item">
+        <div class="portfolio-item-placeholder" style="aspect-ratio:3/4">
+          <img src="https://images.unsplash.com/photo-1596704017248-ab244b945c9a?w=700&q=80" alt="Editorial">
+        </div>
+        <div class="portfolio-item-overlay"><span class="portfolio-item-tag">Editorial</span></div>
+      </div>
+      <div class="portfolio-item">
+        <div class="portfolio-item-placeholder" style="aspect-ratio:1">
+          <img src="https://images.unsplash.com/photo-1519699047748-de8e457a634e?w=600&q=80" alt="Fiesta">
+        </div>
+        <div class="portfolio-item-overlay"><span class="portfolio-item-tag">Fiesta</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PACKAGES -->
+<section class="packages" id="packages">
+  <div class="container">
+    <p class="eyebrow reveal">Tarifas</p>
+    <h2 class="h2 reveal">Paquetes <em>exclusivos</em></h2>
+    <div class="packages-grid">
+      <div class="pkg reveal">
+        <div class="pkg-level">01 — Básico</div>
+        <div class="pkg-name">Social</div>
+        <div class="pkg-price"><sup>$</sup>1,500</div>
+        <div class="pkg-divider"></div>
+        <ul class="pkg-features">
+          <li class="pkg-feature"><span class="check">✦</span> Maquillaje social completo</li>
+          <li class="pkg-feature"><span class="check">✦</span> Duración 60 minutos</li>
+          <li class="pkg-feature"><span class="check">✦</span> Productos premium</li>
+          <li class="pkg-feature"><span class="check">✦</span> 1 retoque incluido</li>
+          <li class="pkg-feature inactive"><span class="check">✦</span> Servicio a domicilio</li>
+          <li class="pkg-feature inactive"><span class="check">✦</span> Prueba previa</li>
+        </ul>
+        <a href="https://wa.me/5215500000000" class="pkg-btn pkg-btn-outline">Reservar</a>
+      </div>
+      <div class="pkg center reveal reveal-d1">
+        <div class="pkg-crown"></div>
+        <div class="pkg-level">02 — Novia</div>
+        <div class="pkg-name">Nupcial</div>
+        <div class="pkg-price"><sup>$</sup>3,500</div>
+        <div class="pkg-divider"></div>
+        <ul class="pkg-features">
+          <li class="pkg-feature"><span class="check">✦</span> Prueba de maquillaje previa</li>
+          <li class="pkg-feature"><span class="check">✦</span> Asesoría personalizada</li>
+          <li class="pkg-feature"><span class="check">✦</span> Maquillaje día del evento</li>
+          <li class="pkg-feature"><span class="check">✦</span> Duración hasta 10 horas</li>
+          <li class="pkg-feature"><span class="check">✦</span> Servicio a domicilio</li>
+          <li class="pkg-feature"><span class="check">✦</span> 2 retoques incluidos</li>
+        </ul>
+        <a href="https://wa.me/5215500000000" class="pkg-btn pkg-btn-solid">Reservar</a>
+      </div>
+      <div class="pkg reveal reveal-d2">
+        <div class="pkg-level">03 — Elite</div>
+        <div class="pkg-name">Premium</div>
+        <div class="pkg-price"><sup>$</sup>5,200</div>
+        <div class="pkg-divider"></div>
+        <ul class="pkg-features">
+          <li class="pkg-feature"><span class="check">✦</span> Todo del paquete Nupcial</li>
+          <li class="pkg-feature"><span class="check">✦</span> Peinado incluido</li>
+          <li class="pkg-feature"><span class="check">✦</span> Cortejo (1 persona)</li>
+          <li class="pkg-feature"><span class="check">✦</span> Presencia en recepción</li>
+          <li class="pkg-feature"><span class="check">✦</span> Retoques ilimitados</li>
+          <li class="pkg-feature"><span class="check">✦</span> Kit de emergencia beauty</li>
+        </ul>
+        <a href="https://wa.me/5215500000000" class="pkg-btn pkg-btn-outline">Reservar</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-text">
+        <p class="eyebrow reveal">Sobre mí</p>
+        <h2 class="h2 reveal">Diez años creando <em>confianza</em></h2>
+        <div class="about-desc reveal">
+          <p>Soy Isabella, maquilladora profesional con una década de experiencia en el mundo de la belleza. Mi filosofía es simple: <strong>cada mujer merece sentirse extraordinaria</strong> en cada momento importante de su vida.</p>
+          <br>
+          <p>Formada en la Ciudad de México y con certificaciones internacionales, combino técnicas de maquillaje artístico con un profundo conocimiento de la dermato-cosmética para resultados que duran y se ven perfectos tanto en persona como en fotografía.</p>
+        </div>
+        <div class="about-qualities">
+          <div class="quality reveal">
+            <span class="quality-icon">🎓</span>
+            <div>
+              <div class="quality-title">Formación Internacional</div>
+              <div class="quality-desc">Certificada por la London College of Fashion y el Instituto Europeo de Design.</div>
+            </div>
+          </div>
+          <div class="quality reveal reveal-d1">
+            <span class="quality-icon">🌍</span>
+            <div>
+              <div class="quality-title">Experiencia Editorial</div>
+              <div class="quality-desc">He trabajado para Vogue México, Elle y múltiples campañas de moda y publicidad.</div>
+            </div>
+          </div>
+          <div class="quality reveal reveal-d2">
+            <span class="quality-icon">👰</span>
+            <div>
+              <div class="quality-title">Especialista en Novias</div>
+              <div class="quality-desc">Más de 600 novias acompañadas en el día más especial de sus vidas.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="about-visual reveal">
+        <div class="about-main-placeholder">
+          <img src="https://images.unsplash.com/photo-1519699047748-de8e457a634e?w=800&q=80" alt="Isabella">
+        </div>
+        <div class="about-accent"></div>
+        <div class="about-badge-dark">
+          <strong>10</strong>
+          <span>Años de excelencia</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="testimonials">
+  <div class="container">
+    <p class="eyebrow reveal">Testimonios</p>
+    <h2 class="h2 reveal">Palabras que <em>inspiran</em></h2>
+    <div class="testimonials-track">
+      <div class="testi">
+        <div class="testi-quote">"</div>
+        <p class="testi-text">Me sentí hermosa y segura todo el evento. Isabella entendió exactamente la elegancia que buscaba para mi boda. Cada vez que me veía en el espejo quería llorar de la emoción — pero no podía arruinar el maquillaje.</p>
+        <div class="testi-footer">
+          <div class="testi-avatar">👰</div>
+          <div>
+            <div class="testi-stars">★★★★★</div>
+            <div class="testi-name">Mariana Elizondo</div>
+            <div class="testi-role">Novia · Bodas de lujo · 2024</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi">
+        <div class="testi-quote">"</div>
+        <p class="testi-text">Para mi sesión editorial necesitaba algo impactante pero que no se viera recargado. Isabella creó un look que los fotógrafos no dejaban de elogiar. Definitivamente es la mejor en lo que hace.</p>
+        <div class="testi-footer">
+          <div class="testi-avatar">📸</div>
+          <div>
+            <div class="testi-stars">★★★★★</div>
+            <div class="testi-name">Sofía del Valle</div>
+            <div class="testi-role">Modelo editorial · CDMX</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi">
+        <div class="testi-quote">"</div>
+        <p class="testi-text">Contraté el paquete premium para mi boda y valió cada peso. No solo fue el maquillaje — fue la tranquilidad de saber que todo estaba en manos expertas. Mi novio no podía creer lo que veía.</p>
+        <div class="testi-footer">
+          <div class="testi-avatar">💍</div>
+          <div>
+            <div class="testi-stars">★★★★★</div>
+            <div class="testi-name">Andrea Gutiérrez</div>
+            <div class="testi-role">Novia · Paquete Premium · 2025</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="container">
+    <p class="eyebrow" style="justify-content:center">No esperes más</p>
+    <h2 class="h2">Agenda tu fecha <em>con anticipación</em></h2>
+    <p class="cta-desc">Las fechas de temporada alta se agotan rápido. Asegura tu lugar y comienza a preparar el look perfecto para tu momento especial.</p>
+    <div class="cta-actions">
+      <a href="https://wa.me/5215500000000?text=Hola!%20Quiero%20reservar%20mi%20fecha" class="btn-gold">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Contactar por WhatsApp
+      </a>
+      <a href="#contact" class="btn-outline-gold">Formulario de contacto</a>
+    </div>
+  </div>
+  <div class="cta-line"></div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="contact-left">
+        <p class="eyebrow reveal">Contacto</p>
+        <h3 class="reveal">Conversemos sobre tu <em style="font-style:italic;color:var(--gold-bright)">evento</em></h3>
+        <p class="reveal">Completa el formulario y me pondré en contacto contigo lo antes posible. También puedes escribirme directamente por WhatsApp.</p>
+        <div class="c-detail reveal">
+          <div class="c-detail-icon">📱</div>
+          <div><strong>WhatsApp</strong><span>+52 55 0000 0000</span></div>
+        </div>
+        <div class="c-detail reveal">
+          <div class="c-detail-icon">📸</div>
+          <div><strong>Instagram</strong><span>@isabella.voss.makeup</span></div>
+        </div>
+        <div class="c-detail reveal">
+          <div class="c-detail-icon">📍</div>
+          <div><strong>Ciudad de México</strong><span>Disponible para destinos</span></div>
+        </div>
+      </div>
+      <div class="reveal">
+        <form class="contact-form" onsubmit="handleFormSubmit(event)">
+          <div class="cf-row">
+            <div class="cf-group">
+              <label>Nombre</label>
+              <input type="text" placeholder="Tu nombre completo" required>
+            </div>
+            <div class="cf-group">
+              <label>WhatsApp</label>
+              <input type="tel" placeholder="+52 55 0000 0000" required>
+            </div>
+          </div>
+          <div class="cf-row">
+            <div class="cf-group">
+              <label>Tipo de evento</label>
+              <select required>
+                <option value="">Seleccionar...</option>
+                <option>Boda / Novia</option>
+                <option>Evento social</option>
+                <option>Sesión de fotos</option>
+                <option>Gala / Fiesta</option>
+                <option>Graduación</option>
+                <option>Quinceaños</option>
+              </select>
+            </div>
+            <div class="cf-group">
+              <label>Fecha del evento</label>
+              <input type="date" required>
+            </div>
+          </div>
+          <div class="cf-group">
+            <label>Mensaje</label>
+            <textarea placeholder="Cuéntame sobre tu evento, el look que tienes en mente, o cualquier pregunta..."></textarea>
+          </div>
+          <button type="submit" class="btn-form-submit">Enviar solicitud →</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo">Isabella <em>Voss</em></div>
+        <p class="footer-tagline">Maquilladora de lujo especializada en novias, eventos exclusivos y producción editorial en Ciudad de México y destinos.</p>
+        <div class="footer-socials">
+          <a href="#" class="fsocial">📷</a>
+          <a href="#" class="fsocial">📘</a>
+          <a href="#" class="fsocial">💬</a>
+          <a href="#" class="fsocial">▶</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-heading">Servicios</div>
+        <ul class="footer-list">
+          <li><a href="#">Maquillaje Nupcial</a></li>
+          <li><a href="#">Eventos Exclusivos</a></li>
+          <li><a href="#">Editorial & Moda</a></li>
+          <li><a href="#">Sesiones de Fotos</a></li>
+          <li><a href="#">Maquillaje Social</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-heading">Contacto</div>
+        <ul class="footer-list">
+          <li><a href="https://wa.me/5215500000000">WhatsApp directo</a></li>
+          <li><a href="#">@isabella.voss.makeup</a></li>
+          <li><a href="#">Ciudad de México</a></li>
+          <li><a href="#">Servicio a destinos</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Isabella Voss Makeup Art · Todos los derechos reservados</p>
+    </div>
+  </div>
+</footer>
+
+<!-- WA FLOAT -->
+<div class="wa-float">
+  <a href="https://wa.me/5215500000000" target="_blank">
+    <svg viewBox="0 0 24 24" width="28" height="28" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+</div>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const dot = document.getElementById('cursorDot');
+  const ring = document.getElementById('cursorRing');
+  let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+  document.addEventListener('mousemove', e => {
+    mouseX = e.clientX; mouseY = e.clientY;
+    dot.style.left = mouseX + 'px';
+    dot.style.top = mouseY + 'px';
+  });
+  function animateRing() {
+    ringX += (mouseX - ringX) * 0.15;
+    ringY += (mouseY - ringY) * 0.15;
+    ring.style.left = ringX + 'px';
+    ring.style.top = ringY + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+  document.querySelectorAll('a, button, .portfolio-item, .pkg').forEach(el => {
+    el.addEventListener('mouseenter', () => { ring.style.width = '55px'; ring.style.height = '55px'; ring.style.borderColor = 'rgba(184,149,42,0.8)'; });
+    el.addEventListener('mouseleave', () => { ring.style.width = '36px'; ring.style.height = '36px'; ring.style.borderColor = 'rgba(184,149,42,0.5)'; });
+  });
+
+  // Navbar
+  const nav = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 80);
+  });
+
+  // Scroll reveal
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // Portfolio filters
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  // Form
+  function handleFormSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('.btn-form-submit');
+    btn.textContent = '¡Solicitud enviada! ✓';
+    btn.style.background = 'rgba(37,211,102,0.2)';
+    btn.style.color = '#25D366';
+    btn.style.border = '1px solid #25D366';
+    setTimeout(() => {
+      btn.textContent = 'Enviar solicitud →';
+      btn.style.background = ''; btn.style.color = ''; btn.style.border = '';
+      e.target.reset();
+    }, 3500);
+  }
+</script>
+</body>
+</html>

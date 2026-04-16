@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maria Zolares · UGC Creator</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #FAF7F2;
+    --nude: #E8D5C4;
+    --terracotta: #C4785A;
+    --dark: #1A1410;
+    --mid: #6B5C52;
+    --light-nude: #F2E8DF;
+    --accent: #B5622C;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--cream);
+    color: var(--dark);
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 3rem;
+    background: rgba(250,247,242,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(196,120,90,0.15);
+    transition: padding 0.3s;
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.25rem;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--dark);
+    text-decoration: none;
+  }
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mid);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--terracotta); }
+
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 4px;
+  }
+  .hamburger span {
+    display: block;
+    width: 24px;
+    height: 1.5px;
+    background: var(--dark);
+    transition: all 0.3s;
+  }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 8rem 3rem 4rem;
+    gap: 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  #hero::before {
+    content: '';
+    position: absolute;
+    right: -10%;
+    top: -10%;
+    width: 60%;
+    height: 120%;
+    background: radial-gradient(ellipse at center, var(--light-nude) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-text { position: relative; z-index: 2; }
+  .hero-eyebrow {
+    font-size: 0.65rem;
+    font-weight: 400;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+  .hero-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(4rem, 8vw, 8rem);
+    font-weight: 300;
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    color: var(--dark);
+    opacity: 0;
+    animation: fadeUp 0.8s 0.4s forwards;
+  }
+  .hero-name em {
+    font-style: italic;
+    color: var(--terracotta);
+  }
+  .hero-subtitle {
+    font-size: 0.75rem;
+    font-weight: 300;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--mid);
+    margin-top: 2rem;
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s forwards;
+  }
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--dark);
+    text-decoration: none;
+    border-bottom: 1px solid var(--terracotta);
+    padding-bottom: 0.3rem;
+    transition: gap 0.3s, color 0.3s;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.8s forwards;
+  }
+  .hero-cta:hover { gap: 1.5rem; color: var(--terracotta); }
+  .hero-cta::after { content: '→'; }
+
+  .hero-socials {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 3rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 1s forwards;
+  }
+  .hero-socials a {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mid);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .hero-socials a:hover { color: var(--terracotta); }
+
+  .hero-visual {
+    position: relative;
+    height: 600px;
+    opacity: 0;
+    animation: fadeIn 1s 0.5s forwards;
+  }
+  .hero-img-main {
+    position: absolute;
+    right: 0; top: 0;
+    width: 78%;
+    height: 88%;
+    background: linear-gradient(135deg, var(--nude) 0%, var(--terracotta) 100%);
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .hero-img-main .placeholder-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0.1em;
+    background: linear-gradient(135deg, #D4A892 0%, #C4785A 60%, #9E5A3E 100%);
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .hero-img-accent {
+    position: absolute;
+    left: 0; bottom: 0;
+    width: 45%;
+    height: 50%;
+    background: var(--light-nude);
+    border-radius: 2px;
+    border: 1px solid var(--nude);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.85rem;
+    color: var(--mid);
+    letter-spacing: 0.05em;
+  }
+  .hero-badge {
+    position: absolute;
+    left: 32%;
+    top: 20%;
+    width: 100px;
+    height: 100px;
+    background: var(--dark);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 2px;
+    z-index: 10;
+    animation: spin 12s linear infinite;
+  }
+  .hero-badge span {
+    font-size: 0.55rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--cream);
+    line-height: 1.6;
+  }
+
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  /* DIVIDER */
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--nude), transparent);
+    margin: 0 3rem;
+    width: calc(100% - 6rem);
+  }
+
+  /* SECTION BASE */
+  section {
+    padding: 7rem 3rem;
+  }
+  .section-label {
+    font-size: 0.6rem;
+    font-weight: 400;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 1rem;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 5vw, 5rem);
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.01em;
+    color: var(--dark);
+  }
+  .section-title em { font-style: italic; color: var(--terracotta); }
+
+  /* SOBRE MI */
+  #about {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 6rem;
+    align-items: center;
+    background: var(--cream);
+  }
+  .about-img {
+    position: relative;
+  }
+  .about-img-frame {
+    width: 100%;
+    padding-bottom: 125%;
+    background: linear-gradient(135deg, var(--nude) 0%, #D4A892 100%);
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .about-img-frame-inner {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 0.1em;
+  }
+  .about-deco {
+    position: absolute;
+    bottom: -1.5rem;
+    right: -1.5rem;
+    width: 60%;
+    height: 60%;
+    border: 1px solid var(--nude);
+    border-radius: 2px;
+    z-index: -1;
+  }
+  .about-tags {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin: 2rem 0;
+  }
+  .tag {
+    font-size: 0.6rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    border: 1px solid var(--nude);
+    padding: 0.4rem 1rem;
+    border-radius: 50px;
+  }
+  .about-text p {
+    font-size: 0.95rem;
+    font-weight: 300;
+    line-height: 1.9;
+    color: var(--mid);
+    margin-bottom: 1.2rem;
+  }
+
+  /* QUE ES UGC */
+  #ugc-info {
+    background: var(--dark);
+    color: var(--cream);
+    padding: 7rem 3rem;
+  }
+  #ugc-info .section-label { color: var(--nude); }
+  #ugc-info .section-title { color: var(--cream); }
+  #ugc-info .section-title em { color: var(--nude); }
+  .ugc-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
+    margin-top: 5rem;
+  }
+  .ugc-card {
+    border-top: 1px solid rgba(232,213,196,0.2);
+    padding-top: 2rem;
+  }
+  .ugc-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.5rem;
+    font-weight: 300;
+    color: var(--terracotta);
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+  .ugc-card h3 {
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--nude);
+    margin-bottom: 0.75rem;
+  }
+  .ugc-card p {
+    font-size: 0.85rem;
+    font-weight: 300;
+    line-height: 1.8;
+    color: rgba(250,247,242,0.6);
+  }
+
+  /* STATS */
+  #stats {
+    background: var(--light-nude);
+    padding: 6rem 3rem;
+  }
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    margin-top: 4rem;
+    text-align: center;
+  }
+  .stat-item {
+    padding: 2.5rem 1.5rem;
+    background: var(--cream);
+    border-radius: 2px;
+    position: relative;
+  }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.5rem;
+    font-weight: 300;
+    color: var(--terracotta);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.65rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mid);
+    margin-top: 0.75rem;
+    line-height: 1.5;
+  }
+
+  /* PORTFOLIO */
+  #portfolio {
+    background: var(--cream);
+  }
+  .portfolio-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 4rem;
+  }
+  .portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .portfolio-item {
+    position: relative;
+    cursor: pointer;
+  }
+  .portfolio-thumb {
+    width: 100%;
+    padding-bottom: 177%; /* proporción vertical 9:16 */
+    background: #1a1410;
+    position: relative;
+    overflow: hidden;
+    border-radius: 2px;
+  }
+  .portfolio-thumb video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  /* overlay oscuro que aparece al hover cuando está pausado */
+  .portfolio-thumb .vid-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+    transition: background 0.3s;
+  }
+  .portfolio-item.playing .vid-overlay {
+    background: transparent;
+  }
+  .portfolio-item.playing:hover .vid-overlay {
+    background: rgba(0,0,0,0.2);
+  }
+  .play-pause-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(250,247,242,0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    color: var(--dark);
+    transition: transform 0.2s, opacity 0.3s;
+    flex-shrink: 0;
+  }
+  .portfolio-item.playing .play-pause-btn {
+    opacity: 0;
+  }
+  .portfolio-item.playing:hover .play-pause-btn {
+    opacity: 1;
+  }
+  .play-pause-btn .icon-play  { display: block; }
+  .play-pause-btn .icon-pause { display: none; }
+  .portfolio-item.playing .play-pause-btn .icon-play  { display: none; }
+  .portfolio-item.playing .play-pause-btn .icon-pause { display: block; }
+
+  .portfolio-label {
+    font-size: 0.6rem;
+    font-weight: 400;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--mid);
+    margin-top: 1rem;
+    text-align: center;
+  }
+
+  /* FOTOS */
+  #photos {
+    background: var(--light-nude);
+  }
+  .photo-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-top: 4rem;
+  }
+  .photo-item {
+    overflow: hidden;
+    border-radius: 2px;
+    aspect-ratio: 3/4;
+  }
+  .photo-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+  }
+  .photo-item:hover img { transform: scale(1.04); }
+  /* Placeholder cuando no hay imagen aún */
+  .photo-item .photo-placeholder {
+    width: 100%;
+    height: 100%;
+    background: var(--nude);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.8rem;
+    color: rgba(107,92,82,0.5);
+    letter-spacing: 0.1em;
+  }
+
+  /* TARIFAS */
+  #pricing {
+    background: var(--cream);
+  }
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 4rem;
+  }
+  .price-card {
+    border: 1px solid var(--nude);
+    padding: 2.5rem;
+    border-radius: 2px;
+    position: relative;
+    transition: border-color 0.3s, transform 0.3s;
+    background: var(--cream);
+  }
+  .price-card:hover {
+    border-color: var(--terracotta);
+    transform: translateY(-4px);
+  }
+  .price-card.featured {
+    background: var(--dark);
+    border-color: var(--dark);
+    color: var(--cream);
+  }
+  .price-tag {
+    display: inline-block;
+    font-size: 0.6rem;
+    font-weight: 400;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    padding: 0.35rem 1rem;
+    border-radius: 50px;
+    margin-bottom: 1.5rem;
+  }
+  .price-card:not(.featured) .price-tag {
+    background: var(--light-nude);
+    color: var(--terracotta);
+  }
+  .price-card.featured .price-tag {
+    background: rgba(250,247,242,0.15);
+    color: var(--nude);
+  }
+  .price-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+  }
+  .price-desc {
+    font-size: 0.75rem;
+    font-weight: 300;
+    color: var(--mid);
+    margin-bottom: 2rem;
+    line-height: 1.7;
+  }
+  .price-card.featured .price-desc { color: rgba(250,247,242,0.6); }
+  .price-list {
+    list-style: none;
+    margin-bottom: 2.5rem;
+  }
+  .price-list li {
+    font-size: 0.8rem;
+    font-weight: 300;
+    color: var(--mid);
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--light-nude);
+    display: flex;
+    justify-content: space-between;
+  }
+  .price-card.featured .price-list li {
+    color: rgba(250,247,242,0.7);
+    border-bottom-color: rgba(250,247,242,0.1);
+  }
+  .price-list strong {
+    font-weight: 500;
+    color: var(--dark);
+  }
+  .price-card.featured .price-list strong { color: var(--cream); }
+  .price-btn {
+    display: block;
+    text-align: center;
+    font-size: 0.65rem;
+    font-weight: 400;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    padding: 1rem;
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+  .price-card:not(.featured) .price-btn {
+    border: 1px solid var(--dark);
+    color: var(--dark);
+  }
+  .price-card:not(.featured) .price-btn:hover {
+    background: var(--dark);
+    color: var(--cream);
+  }
+  .price-card.featured .price-btn {
+    background: var(--terracotta);
+    color: var(--cream);
+  }
+  .price-card.featured .price-btn:hover {
+    background: var(--accent);
+  }
+  .canje-note {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 0.75rem;
+    color: var(--mid);
+    letter-spacing: 0.1em;
+  }
+  .canje-note strong { color: var(--terracotta); }
+
+  /* PROCESO */
+  #proceso {
+    background: var(--dark);
+    color: var(--cream);
+  }
+  #proceso .section-label { color: var(--nude); }
+  #proceso .section-title { color: var(--cream); }
+  .proceso-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    margin-top: 5rem;
+    position: relative;
+  }
+  .proceso-steps::before {
+    content: '';
+    position: absolute;
+    top: 28px;
+    left: 12.5%;
+    right: 12.5%;
+    height: 1px;
+    background: linear-gradient(to right, var(--terracotta), var(--nude), var(--terracotta));
+  }
+  .step {
+    text-align: center;
+    padding: 0 1.5rem;
+    position: relative;
+  }
+  .step-num {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--terracotta);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 2rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: var(--cream);
+    position: relative;
+    z-index: 2;
+  }
+  .step h3 {
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--nude);
+    margin-bottom: 0.75rem;
+  }
+  .step p {
+    font-size: 0.8rem;
+    font-weight: 300;
+    line-height: 1.8;
+    color: rgba(250,247,242,0.5);
+  }
+
+  /* TESTIMONIOS */
+  #testimonios {
+    background: var(--light-nude);
+  }
+  .testi-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 4rem;
+  }
+  .testi-card {
+    background: var(--cream);
+    padding: 2.5rem;
+    border-radius: 2px;
+    position: relative;
+  }
+  .testi-card::before {
+    content: '"';
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 5rem;
+    color: var(--nude);
+    position: absolute;
+    top: 1rem;
+    left: 2rem;
+    line-height: 1;
+  }
+  .testi-text {
+    font-size: 0.85rem;
+    font-weight: 300;
+    line-height: 1.9;
+    color: var(--mid);
+    margin-bottom: 1.5rem;
+    margin-top: 2rem;
+  }
+  .testi-brand {
+    font-size: 0.65rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+  }
+  .stars { color: var(--terracotta); margin-bottom: 0.5rem; font-size: 0.75rem; }
+
+  /* CONTACT */
+  #contact {
+    background: var(--cream);
+    text-align: center;
+  }
+  .contact-inner {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  .contact-subtitle {
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--mid);
+    line-height: 1.8;
+    margin: 2rem 0 3.5rem;
+  }
+  .contact-email {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-weight: 300;
+    color: var(--dark);
+    text-decoration: none;
+    border-bottom: 1px solid var(--terracotta);
+    padding-bottom: 0.3rem;
+    transition: color 0.3s;
+    display: inline-block;
+    margin-bottom: 3rem;
+  }
+  .contact-email:hover { color: var(--terracotta); }
+  .contact-socials {
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+  }
+  .contact-socials a {
+    font-size: 0.65rem;
+    font-weight: 400;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--mid);
+    text-decoration: none;
+    transition: color 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .contact-socials a:hover { color: var(--terracotta); }
+  .social-icon {
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--nude);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .contact-socials a:hover .social-icon {
+    border-color: var(--terracotta);
+    background: var(--light-nude);
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--dark);
+    color: rgba(250,247,242,0.4);
+    text-align: center;
+    padding: 2rem 3rem;
+    font-size: 0.65rem;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+  }
+
+  /* MOBILE NAV MENU */
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: var(--dark);
+    z-index: 200;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5rem;
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.76, 0, 0.24, 1);
+  }
+  .mobile-menu.open { transform: translateX(0); }
+  .mobile-menu a {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: var(--cream);
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    transition: color 0.3s;
+  }
+  .mobile-menu a:hover { color: var(--terracotta); }
+  .close-btn {
+    position: absolute;
+    top: 1.5rem;
+    right: 2rem;
+    background: none;
+    border: none;
+    color: var(--cream);
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+
+  /* SCROLL REVEAL */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
+  /* Fallback: si JS no corre, todo se ve igual */
+  .no-js .reveal {
+    opacity: 1;
+    transform: none;
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* RESPONSIVE */
+  @media (max-width: 1024px) {
+    #hero { grid-template-columns: 1fr; padding-top: 7rem; }
+    .hero-visual { display: none; }
+    #about { grid-template-columns: 1fr; }
+    .about-img { max-width: 400px; margin: 0 auto; }
+    .ugc-grid { grid-template-columns: 1fr 1fr; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+    .photo-grid { grid-template-columns: repeat(2, 1fr); }
+    .pricing-grid { grid-template-columns: 1fr; max-width: 500px; margin-left: auto; margin-right: auto; }
+    .proceso-steps { grid-template-columns: repeat(2, 1fr); }
+    .proceso-steps::before { display: none; }
+    .testi-grid { grid-template-columns: 1fr; max-width: 500px; margin-left: auto; margin-right: auto; }
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .mobile-menu { display: flex; }
+    section { padding: 5rem 1.5rem; }
+    #hero { padding: 6rem 1.5rem 4rem; }
+    .ugc-grid { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .portfolio-grid { grid-template-columns: 1fr 1fr; }
+    .photo-grid { grid-template-columns: repeat(2, 1fr); }
+    .proceso-steps { grid-template-columns: 1fr; }
+    .contact-socials { gap: 1.5rem; }
+    .portfolio-header { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+    .divider { margin: 0 1.5rem; width: calc(100% - 3rem); }
+  }
+
+  @media (max-width: 480px) {
+    .stats-grid { grid-template-columns: 1fr; }
+    .portfolio-grid { grid-template-columns: 1fr; }
+    .photo-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">Maria Zolares</a>
+  <ul class="nav-links">
+    <li><a href="#about">Sobre mí</a></li>
+    <li><a href="#portfolio">Portfolio</a></li>
+    <li><a href="#pricing">Tarifas</a></li>
+    <li><a href="#contact">Contacto</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="close-btn" id="closeMenu">✕</button>
+  <a href="#about" onclick="closeMobile()">Sobre mí</a>
+  <a href="#portfolio" onclick="closeMobile()">Portfolio</a>
+  <a href="#pricing" onclick="closeMobile()">Tarifas</a>
+  <a href="#contact" onclick="closeMobile()">Contacto</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-text">
+    <p class="hero-eyebrow">UGC Creator · Content Creator</p>
+    <h1 class="hero-name">
+      Maria<br><em>Zolares</em>
+    </h1>
+    <p class="hero-subtitle">Creadora de Contenido UGC</p>
+    <a href="#portfolio" class="hero-cta">Ver mi trabajo</a>
+    <div class="hero-socials">
+      <a href="#" target="_blank">Instagram</a>
+      <a href="#" target="_blank">TikTok</a>
+      <a href="#contact">Contáctame</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-img-main">
+      <div class="placeholder-photo">
+        
+        <img src="ugc/fotoprincipal.png" alt="Areli Viridiana" style="width:100%;height:100%;object-fit:cover;">
+      </div>
+    </div>
+    <div class="hero-img-accent">
+      <span style="text-align:center; padding:1rem; font-size:0.8rem; color:var(--mid);">Lifestyle · Beauty<br>Fashion · Experiences</span>
+    </div>
+    <div class="hero-badge">
+      <span>UGC</span>
+      <span>✦</span>
+      <span>Creator</span>
+      <span>✦</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SOBRE MI -->
+<section id="about">
+  <div class="about-img reveal">
+    <div class="about-img-frame">
+      <div class="about-img-frame-inner">
+        <img src="ugc/sobremi.png" alt="Areli Viridiana" style="width:100%;height:100%;object-fit:cover;">      </div>
+    </div>
+    <div class="about-deco"></div>
+  </div>
+  <div class="about-content">
+    <p class="section-label reveal">Conóceme</p>
+    <h2 class="section-title reveal">Sobre <em>mí</em></h2>
+    <div class="about-tags reveal reveal-delay-1">
+      <span class="tag">Lifestyle</span>
+      <span class="tag">Beauty</span>
+      <span class="tag">Fashion</span>
+      <span class="tag">Experiences</span>
+    </div>
+    <div class="about-text">
+      <p class="reveal reveal-delay-2">Soy maria zolares, creadora de contenido UGC apasionada por conectar marcas con sus consumidores de manera auténtica e impactante.</p>
+      <p class="reveal reveal-delay-3">Mi principal objetivo es que el contenido que creo genere valor, crecimiento y represente fielmente los valores de cada marca. Creo en la autenticidad como la herramienta más poderosa del marketing moderno.</p>
+      <p class="reveal reveal-delay-4">Trabajo con marcas de lifestyle, belleza, moda y experiencias, adaptando mi creatividad y estilo a la estrategia de cada cliente para maximizar su impacto.</p>
+    </div>
+  </div>
+</section>
+
+<!-- QUE ES UGC -->
+<section id="ugc-info">
+  <p class="section-label reveal">Educación de marca</p>
+  <h2 class="section-title reveal">¿Qué es el<br>Contenido <em>UGC</em>?</h2>
+  <div class="ugc-grid">
+    <div class="ugc-card reveal">
+      <div class="ugc-num">01</div>
+      <h3>User Generated Content</h3>
+      <p>Contenido creado por consumidores reales sobre su experiencia con una marca, producto o servicio — auténtico y orgánico por naturaleza.</p>
+    </div>
+    <div class="ugc-card reveal reveal-delay-1">
+      <div class="ugc-num">02</div>
+      <h3>Confianza & Credibilidad</h3>
+      <p>Los consumidores confían más en reseñas y contenido de otros usuarios que en publicidad tradicional. El UGC genera esa conexión genuina.</p>
+    </div>
+    <div class="ugc-card reveal reveal-delay-2">
+      <div class="ugc-num">03</div>
+      <h3>Estrategia que convierte</h3>
+      <p>El UGC es contenido original diseñado específicamente para que las marcas lo usen en sus redes sociales y campañas publicitarias.</p>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section id="stats">
+  <p class="section-label reveal" style="text-align:center">Por qué funciona</p>
+  <h2 class="section-title reveal" style="text-align:center">El <em>poder</em> del UGC</h2>
+  <div class="stats-grid">
+    <div class="stat-item reveal">
+      <div class="stat-num">79%</div>
+      <div class="stat-label">de personas dice que el UGC tiene alto impacto en sus decisiones de compra</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-1">
+      <div class="stat-num">86%</div>
+      <div class="stat-label">de las marcas con UGC reportan mayor confianza y autenticidad en su imagen</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-2">
+      <div class="stat-num">92%</div>
+      <div class="stat-label">de los consumidores confían más en reseñas de usuarios que en influencers</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-3">
+      <div class="stat-num">85%</div>
+      <div class="stat-label">encuentran el UGC más influyente que las fotos oficiales de producto</div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO VIDEOS -->
+<section id="portfolio">
+  <div class="portfolio-header">
+    <div>
+      <p class="section-label reveal">Mi trabajo</p>
+      <h2 class="section-title reveal">Videos <em>UGC</em></h2>
+    </div>
+    <p class="reveal" style="font-size:0.75rem; color:var(--mid); font-weight:300; max-width:280px; line-height:1.7; text-align:right;">Contenido exclusivo creado para que las marcas utilicen en sus redes sociales</p>
+  </div>
+  <div class="portfolio-grid">
+
+    <!-- VIDEO 1 — cambia "tu-video1.mp4" por el nombre de tu archivo -->
+    <div class="portfolio-item reveal" onclick="toggleVideo(this)">
+      <div class="portfolio-thumb">
+        <video preload="metadata" playsinline>
+          <source src="ugc/1.mp4" type="video/mp4">
+        </video>
+        <div class="vid-overlay">
+          <div class="play-pause-btn">
+            <span class="icon-play">▶</span>
+            <span class="icon-pause">⏸</span>
+          </div>
+        </div>
+      </div>
+      <p class="portfolio-label">Nombre del video</p>
+    </div>
+
+    <!-- VIDEO 2 -->
+    <div class="portfolio-item reveal reveal-delay-1" onclick="toggleVideo(this)">
+      <div class="portfolio-thumb">
+        <video preload="metadata" playsinline>
+          <source src="ugc/2.mp4" type="video/mp4">
+        </video>
+        <div class="vid-overlay">
+          <div class="play-pause-btn">
+            <span class="icon-play">▶</span>
+            <span class="icon-pause">⏸</span>
+          </div>
+        </div>
+      </div>
+      <p class="portfolio-label">Nombre del video</p>
+    </div>
+
+    <!-- VIDEO 3 -->
+    <div class="portfolio-item reveal reveal-delay-2" onclick="toggleVideo(this)">
+      <div class="portfolio-thumb">
+        <video preload="metadata" playsinline>
+          <source src="ugc/3.mp4" type="video/mp4">
+        </video>
+        <div class="vid-overlay">
+          <div class="play-pause-btn">
+            <span class="icon-play">▶</span>
+            <span class="icon-pause">⏸</span>
+          </div>
+        </div>
+      </div>
+      <p class="portfolio-label">Nombre del video</p>
+    </div>
+
+    <!-- VIDEO 4 -->
+    <div class="portfolio-item reveal" onclick="toggleVideo(this)">
+      <div class="portfolio-thumb">
+        <video preload="metadata" playsinline>
+          <source src="ugc/4.mp4" type="video/mp4">
+        </video>
+        <div class="vid-overlay">
+          <div class="play-pause-btn">
+            <span class="icon-play">▶</span>
+            <span class="icon-pause">⏸</span>
+          </div>
+        </div>
+      </div>
+      <p class="portfolio-label">Nombre del video</p>
+    </div>
+
+    <!-- VIDEO 5 -->
+    <div class="portfolio-item reveal reveal-delay-1" onclick="toggleVideo(this)">
+      <div class="portfolio-thumb">
+        <video preload="metadata" playsinline>
+          <source src="tu-video5.mp4" type="video/mp4">
+        </video>
+        <div class="vid-overlay">
+          <div class="play-pause-btn">
+            <span class="icon-play">▶</span>
+            <span class="icon-pause">⏸</span>
+          </div>
+        </div>
+      </div>
+      <p class="portfolio-label">Nombre del video</p>
+    </div>
+
+    <!-- VIDEO 6 -->
+    <div class="portfolio-item reveal reveal-delay-2" onclick="toggleVideo(this)">
+      <div class="portfolio-thumb">
+        <video preload="metadata" playsinline>
+          <source src="tu-video6.mp4" type="video/mp4">
+        </video>
+        <div class="vid-overlay">
+          <div class="play-pause-btn">
+            <span class="icon-play">▶</span>
+            <span class="icon-pause">⏸</span>
+          </div>
+        </div>
+      </div>
+      <p class="portfolio-label">Nombre del video</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOTOS -->
+<section id="photos">
+  <p class="section-label reveal">Fotografía</p>
+  <h2 class="section-title reveal">Ejemplos de<br>Fotografía <em>UGC</em></h2>
+  <div class="photo-grid">
+
+    <!-- Reemplaza cada src="" con el nombre de tu imagen, ej: src="foto1.jpg" -->
+    <div class="photo-item reveal">
+      <img src="tu-foto1.jpg" alt="UGC foto 1" onerror="this.style.display='none';this.parentElement.innerHTML='<div class=\'photo-placeholder\'>Tu foto aquí</div>'">
+    </div>
+    <div class="photo-item reveal reveal-delay-1">
+      <img src="tu-foto2.jpg" alt="UGC foto 2" onerror="this.style.display='none';this.parentElement.innerHTML='<div class=\'photo-placeholder\'>Tu foto aquí</div>'">
+    </div>
+    <div class="photo-item reveal reveal-delay-2">
+      <img src="tu-foto3.jpg" alt="UGC foto 3" onerror="this.style.display='none';this.parentElement.innerHTML='<div class=\'photo-placeholder\'>Tu foto aquí</div>'">
+    </div>
+    <div class="photo-item reveal reveal-delay-3">
+      <img src="tu-foto4.jpg" alt="UGC foto 4" onerror="this.style.display='none';this.parentElement.innerHTML='<div class=\'photo-placeholder\'>Tu foto aquí</div>'">
+    </div>
+    <div class="photo-item reveal">
+      <img src="tu-foto5.jpg" alt="UGC foto 5" onerror="this.style.display='none';this.parentElement.innerHTML='<div class=\'photo-placeholder\'>Tu foto aquí</div>'">
+    </div>
+    <div class="photo-item reveal reveal-delay-1">
+      <img src="tu-foto6.jpg" alt="UGC foto 6" onerror="this.style.display='none';this.parentElement.innerHTML='<div class=\'photo-placeholder\'>Tu foto aquí</div>'">
+    </div>
+    <div class="photo-item reveal reveal-delay-2">
+      <img src="tu-foto7.jpg" alt="UGC foto 7" onerror="this.style.display='none';this.parentElement.innerHTML='<div class=\'photo-placeholder\'>Tu foto aquí</div>'">
+    </div>
+    <div class="photo-item reveal reveal-delay-3">
+      <img src="tu-foto8.jpg" alt="UGC foto 8" onerror="this.style.display='none';this.parentElement.innerHTML='<div class=\'photo-placeholder\'>Tu foto aquí</div>'">
+    </div>
+
+  </div>
+</section>
+
+<!-- PROCESO -->
+<section id="proceso">
+  <p class="section-label reveal">Cómo trabajo</p>
+  <h2 class="section-title reveal">El <em>proceso</em></h2>
+  <div class="proceso-steps">
+    <div class="step reveal">
+      <div class="step-num">1</div>
+      <h3>Contacto</h3>
+      <p>Hablamos sobre tu marca, producto y objetivos de contenido.</p>
+    </div>
+    <div class="step reveal reveal-delay-1">
+      <div class="step-num">2</div>
+      <h3>Brief & Acuerdo</h3>
+      <p>Defines el brief creativo y acordamos tarifas, formatos y entregas.</p>
+    </div>
+    <div class="step reveal reveal-delay-2">
+      <div class="step-num">3</div>
+      <h3>Producción</h3>
+      <p>Creo el contenido con edición básica incluida en todos los formatos.</p>
+    </div>
+    <div class="step reveal reveal-delay-3">
+      <div class="step-num">4</div>
+      <h3>Entrega</h3>
+      <p>Recibes los archivos listos para publicar en tus redes o usarlos en ads.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TARIFAS -->
+<section id="pricing">
+  <p class="section-label reveal" style="text-align:center">Inversión</p>
+  <h2 class="section-title reveal" style="text-align:center"><em>Tarifas</em></h2>
+  <div class="pricing-grid">
+    <div class="price-card reveal">
+      <span class="price-tag">Shorts</span>
+      <h3 class="price-name">Videos<br>15–60 seg</h3>
+      <p class="price-desc">Formato vertical y editado. Incluye texto, cortes y voiceover.</p>
+      <ul class="price-list">
+        <li><span>1 video</span><strong>$70.000 COP</strong></li>
+        <li><span>2 videos</span><strong>$120.000 COP</strong></li>
+        <li><span>3 videos</span><strong>$170.000 COP</strong></li>
+      </ul>
+      <a href="#contact" class="price-btn">Solicitar</a>
+    </div>
+    <div class="price-card featured reveal reveal-delay-1">
+      <span class="price-tag">⭐ Popular</span>
+      <h3 class="price-name">Videos<br>1–3 min</h3>
+      <p class="price-desc">Formato vertical y editado. Contenido más profundo y detallado.</p>
+      <ul class="price-list">
+        <li><span>1 video</span><strong>$80.000 COP</strong></li>
+        <li><span>2 videos</span><strong>$140.000 COP</strong></li>
+        <li><span>3 videos</span><strong>$200.000 COP</strong></li>
+      </ul>
+      <a href="#contact" class="price-btn">Solicitar</a>
+    </div>
+    <div class="price-card reveal reveal-delay-2">
+      <span class="price-tag">Fotos</span>
+      <h3 class="price-name">Fotografía<br>de Producto</h3>
+      <p class="price-desc">Imágenes profesionales de producto con estética UGC auténtica.</p>
+      <ul class="price-list">
+        <li><span>Pack básico</span><strong>Desde $50.000</strong></li>
+        <li><span>Pack completo</span><strong>A consultar</strong></li>
+      </ul>
+      <a href="#contact" class="price-btn">Solicitar</a>
+    </div>
+  </div>
+  <p class="canje-note reveal reveal-delay-2">✦ También disponible <strong>opción de canje</strong> — hablemos</p>
+</section>
+
+<!-- TESTIMONIOS -->
+<section id="testimonios">
+  <p class="section-label reveal" style="text-align:center">Lo que dicen</p>
+  <h2 class="section-title reveal" style="text-align:center">Marcas que han<br><em>confiado</em> en mí</h2>
+  <div class="testi-grid">
+    <div class="testi-card reveal">
+      <div class="stars">★★★★★</div>
+      <p class="testi-text">El contenido que nos entregó fue exactamente lo que necesitábamos. Auténtico, creativo y perfectamente alineado con nuestra marca.</p>
+      <p class="testi-brand">Marca de Belleza</p>
+    </div>
+    <div class="testi-card reveal reveal-delay-1">
+      <div class="stars">★★★★★</div>
+      <p class="testi-text">Muy profesional y puntual. El video de unboxing que creó aumentó nuestra tasa de conversión significativamente.</p>
+      <p class="testi-brand">Marca de Moda</p>
+    </div>
+    <div class="testi-card reveal reveal-delay-2">
+      <div class="stars">★★★★★</div>
+      <p class="testi-text">Trabajar con Areli fue una experiencia increíble. Entendió nuestra visión desde el primer brief y la ejecutó perfectamente.</p>
+      <p class="testi-brand">Marca de Lifestyle</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <p class="section-label reveal">¿Listas para crear?</p>
+    <h2 class="section-title reveal">¡Trabajemos<br><em>Juntas</em>!</h2>
+    <p class="contact-subtitle reveal">¿Tienes una marca y quieres contenido UGC auténtico que conecte con tus consumidores? Escríbeme y cuéntame sobre tu proyecto.</p>
+    <a href="/cdn-cgi/l/email-protection#3c5453505d7c5d4e5950554a5558555d525d125f5351" class="contact-email reveal"><span class="__cf_email__" data-cfemail="b2daddded3f2d3c0d7dedbc4dbd6dbd3dcd39cd1dddf">[email&#160;protected]</span></a>
+    <div class="contact-socials reveal">
+      <a href="#" target="_blank">
+        <div class="social-icon">📸</div>
+        Instagram
+      </a>
+      <a href="#" target="_blank">
+        <div class="social-icon">🎵</div>
+        TikTok
+      </a>
+      <a href="/cdn-cgi/l/email-protection#6f0700030e2f0e1d0a030619060b060e010e410c0002">
+        <div class="social-icon">✉</div>
+        Email
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 Areli Viridiana · UGC Creator · Todos los derechos reservados</p>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // Hamburger menu
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const closeMenu = document.getElementById('closeMenu');
+
+  hamburger.addEventListener('click', () => mobileMenu.classList.add('open'));
+  closeMenu.addEventListener('click', () => mobileMenu.classList.remove('open'));
+  function closeMobile() { mobileMenu.classList.remove('open'); }
+
+  // Play / Pausa en videos del portfolio
+  function toggleVideo(item) {
+    const video = item.querySelector('video');
+    if (!video) return;
+    if (video.paused) {
+      // Pausa todos los demás videos primero
+      document.querySelectorAll('.portfolio-item').forEach(el => {
+        const v = el.querySelector('video');
+        if (v && !v.paused) {
+          v.pause();
+          el.classList.remove('playing');
+        }
+      });
+      video.play();
+      item.classList.add('playing');
+    } else {
+      video.pause();
+      item.classList.remove('playing');
+    }
+    // Cuando el video termina, vuelve al estado inicial
+    video.onended = () => item.classList.remove('playing');
+  }
+
+  // Scroll reveal — mostrar todo de inmediato y animar al hacer scroll
+  document.querySelectorAll('.reveal').forEach(el => {
+    new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.05 }).observe(el);
+  });
+  // Fallback: mostrar todo después de 1s por si el observer falla
+  setTimeout(() => {
+    document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+  }, 1000);
+
+  // Nav scroll effect
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.style.padding = window.scrollY > 50 ? '0.8rem 3rem' : '1.2rem 3rem';
+  });
+</script>
+</body>
+</html>

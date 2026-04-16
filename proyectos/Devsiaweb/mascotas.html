@@ -1,0 +1,1740 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patitas Felices - Tu tienda de mascotas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  /* ══════════════════════════════════════
+     VARIABLES & RESET
+  ══════════════════════════════════════ */
+  :root {
+    --green:       #3d9970;
+    --green-light: #5cb98a;
+    --green-pale:  #e8f7f0;
+    --orange:      #f5793a;
+    --orange-light:#ff9f68;
+    --cream:       #fffbf4;
+    --warm:        #fef3e2;
+    --brown:       #7a4a2c;
+    --dark:        #1a1a1a;
+    --glass-bg:    rgba(255,255,255,0.15);
+    --glass-border:rgba(255,255,255,0.3);
+    --shadow-soft: 0 8px 40px rgba(0,0,0,0.12);
+    --shadow-card: 0 4px 20px rgba(0,0,0,0.08);
+    --radius:      20px;
+    --radius-lg:   32px;
+    --font-display:'Fraunces', serif;
+    --font-body:   'Plus Jakarta Sans', sans-serif;
+    --transition:  0.35s cubic-bezier(0.34,1.56,0.64,1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--cream);
+    color: var(--dark);
+    overflow-x: hidden;
+  }
+
+  
+
+  /* ── SCROLL ANIMATIONS ── */
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .js-loaded .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  .js-loaded .reveal.slide-left  { transform: translateX(-50px); }
+  .js-loaded .reveal.slide-right { transform: translateX(50px); }
+  .js-loaded .reveal.scale-in    { transform: scale(0.85); }
+  .reveal.visible {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+  .reveal-delay-5 { transition-delay: 0.5s; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 16px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(255,251,244,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255,255,255,0.6);
+    transition: padding 0.3s ease, box-shadow 0.3s ease;
+  }
+  nav.scrolled {
+    padding: 10px 48px;
+    box-shadow: var(--shadow-soft);
+  }
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 1.6rem; font-weight: 900;
+    color: var(--green);
+    display: flex; align-items: center; gap: 8px;
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--orange); }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a {
+    text-decoration: none; font-weight: 500;
+    color: var(--dark); font-size: 0.95rem;
+    position: relative; padding-bottom: 4px;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: 0; left: 0;
+    width: 0; height: 2px; background: var(--orange);
+    transition: width 0.3s ease;
+  }
+  .nav-links a:hover::after { width: 100%; }
+  .nav-cart {
+    background: var(--orange); color: white;
+    border: none; border-radius: 50px;
+    padding: 10px 24px; font-family: var(--font-body);
+    font-weight: 600; font-size: 0.9rem; display: flex; align-items: center; gap: 8px;
+    transition: var(--transition);
+    position: relative;
+  }
+  .nav-cart:hover { background: var(--orange-light); transform: scale(1.05); }
+  .cart-badge {
+    position: absolute; top: -6px; right: -6px;
+    background: var(--green); color: white;
+    border-radius: 50%; width: 20px; height: 20px;
+    font-size: 0.7rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.3s;
+  }
+  .cart-badge.bump { animation: bump 0.4s var(--transition); }
+  @keyframes bump {
+    0%,100% { transform: scale(1); }
+    50% { transform: scale(1.5); }
+  }
+  .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; }
+  .hamburger span { display: block; width: 26px; height: 2px; background: var(--dark); transition: 0.3s; border-radius: 2px; }
+
+  /* ══════════════════════════════════════
+     HERO
+  ══════════════════════════════════════ */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    position: relative; overflow: hidden;
+    padding-top: 80px;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background-image: url('https://images.unsplash.com/photo-1560807707-8cc77767d783?w=1600&auto=format&fit=crop&q=80');
+    background-size: cover; background-position: center;
+    transform: scale(1.1);
+    transition: transform 0.1s linear;
+    will-change: transform;
+  }
+  .hero-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg,
+      rgba(20,50,30,0.7) 0%,
+      rgba(10,20,15,0.5) 50%,
+      rgba(30,15,5,0.4) 100%);
+  }
+  .hero-content {
+    position: relative; z-index: 2;
+    max-width: 700px;
+    padding: 0 48px;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    color: white; border-radius: 50px;
+    padding: 8px 20px; font-size: 0.85rem; font-weight: 500;
+    margin-bottom: 28px;
+    animation: fadeDown 0.8s ease 0.2s both;
+    opacity: 1; /* fallback */
+  }
+  .hero-badge .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--orange-light);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50%      { opacity: 0.6; transform: scale(1.3); }
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.8rem, 6vw, 5rem);
+    font-weight: 900;
+    color: white;
+    line-height: 1.1;
+    margin-bottom: 24px;
+    animation: fadeUp 0.9s ease 0.4s both;
+  }
+  .hero h1 .highlight {
+    color: var(--orange-light);
+    font-style: italic;
+  }
+  .hero p {
+    font-size: 1.2rem;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.7;
+    margin-bottom: 40px;
+    max-width: 520px;
+    animation: fadeUp 0.9s ease 0.6s both;
+  }
+  .hero-actions {
+    display: flex; gap: 16px; flex-wrap: wrap;
+    animation: fadeUp 0.9s ease 0.8s both;
+  }
+  .btn-primary {
+    background: var(--orange);
+    color: white; border: none; border-radius: 50px;
+    padding: 16px 36px; font-family: var(--font-body);
+    font-weight: 700; font-size: 1rem; display: inline-flex; align-items: center; gap: 10px;
+    transition: var(--transition);
+    box-shadow: 0 8px 30px rgba(245,121,58,0.4);
+    text-decoration: none;
+  }
+  .btn-primary:hover {
+    background: var(--orange-light);
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 16px 40px rgba(245,121,58,0.5);
+  }
+  .btn-primary:active { transform: scale(0.97); }
+  .btn-secondary {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    color: white; border-radius: 50px;
+    padding: 16px 36px; font-family: var(--font-body);
+    font-weight: 600; font-size: 1rem; display: inline-flex; align-items: center; gap: 10px;
+    transition: var(--transition);
+    text-decoration: none;
+  }
+  .btn-secondary:hover {
+    background: rgba(255,255,255,0.25);
+    transform: translateY(-4px);
+  }
+  .hero-stats {
+    position: absolute; bottom: 48px; left: 48px; right: 48px;
+    display: flex; gap: 32px;
+    animation: fadeUp 1s ease 1s both;
+    z-index: 2;
+  }
+  .hero-stat {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+    padding: 20px 28px;
+  }
+  .hero-stat strong {
+    display: block; font-family: var(--font-display);
+    font-size: 2rem; font-weight: 900; color: white;
+  }
+  .hero-stat span {
+    font-size: 0.85rem; color: rgba(255,255,255,0.75);
+  }
+  .floating-paw {
+    position: absolute; font-size: 2rem; opacity: 0.15;
+    animation: floatPaw 6s ease-in-out infinite;
+    user-select: none; pointer-events: none;
+  }
+  @keyframes floatPaw {
+    0%,100% { transform: translateY(0) rotate(0deg); }
+    50%      { transform: translateY(-20px) rotate(15deg); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: none; }
+  }
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  /* ══════════════════════════════════════
+     PROMO BANNER
+  ══════════════════════════════════════ */
+  .promo-banner {
+    background: linear-gradient(90deg, var(--orange) 0%, var(--orange-light) 50%, var(--orange) 100%);
+    background-size: 200% 100%;
+    animation: shimmerBg 4s linear infinite;
+    padding: 16px;
+    text-align: center; color: white;
+    font-weight: 700; font-size: 1rem;
+    letter-spacing: 0.5px;
+  }
+  @keyframes shimmerBg {
+    0%   { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+  }
+  .promo-banner span { margin: 0 12px; }
+  .promo-banner .fire { animation: shake 0.5s infinite alternate; display: inline-block; }
+  @keyframes shake {
+    from { transform: rotate(-5deg) scale(1); }
+    to   { transform: rotate(5deg) scale(1.1); }
+  }
+
+  /* ══════════════════════════════════════
+     SECTIONS BASE
+  ══════════════════════════════════════ */
+  section { padding: 100px 48px; }
+  .section-label {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--green-pale); color: var(--green);
+    border-radius: 50px; padding: 6px 18px;
+    font-size: 0.85rem; font-weight: 600;
+    margin-bottom: 16px;
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 900; line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  .section-sub {
+    font-size: 1.1rem; color: #666;
+    max-width: 560px; line-height: 1.7;
+    margin-bottom: 56px;
+  }
+
+  /* ══════════════════════════════════════
+     CATEGORIES
+  ══════════════════════════════════════ */
+  #categorias { background: var(--cream); }
+  .cat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin-top: 16px;
+  }
+  .cat-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: var(--transition);
+    box-shadow: var(--shadow-card);
+    position: relative;
+  }
+  .cat-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  }
+  .cat-img {
+    width: 100%; height: 200px; object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+  .cat-card:hover .cat-img { transform: scale(1.08); }
+  .cat-body {
+    padding: 24px;
+    text-align: center;
+  }
+  .cat-icon {
+    font-size: 2.5rem; margin-bottom: 8px;
+    display: block;
+    transition: transform 0.4s var(--transition);
+  }
+  .cat-card:hover .cat-icon { transform: scale(1.3) rotate(10deg); }
+  .cat-body h3 {
+    font-family: var(--font-display);
+    font-size: 1.3rem; font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .cat-body p { font-size: 0.9rem; color: #888; }
+  .cat-tag {
+    position: absolute; top: 14px; right: 14px;
+    background: var(--orange); color: white;
+    border-radius: 50px; padding: 4px 14px;
+    font-size: 0.75rem; font-weight: 700;
+    opacity: 0; transform: translateY(-8px);
+    transition: 0.3s ease;
+  }
+  .cat-card:hover .cat-tag { opacity: 1; transform: none; }
+
+  /* ══════════════════════════════════════
+     FEATURED PRODUCTS
+  ══════════════════════════════════════ */
+  #productos { background: var(--warm); }
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 28px;
+  }
+  .product-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: var(--transition);
+    box-shadow: var(--shadow-card);
+  }
+  .product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 24px 60px rgba(0,0,0,0.14);
+  }
+  .product-img-wrap {
+    position: relative; overflow: hidden;
+    background: var(--green-pale);
+    height: 220px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .product-img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+  .product-card:hover .product-img { transform: scale(1.06); }
+  .product-badge {
+    position: absolute; top: 12px; left: 12px;
+    background: var(--green); color: white;
+    border-radius: 50px; padding: 4px 14px;
+    font-size: 0.75rem; font-weight: 700;
+  }
+  .product-badge.sale { background: var(--orange); }
+  .product-body { padding: 22px; }
+  .product-body h3 {
+    font-family: var(--font-display);
+    font-size: 1.15rem; font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .product-body .rating {
+    color: #f5c518; font-size: 0.85rem;
+    margin-bottom: 10px;
+  }
+  .product-body .rating span { color: #888; font-size: 0.8rem; margin-left: 6px; }
+  .product-footer {
+    display: flex; align-items: center;
+    justify-content: space-between;
+    margin-top: 16px;
+  }
+  .product-price {
+    font-family: var(--font-display);
+    font-size: 1.5rem; font-weight: 900;
+    color: var(--green);
+  }
+  .product-price small {
+    text-decoration: line-through;
+    color: #aaa; font-size: 0.9rem;
+    font-family: var(--font-body);
+    font-weight: 400; margin-right: 6px;
+  }
+  .btn-cart {
+    background: var(--dark); color: white;
+    border: none; border-radius: 50px;
+    width: 44px; height: 44px; font-size: 1.1rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: var(--transition);
+  }
+  .btn-cart:hover { background: var(--orange); transform: scale(1.15) rotate(-10deg); }
+  .btn-cart.added { background: var(--green); animation: cartBounce 0.5s var(--transition); }
+  @keyframes cartBounce {
+    0%,100% { transform: scale(1); }
+    40%     { transform: scale(1.4) rotate(10deg); }
+    70%     { transform: scale(0.9); }
+  }
+
+  /* ══════════════════════════════════════
+     FINDER FORM
+  ══════════════════════════════════════ */
+  #recomendador {
+    background: linear-gradient(135deg, var(--green) 0%, #2d7a5a 100%);
+    position: relative; overflow: hidden;
+  }
+  #recomendador::before {
+    content: ''; position: absolute; inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 20%, rgba(255,255,255,0.06) 0%, transparent 40%),
+      radial-gradient(circle at 80% 80%, rgba(245,121,58,0.15) 0%, transparent 40%);
+  }
+  .finder-wrap {
+    position: relative; z-index: 1;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 60px; align-items: start;
+  }
+  .finder-left .section-label { background: rgba(255,255,255,0.2); color: white; }
+  .finder-left .section-title { color: white; }
+  .finder-left .section-sub { color: rgba(255,255,255,0.8); }
+  .paw-deco {
+    font-size: 8rem; opacity: 0.12; display: block;
+    animation: floatPaw 8s ease-in-out infinite;
+    margin-top: 32px; user-select: none;
+  }
+  .finder-form {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 40px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.2);
+  }
+  .form-group { margin-bottom: 24px; }
+  .form-group label {
+    display: block; font-weight: 600;
+    font-size: 0.9rem; margin-bottom: 10px; color: var(--dark);
+  }
+  .form-group label span { font-size: 1.1em; margin-right: 6px; }
+  .form-input {
+    width: 100%; padding: 14px 18px;
+    border: 2px solid #e8e8e8;
+    border-radius: var(--radius);
+    font-family: var(--font-body); font-size: 0.95rem;
+    background: var(--cream); color: var(--dark);
+    transition: 0.3s ease; outline: none;
+  }
+  .form-input:focus {
+    border-color: var(--green);
+    background: white;
+    box-shadow: 0 0 0 4px rgba(61,153,112,0.12);
+    transform: translateY(-1px);
+  }
+  .pet-type-group {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .pet-type-btn {
+    border: 2px solid #e8e8e8;
+    border-radius: var(--radius);
+    padding: 14px 10px; text-align: center; background: var(--cream);
+    transition: var(--transition); font-family: var(--font-body);
+    font-weight: 600; font-size: 0.9rem;
+  }
+  .pet-type-btn:hover { border-color: var(--green); transform: translateY(-3px); }
+  .pet-type-btn.active {
+    border-color: var(--green); background: var(--green-pale);
+    color: var(--green); box-shadow: 0 4px 16px rgba(61,153,112,0.25);
+  }
+  .pet-type-btn .emoji { display: block; font-size: 1.8rem; margin-bottom: 4px; }
+  .slider-wrap { position: relative; }
+  .slider-labels {
+    display: flex; justify-content: space-between;
+    font-size: 0.8rem; color: #888; margin-top: 8px;
+  }
+  .form-range {
+    -webkit-appearance: none; appearance: none;
+    width: 100%; height: 6px;
+    background: linear-gradient(to right, var(--green) 0%, var(--green) var(--slider-pct, 25%), #e0e0e0 var(--slider-pct, 25%), #e0e0e0 100%);
+    border-radius: 4px; outline: none;
+    transition: background 0.2s;
+  }
+  .form-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 2px 12px rgba(61,153,112,0.4);
+    transition: transform 0.2s;
+  }
+  .form-range::-webkit-slider-thumb:hover { transform: scale(1.3); }
+  .age-display {
+    display: inline-block; background: var(--green-pale);
+    color: var(--green); border-radius: 50px;
+    padding: 4px 16px; font-weight: 700; font-size: 0.9rem;
+    margin-bottom: 12px;
+    transition: 0.2s ease;
+  }
+  .energy-group { display: flex; gap: 12px; }
+  .energy-btn {
+    flex: 1; border: 2px solid #e8e8e8;
+    border-radius: var(--radius); padding: 12px 8px;
+    text-align: center; background: var(--cream);
+    transition: var(--transition); font-family: var(--font-body);
+    font-weight: 600; font-size: 0.88rem;
+  }
+  .energy-btn.active { border-color: var(--orange); background: #fff5ee; color: var(--orange); }
+  .energy-btn:hover { transform: translateY(-2px); }
+  .btn-find {
+    width: 100%; background: linear-gradient(135deg, var(--green) 0%, var(--green-light) 100%);
+    color: white; border: none; border-radius: var(--radius);
+    padding: 18px; font-family: var(--font-body);
+    font-weight: 700; font-size: 1.05rem; transition: var(--transition);
+    margin-top: 8px; display: flex; align-items: center;
+    justify-content: center; gap: 10px;
+    box-shadow: 0 8px 30px rgba(61,153,112,0.35);
+  }
+  .btn-find:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 40px rgba(61,153,112,0.45);
+  }
+  .btn-find:active { transform: scale(0.98); }
+
+  /* Results */
+  .rec-results {
+    margin-top: 32px;
+    border-radius: var(--radius);
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.5s ease, opacity 0.4s ease;
+    opacity: 0;
+  }
+  .rec-results.visible {
+    max-height: 600px; opacity: 1;
+  }
+  .rec-header {
+    background: linear-gradient(135deg, var(--orange) 0%, var(--orange-light) 100%);
+    color: white; padding: 20px 24px;
+    border-radius: var(--radius) var(--radius) 0 0;
+  }
+  .rec-header h4 {
+    font-family: var(--font-display);
+    font-size: 1.2rem; font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .rec-header p { font-size: 0.9rem; opacity: 0.9; }
+  .rec-items { background: var(--warm); padding: 20px 24px; border-radius: 0 0 var(--radius) var(--radius); }
+  .rec-item {
+    display: flex; align-items: center; gap: 14px;
+    padding: 12px 0; border-bottom: 1px solid rgba(0,0,0,0.06);
+    animation: fadeUp 0.4s ease both;
+  }
+  .rec-item:last-child { border-bottom: none; }
+  .rec-item-emoji { font-size: 1.8rem; }
+  .rec-item-info h5 { font-weight: 700; font-size: 0.95rem; margin-bottom: 2px; }
+  .rec-item-info p { font-size: 0.82rem; color: #888; }
+
+  /* ══════════════════════════════════════
+     TESTIMONIALS
+  ══════════════════════════════════════ */
+  #testimonios { background: var(--cream); overflow: hidden; }
+  .testimonials-track-wrap { overflow: hidden; position: relative; }
+  .testimonials-track-wrap::before,
+  .testimonials-track-wrap::after {
+    content: ''; position: absolute; top: 0; bottom: 0; width: 80px;
+    z-index: 2;
+  }
+  .testimonials-track-wrap::before {
+    left: 0;
+    background: linear-gradient(to right, var(--cream), transparent);
+  }
+  .testimonials-track-wrap::after {
+    right: 0;
+    background: linear-gradient(to left, var(--cream), transparent);
+  }
+  .testimonials-track {
+    display: flex; gap: 24px;
+    animation: scrollTrack 28s linear infinite;
+    width: max-content;
+  }
+  .testimonials-track:hover { animation-play-state: paused; }
+  @keyframes scrollTrack {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .testi-card {
+    background: white; border-radius: var(--radius-lg);
+    padding: 32px; width: 340px; flex-shrink: 0;
+    box-shadow: var(--shadow-card);
+    
+    transition: 0.3s ease;
+  }
+  .testi-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-soft); }
+  .testi-pet-img {
+    width: 70px; height: 70px; border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--green-pale);
+    margin-bottom: 16px;
+    transition: transform 0.4s var(--transition);
+  }
+  .testi-card:hover .testi-pet-img { transform: scale(1.1) rotate(-5deg); }
+  .testi-stars { color: #f5c518; font-size: 1rem; margin-bottom: 12px; }
+  .testi-text {
+    font-size: 0.95rem; line-height: 1.7;
+    color: #444; margin-bottom: 20px;
+    font-style: italic;
+  }
+  .testi-author { display: flex; align-items: center; gap: 10px; }
+  .testi-author-img {
+    width: 38px; height: 38px; border-radius: 50%; object-fit: cover;
+    border: 2px solid var(--green-pale);
+  }
+  .testi-author-info strong { display: block; font-weight: 700; font-size: 0.9rem; }
+  .testi-author-info span { font-size: 0.8rem; color: #aaa; }
+
+  /* ══════════════════════════════════════
+     CONTACT
+  ══════════════════════════════════════ */
+  #contacto { background: var(--warm); }
+  .contact-wrap {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 60px; align-items: start;
+  }
+  .contact-info h3 {
+    font-family: var(--font-display);
+    font-size: 1.8rem; font-weight: 800; margin-bottom: 16px;
+  }
+  .contact-info p { color: #666; line-height: 1.8; margin-bottom: 32px; }
+  .contact-detail {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 18px; font-size: 0.95rem;
+  }
+  .contact-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: var(--green-pale); color: var(--green);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; flex-shrink: 0;
+    transition: var(--transition);
+  }
+  .contact-detail:hover .contact-icon {
+    background: var(--green); color: white;
+    transform: scale(1.1) rotate(-8deg);
+  }
+  .contact-form { background: white; border-radius: var(--radius-lg); padding: 40px; box-shadow: var(--shadow-card); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-field {
+    margin-bottom: 20px; position: relative;
+  }
+  .form-field label {
+    display: block; font-weight: 600; font-size: 0.85rem;
+    margin-bottom: 8px; color: #555;
+    transition: color 0.2s;
+  }
+  .form-field:focus-within label { color: var(--green); }
+  .input-field {
+    width: 100%; padding: 13px 16px;
+    border: 2px solid #eee; border-radius: 14px;
+    font-family: var(--font-body); font-size: 0.95rem;
+    background: var(--cream); outline: none;
+    transition: 0.3s ease;
+  }
+  .input-field:focus {
+    border-color: var(--green); background: white;
+    box-shadow: 0 0 0 4px rgba(61,153,112,0.1);
+    transform: translateY(-1px);
+  }
+  textarea.input-field { resize: none; height: 120px; }
+  .field-error {
+    font-size: 0.78rem; color: #e63946;
+    margin-top: 4px; display: none;
+    animation: fadeUp 0.3s ease;
+  }
+  .form-field.has-error .input-field { border-color: #e63946; }
+  .form-field.has-error .field-error { display: block; }
+  .btn-submit {
+    width: 100%; background: linear-gradient(135deg, var(--orange) 0%, var(--orange-light) 100%);
+    color: white; border: none; border-radius: var(--radius);
+    padding: 16px; font-family: var(--font-body);
+    font-weight: 700; font-size: 1rem;
+    transition: var(--transition);
+    box-shadow: 0 8px 24px rgba(245,121,58,0.35);
+  }
+  .btn-submit:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 35px rgba(245,121,58,0.45);
+  }
+  .form-success {
+    display: none; text-align: center; padding: 32px;
+    animation: fadeUp 0.5s ease;
+  }
+  .form-success.show { display: block; }
+  .form-success .success-icon {
+    font-size: 3.5rem; margin-bottom: 16px;
+    display: block; animation: bounce 0.6s ease;
+  }
+  @keyframes bounce {
+    0%   { transform: scale(0); }
+    60%  { transform: scale(1.2); }
+    80%  { transform: scale(0.9); }
+    100% { transform: scale(1); }
+  }
+
+  /* ══════════════════════════════════════
+     UBICACION / MAP
+  ══════════════════════════════════════ */
+  #ubicacion { background: var(--cream); padding: 100px 48px; }
+  .ubicacion-wrap {
+    display: grid; grid-template-columns: 1fr 1.4fr;
+    gap: 56px; align-items: start;
+  }
+  .ubicacion-info { }
+  .ubicacion-info .section-label { margin-bottom: 16px; }
+  .ubicacion-info .section-title { margin-bottom: 16px; }
+  .ubicacion-info p { color: #666; line-height: 1.8; margin-bottom: 32px; font-size: 1rem; }
+
+  .horarios-card {
+    background: white; border-radius: var(--radius-lg);
+    padding: 28px; box-shadow: var(--shadow-card);
+    margin-bottom: 24px;
+  }
+  .horarios-card h4 {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: 1.1rem; margin-bottom: 16px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .horario-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 8px 0; border-bottom: 1px solid #f0f0f0;
+    font-size: 0.9rem;
+  }
+  .horario-row:last-child { border-bottom: none; }
+  .horario-row .day { color: #555; font-weight: 500; }
+  .horario-row .time { color: var(--green); font-weight: 700; }
+  .horario-row .time.closed { color: #ccc; }
+  .open-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: #e8f7f0; color: var(--green);
+    border-radius: 50px; padding: 6px 16px;
+    font-size: 0.82rem; font-weight: 700;
+    margin-bottom: 20px;
+  }
+  .open-badge .dot-green {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--green); animation: pulse 2s infinite;
+  }
+
+  .ubicacion-chips { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; }
+  .chip {
+    display: flex; align-items: center; gap: 6px;
+    background: white; border: 1.5px solid #e8e8e8;
+    border-radius: 50px; padding: 8px 16px;
+    font-size: 0.85rem; font-weight: 600; color: #444;
+    box-shadow: var(--shadow-card);
+    transition: 0.25s ease;
+  }
+  .chip:hover { border-color: var(--green); color: var(--green); transform: translateY(-2px); }
+
+  .btn-directions {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--green); color: white;
+    border-radius: 50px; padding: 14px 28px;
+    font-family: var(--font-body); font-weight: 700;
+    font-size: 0.95rem; text-decoration: none;
+    transition: var(--transition);
+    box-shadow: 0 8px 24px rgba(61,153,112,0.35);
+  }
+  .btn-directions:hover {
+    background: var(--green-light);
+    transform: translateY(-3px);
+    box-shadow: 0 14px 35px rgba(61,153,112,0.45);
+  }
+
+  /* MAP */
+  .map-container {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.14);
+    position: relative;
+    height: 480px;
+    background: #e8f0e8;
+  }
+  .map-container iframe {
+    width: 100%; height: 100%; border: none;
+    display: block;
+  }
+  .map-pin-card {
+    position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+    background: white; border-radius: var(--radius);
+    padding: 16px 24px; box-shadow: var(--shadow-soft);
+    display: flex; align-items: center; gap: 14px;
+    min-width: 280px; z-index: 10;
+    animation: fadeUp 0.6s ease 0.3s both;
+    pointer-events: none;
+  }
+  .map-pin-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: var(--green-pale); color: var(--green);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; flex-shrink: 0;
+  }
+  .map-pin-text strong { display: block; font-weight: 700; font-size: 0.95rem; }
+  .map-pin-text span { font-size: 0.82rem; color: #888; }
+
+  @media (max-width: 900px) {
+    .ubicacion-wrap { grid-template-columns: 1fr; }
+    .map-container { height: 360px; }
+    #ubicacion { padding: 70px 28px; }
+  }
+
+  /* ══════════════════════════════════════
+     FOOTER
+  ══════════════════════════════════════ */
+  footer {
+    background: var(--dark);
+    color: white;
+    padding: 70px 48px 36px;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1.5fr;
+    gap: 48px; margin-bottom: 60px;
+  }
+  .footer-brand .nav-logo { margin-bottom: 16px; display: flex; }
+  .footer-brand p { font-size: 0.9rem; color: rgba(255,255,255,0.55); line-height: 1.8; max-width: 260px; }
+  .footer-socials {
+    display: flex; gap: 12px; margin-top: 24px;
+  }
+  .social-btn {
+    width: 40px; height: 40px; border-radius: 12px;
+    background: rgba(255,255,255,0.1);
+    display: flex; align-items: center; justify-content: center;
+    text-decoration: none; font-size: 1.1rem;
+    transition: var(--transition);
+  }
+  .social-btn:hover { background: var(--orange); transform: translateY(-4px) scale(1.1); }
+  .footer-col h4 {
+    font-family: var(--font-display);
+    font-size: 1.05rem; font-weight: 700;
+    margin-bottom: 20px; color: white;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 10px; }
+  .footer-col ul a {
+    color: rgba(255,255,255,0.55); text-decoration: none;
+    font-size: 0.9rem; transition: 0.2s;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .footer-col ul a:hover { color: var(--orange-light); padding-left: 4px; }
+  .newsletter-input-wrap { display: flex; gap: 8px; margin-top: 4px; }
+  .newsletter-input {
+    flex: 1; padding: 12px 16px;
+    border: none; border-radius: 12px;
+    background: rgba(255,255,255,0.1); color: white;
+    font-family: var(--font-body); font-size: 0.9rem;
+    outline: none;
+    transition: 0.3s;
+  }
+  .newsletter-input::placeholder { color: rgba(255,255,255,0.4); }
+  .newsletter-input:focus { background: rgba(255,255,255,0.16); }
+  .newsletter-btn {
+    background: var(--orange); color: white;
+    border: none; border-radius: 12px;
+    padding: 12px 18px; font-size: 1rem;
+    transition: var(--transition);
+  }
+  .newsletter-btn:hover { background: var(--orange-light); transform: scale(1.08); }
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 28px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 0.85rem; color: rgba(255,255,255,0.4);
+  }
+  .footer-paws { display: flex; gap: 6px; font-size: 1.1rem; opacity: 0.3; }
+
+  /* ══════════════════════════════════════
+     TOAST
+  ══════════════════════════════════════ */
+  .toast-container {
+    position: fixed; bottom: 32px; right: 32px;
+    z-index: 9000; display: flex; flex-direction: column; gap: 12px;
+  }
+  .toast {
+    background: var(--dark); color: white;
+    border-radius: var(--radius); padding: 16px 22px;
+    min-width: 260px; max-width: 320px;
+    display: flex; align-items: center; gap: 14px;
+    box-shadow: var(--shadow-soft);
+    animation: toastIn 0.4s var(--transition);
+    border-left: 4px solid var(--green);
+    font-size: 0.9rem;
+  }
+  .toast.toast-cart { border-left-color: var(--orange); }
+  .toast.hide { animation: toastOut 0.3s ease forwards; }
+  @keyframes toastIn {
+    from { opacity: 0; transform: translateX(60px) scale(0.9); }
+    to   { opacity: 1; transform: none; }
+  }
+  @keyframes toastOut {
+    from { opacity: 1; transform: none; }
+    to   { opacity: 0; transform: translateX(60px); }
+  }
+
+  /* ══════════════════════════════════════
+     SCROLL TO TOP
+  ══════════════════════════════════════ */
+  .scroll-top {
+    position: fixed; bottom: 32px; left: 32px;
+    width: 48px; height: 48px; border-radius: 50%;
+    background: var(--green); color: white;
+    border: none; font-size: 1.2rem;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transform: translateY(20px);
+    transition: var(--transition); z-index: 200;
+    box-shadow: 0 8px 24px rgba(61,153,112,0.4);
+  }
+  .scroll-top.visible { opacity: 1; transform: none; }
+  .scroll-top:hover { transform: translateY(-4px) scale(1.1); }
+
+  /* ══════════════════════════════════════
+     RESPONSIVE
+  ══════════════════════════════════════ */
+  @media (max-width: 1100px) {
+    .cat-grid { grid-template-columns: repeat(2, 1fr); }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+  }
+  @media (max-width: 900px) {
+    section { padding: 70px 28px; }
+    nav { padding: 14px 24px; }
+    nav.scrolled { padding: 10px 24px; }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .hero-content { padding: 0 28px; }
+    .hero-stats { left: 28px; right: 28px; flex-wrap: wrap; gap: 16px; }
+    .finder-wrap, .contact-wrap { grid-template-columns: 1fr; gap: 40px; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .cat-grid { grid-template-columns: 1fr; }
+    .hero-stats { display: none; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+    .pet-type-group { grid-template-columns: 1fr; }
+    .energy-group { flex-direction: column; }
+    .toast-container { bottom: 16px; right: 16px; left: 16px; }
+    .toast { min-width: unset; }
+    .scroll-top { left: 16px; bottom: 16px; }
+  }
+
+  /* MOBILE NAV */
+  .mobile-menu {
+    display: none; position: fixed; inset: 0;
+    background: rgba(26,26,26,0.95); backdrop-filter: blur(16px);
+    z-index: 99; flex-direction: column;
+    align-items: center; justify-content: center; gap: 32px;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    color: white; text-decoration: none;
+    font-family: var(--font-display); font-size: 2rem;
+    font-weight: 700;
+    transition: 0.3s;
+  }
+  .mobile-menu a:hover { color: var(--orange-light); }
+  .mobile-close {
+    position: absolute; top: 24px; right: 24px;
+    background: none; border: none; color: white;
+    font-size: 1.8rem;
+  }
+
+</style>
+</head>
+<body>
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" id="mobileClose">✕</button>
+  <a href="#categorias">Categorías</a>
+  <a href="#productos">Productos</a>
+  <a href="#recomendador">Recomendador</a>
+  <a href="#testimonios">Testimonios</a>
+  <a href="#ubicacion">Ubicación</a>
+  <a href="#contacto">Contacto</a>
+</div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a class="nav-logo" href="#"><span>🐾</span> Patitas <span>Felices</span></a>
+  <ul class="nav-links">
+    <li><a href="#categorias">Categorías</a></li>
+    <li><a href="#productos">Productos</a></li>
+    <li><a href="#recomendador">Recomendador</a></li>
+    <li><a href="#testimonios">Testimonios</a></li>
+    <li><a href="#ubicacion">Ubicación</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+  <button class="nav-cart" id="cartBtn">
+    🛒 Mi carrito
+    <span class="cart-badge" id="cartBadge">0</span>
+  </button>
+  <button class="hamburger" id="hamburger">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- PROMO BANNER -->
+<div class="promo-banner" style="margin-top:70px;">
+  <span class="fire">🔥</span>
+  <span>¡OFERTAS DE LA SEMANA! Hasta <strong>40% OFF</strong> en alimento premium</span>
+  <span>•</span>
+  <span>Envío GRATIS en compras mayores a $399</span>
+  <span>•</span>
+  <span>Nuevos productos cada semana 🐾</span>
+  <span class="fire">🔥</span>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="inicio">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-overlay"></div>
+
+  <!-- Floating paws -->
+  <div class="floating-paw" style="top:20%;right:10%;animation-delay:0s;">🐾</div>
+  <div class="floating-paw" style="top:60%;right:20%;animation-delay:2s;">🐾</div>
+  <div class="floating-paw" style="top:35%;right:5%;animation-delay:4s;font-size:1.5rem">🐾</div>
+  <div class="floating-paw" style="top:75%;right:35%;animation-delay:1s;font-size:3rem">🐾</div>
+
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      ✨ La tienda favorita de las mascotas
+    </div>
+    <h1>
+      Consiente a tu<br>
+      <span class="highlight">mejor amigo</span><br>
+      como se merece 🐶❤️
+    </h1>
+    <p>Alimento premium, juguetes, accesorios y todo lo que necesita tu peludo para vivir feliz. Entregas en 24 h y expertos que realmente aman a los animales.</p>
+    <div class="hero-actions">
+      <a href="#productos" class="btn-primary">🛍️ Explorar productos</a>
+      <a href="#recomendador" class="btn-secondary">🐾 Recomendar para mí</a>
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <strong>+12,400</strong>
+      <span>Mascotas felices</span>
+    </div>
+    <div class="hero-stat">
+      <strong>+850</strong>
+      <span>Productos en stock</span>
+    </div>
+    <div class="hero-stat">
+      <strong>4.9 ⭐</strong>
+      <span>Calificación promedio</span>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORIES -->
+<section id="categorias">
+  <div class="reveal">
+    <div class="section-label">🐾 Categorías</div>
+    <h2 class="section-title">Todo lo que tu mascota<br>necesita, en un solo lugar</h2>
+    <p class="section-sub">Desde el mejor alimento hasta los juguetes más divertidos. Cuida a tu compañero con los mejores productos.</p>
+  </div>
+  <div class="cat-grid">
+    <div class="cat-card reveal reveal-delay-1">
+      <span class="cat-tag">+120 productos</span>
+      <img src="https://images.unsplash.com/photo-1568640347023-a616a30bc3bd?w=400&auto=format&fit=crop&q=80" alt="Alimento" class="cat-img">
+      <div class="cat-body">
+        <span class="cat-icon">🍖</span>
+        <h3>Alimento</h3>
+        <p>Nutrición balanceada y deliciosa para cada etapa de vida</p>
+      </div>
+    </div>
+    <div class="cat-card reveal reveal-delay-2">
+      <span class="cat-tag">+85 productos</span>
+      <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&auto=format&fit=crop&q=80" alt="Juguetes" class="cat-img">
+      <div class="cat-body">
+        <span class="cat-icon">🎾</span>
+        <h3>Juguetes</h3>
+        <p>Diversión sin límites que mantiene activa y feliz a tu mascota</p>
+      </div>
+    </div>
+    <div class="cat-card reveal reveal-delay-3">
+      <span class="cat-tag">+200 productos</span>
+      <img src="https://images.unsplash.com/photo-1601758065893-25c11bdd7453?w=400&auto=format&fit=crop&q=80" alt="Accesorios" class="cat-img">
+      <div class="cat-body">
+        <span class="cat-icon">🐕</span>
+        <h3>Accesorios</h3>
+        <p>Correas, camas, transportadoras y mucho más para su comodidad</p>
+      </div>
+    </div>
+    <div class="cat-card reveal reveal-delay-4">
+      <span class="cat-tag">+60 productos</span>
+      <img src="https://images.unsplash.com/photo-1583511655826-05700d52f4d9?w=400&auto=format&fit=crop&q=80" alt="Higiene" class="cat-img">
+      <div class="cat-body">
+        <span class="cat-icon">🛁</span>
+        <h3>Higiene</h3>
+        <p>Shampoos, cepillos y todo para mantener a tu peludo impecable</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section id="productos">
+  <div class="reveal">
+    <div class="section-label">⭐ Lo más vendido</div>
+    <h2 class="section-title">Productos que las mascotas<br>ya aman 🐾</h2>
+    <p class="section-sub">Seleccionados por nuestros expertos y aprobados por miles de peludos exigentes.</p>
+  </div>
+  <div class="products-grid" id="productsGrid">
+    <!-- JS rendered -->
+  </div>
+</section>
+
+<!-- FINDER / RECOMMENDER -->
+<section id="recomendador">
+  <div class="finder-wrap">
+    <div class="finder-left reveal slide-left">
+      <div class="section-label">🤖 Recomendador IA</div>
+      <h2 class="section-title" style="color:white;">Encuentra el producto ideal<br>para tu mascota 🐾</h2>
+      <p class="section-sub">Cuéntanos cómo es tu compañero y te sugeriremos exactamente lo que necesita. ¡Gratis y sin registro!</p>
+      <span class="paw-deco">🐾</span>
+    </div>
+    <div class="finder-right reveal slide-right">
+      <div class="finder-form">
+        <div class="form-group">
+          <label><span>✏️</span> Nombre de tu mascota</label>
+          <input type="text" class="form-input" id="petName" placeholder="Ej. Coco, Luna, Max...">
+        </div>
+        <div class="form-group">
+          <label><span>🐾</span> Tipo de mascota</label>
+          <div class="pet-type-group">
+            <button class="pet-type-btn active" data-type="perro">
+              <span class="emoji">🐶</span> Perro
+            </button>
+            <button class="pet-type-btn" data-type="gato">
+              <span class="emoji">🐱</span> Gato
+            </button>
+            <button class="pet-type-btn" data-type="otro">
+              <span class="emoji">🐹</span> Otro
+            </button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label><span>🎂</span> Edad de tu mascota</label>
+          <div class="age-display" id="ageDisplay">2 años</div>
+          <div class="slider-wrap">
+            <input type="range" class="form-range" id="ageSlider" min="0" max="15" value="2"
+              oninput="updateAge(this.value)">
+            <div class="slider-labels"><span>Cachorro</span><span>Senior</span></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label><span>⚡</span> Nivel de energía</label>
+          <div class="energy-group">
+            <button class="energy-btn" data-energy="bajo">😴 Bajo</button>
+            <button class="energy-btn active" data-energy="medio">😊 Medio</button>
+            <button class="energy-btn" data-energy="alto">🌪️ Alto</button>
+          </div>
+        </div>
+        <button class="btn-find">
+          🔍 Recomendar productos
+        </button>
+        <div class="rec-results" id="recResults">
+          <div class="rec-header">
+            <h4 id="recTitle">¡Encontramos algo perfecto!</h4>
+            <p id="recMsg">Basado en el perfil de tu mascota</p>
+          </div>
+          <div class="rec-items" id="recItems"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonios">
+  <div class="reveal" style="text-align:center;margin-bottom:56px;">
+    <div class="section-label" style="display:inline-flex;">💬 Testimonios</div>
+    <h2 class="section-title">Familias que ya son<br>parte de Patitas Felices</h2>
+    <p class="section-sub" style="margin:0 auto;">Sus mascotas lo dicen todo. Miles de familias confían en nosotros cada día.</p>
+  </div>
+  <div class="testimonials-track-wrap">
+    <div class="testimonials-track" id="testiTrack">
+      <!-- JS duplicated -->
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contacto">
+  <div class="contact-wrap">
+    <div class="contact-info reveal slide-left">
+      <div class="section-label">📩 Contacto</div>
+      <h3>¿Tienes dudas?<br>¡Con gusto te ayudamos! 🐾</h3>
+      <p>Nuestro equipo de amantes de animales está listo para resolver tus preguntas y ayudarte a encontrar el producto perfecto para tu compañero.</p>
+      <div class="contact-detail">
+        <div class="contact-icon">📞</div>
+        <div>
+          <strong>+52 55 1234-5678</strong>
+          <div style="font-size:0.82rem;color:#888;">Lun–Sáb · 9:00am – 7:00pm</div>
+        </div>
+      </div>
+      <div class="contact-detail">
+        <div class="contact-icon">✉️</div>
+        <div>
+          <strong>hola [arroba] patitasfelices.mx</strong>
+          <div style="font-size:0.82rem;color:#888;">Respondemos en menos de 2 horas</div>
+        </div>
+      </div>
+      <div class="contact-detail">
+        <div class="contact-icon">📍</div>
+        <div>
+          <strong>Ciudad de México, México</strong>
+          <div style="font-size:0.82rem;color:#888;">Entrega a toda la República</div>
+        </div>
+      </div>
+    </div>
+    <div class="contact-form reveal slide-right" id="contactFormWrap">
+      <form id="contactForm" onsubmit="submitContact(event)" novalidate>
+        <div class="form-row">
+          <div class="form-field" id="ff-name">
+            <label>Nombre</label>
+            <input type="text" class="input-field" id="cName" placeholder="Tu nombre">
+            <span class="field-error">Por favor ingresa tu nombre</span>
+          </div>
+          <div class="form-field" id="ff-email">
+            <label>Correo</label>
+            <input type="email" class="input-field" id="cEmail" placeholder="tu@correo.com">
+            <span class="field-error">Correo inválido</span>
+          </div>
+        </div>
+        <div class="form-field">
+          <label>¿De qué mascota nos hablas?</label>
+          <input type="text" class="input-field" id="cPet" placeholder="Ej. Tengo un golden retriever de 3 años">
+        </div>
+        <div class="form-field" id="ff-msg">
+          <label>Mensaje</label>
+          <textarea class="input-field" id="cMsg" placeholder="¿Cómo podemos ayudarte?"></textarea>
+          <span class="field-error">Escribe un mensaje por favor</span>
+        </div>
+        <button type="submit" class="btn-submit">📩 Enviar mensaje</button>
+      </form>
+      <div class="form-success" id="formSuccess">
+        <span class="success-icon">🎉</span>
+        <h3 style="font-family:var(--font-display);font-size:1.5rem;margin-bottom:8px;">¡Mensaje enviado!</h3>
+        <p style="color:#666;">Te responderemos en menos de 2 horas. Mientras tanto, ¡dale un abrazo a tu peludito! 🐾</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- UBICACIÓN -->
+<section id="ubicacion">
+  <div class="ubicacion-wrap">
+    <div class="ubicacion-info reveal slide-left">
+      <div class="section-label">📍 Encuéntranos</div>
+      <h2 class="section-title">Visítanos en<br>nuestra tienda 🐾</h2>
+      <p>Estamos en el corazón de la Condesa, uno de los barrios más pet-friendly de la Ciudad de México. ¡Ven con tu mascota, son bienvenidos!</p>
+
+      <div class="open-badge">
+        <span class="dot-green"></span> Abierto ahora · Cierra a las 8:00 PM
+      </div>
+
+      <div class="ubicacion-chips">
+        <span class="chip">🚇 Metro Chilpancingo</span>
+        <span class="chip">🅿️ Estacionamiento cercano</span>
+        <span class="chip">🐕 Pet-friendly</span>
+        <span class="chip">♿ Acceso universal</span>
+        <span class="chip">💳 Tarjetas aceptadas</span>
+      </div>
+
+      <div class="horarios-card">
+        <h4>🕐 Horarios de atención</h4>
+        <div class="horario-row"><span class="day">Lunes – Viernes</span><span class="time">10:00 AM – 8:00 PM</span></div>
+        <div class="horario-row"><span class="day">Sábado</span><span class="time">10:00 AM – 7:00 PM</span></div>
+        <div class="horario-row"><span class="day">Domingo</span><span class="time">11:00 AM – 6:00 PM</span></div>
+      </div>
+
+      <a class="btn-directions"
+        href="https://www.google.com/maps/dir/?api=1&destination=19.4098891,-99.1787288"
+        target="_blank" rel="noopener">
+        🗺️ Cómo llegar
+      </a>
+    </div>
+
+    <div class="reveal slide-right" style="position:relative;">
+      <div class="map-container">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3763.2!2d-99.1787288!3d19.4098891!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTnCsDI0JzM1LjYiTiA5OcKwMTAnNDMuNCJX!5e0!3m2!1ses!2smx!4v1700000000000!5m2!1ses!2smx&markers=color:green%7C19.4098891,-99.1787288"
+          allowfullscreen="" loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Ubicación Patitas Felices">
+        </iframe>
+        <div class="map-pin-card">
+          <div class="map-pin-icon">🐾</div>
+          <div class="map-pin-text">
+            <strong>Patitas Felices</strong>
+            <span>Hipódromo Condesa, CDMX</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="nav-logo">🐾 Patitas <span style="color:var(--orange)">Felices</span></div>
+      <p>Porque tu mascota no es solo un animal, es familia. Todo lo que necesitan, con el amor que merecen.</p>
+      <div class="footer-socials">
+        <a href="#" class="social-btn" title="Instagram">📸</a>
+        <a href="#" class="social-btn" title="Facebook">📘</a>
+        <a href="#" class="social-btn" title="TikTok">🎵</a>
+        <a href="#" class="social-btn" title="WhatsApp">💬</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Tienda</h4>
+      <ul>
+        <li><a href="#">🍖 Alimento</a></li>
+        <li><a href="#">🎾 Juguetes</a></li>
+        <li><a href="#">🐕 Accesorios</a></li>
+        <li><a href="#">🛁 Higiene</a></li>
+        <li><a href="#">🔥 Ofertas</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Ayuda</h4>
+      <ul>
+        <li><a href="#">📦 Rastrear pedido</a></li>
+        <li><a href="#">↩️ Devoluciones</a></li>
+        <li><a href="#">❓ Preguntas frecuentes</a></li>
+        <li><a href="#">📞 Contacto</a></li>
+        <li><a href="#">⭐ Programa de puntos</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Newsletter 💌</h4>
+      <p style="color:rgba(255,255,255,0.55);font-size:0.88rem;margin-bottom:16px;line-height:1.7;">Recibe tips, ofertas exclusivas y contenido adorable directo en tu correo.</p>
+      <div class="newsletter-input-wrap">
+        <input type="email" class="newsletter-input" placeholder="tu@correo.com" id="newsletterInput">
+        <button class="newsletter-btn">→</button>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Patitas Felices · Hecho con ❤️ para los peludos de México</span>
+    <div class="footer-paws">🐾🐾🐾🐾🐾</div>
+    <span>Privacidad · Términos · Cookies</span>
+  </div>
+</footer>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- SCROLL TO TOP -->
+<button class="scroll-top" id="scrollTop">↑</button>
+
+<div class="toast-container" id="toastContainer"></div>
+<button class="scroll-top" id="scrollTop">↑</button>
+
+<script>
+
+// ---- INIT ----
+window.addEventListener('DOMContentLoaded', function() {
+
+  // ---- REVEAL ON SCROLL ----
+  var revealObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0, rootMargin: '0px 0px -40px 0px' });
+
+  function observeReveal() {
+    document.querySelectorAll('.reveal').forEach(function(el) {
+      revealObserver.observe(el);
+    });
+  }
+  observeReveal();
+  setTimeout(function() {
+    document.querySelectorAll('.reveal:not(.visible)').forEach(function(el) {
+      el.classList.add('visible');
+    });
+  }, 1000);
+
+  // ---- PARALLAX + NAV ----
+  window.addEventListener('scroll', function() {
+    var y = window.scrollY;
+    var bg = document.getElementById('heroBg');
+    if (bg) bg.style.transform = 'scale(1.1) translateY(' + (y * 0.25) + 'px)';
+    var nav = document.getElementById('navbar');
+    if (nav) nav.classList.toggle('scrolled', y > 60);
+    var st = document.getElementById('scrollTop');
+    if (st) st.classList.toggle('visible', y > 400);
+  });
+
+  // ---- PRODUCTS ----
+  var products = [
+    { id:1, name:'Royal Canin Adulto 15kg', price:549, old:699, rating:5, reviews:312, badge:'Mas vendido', img:'https://images.unsplash.com/photo-1598133893773-de3574464ef0?w=400&auto=format&fit=crop&q=80' },
+    { id:2, name:'Set de Juguetes Kong Pack', price:289, old:389, rating:5, reviews:178, badge:'sale', img:'https://images.unsplash.com/photo-1535268647677-300dbf3d78d1?w=400&auto=format&fit=crop&q=80' },
+    { id:3, name:'Cama Ortopedica Premium L', price:899, old:1099, rating:4, reviews:94, badge:'Nuevo', img:'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=400&auto=format&fit=crop&q=80' },
+    { id:4, name:'Shampoo Natural 500ml', price:189, old:null, rating:5, reviews:256, badge:'Natural', img:'https://images.unsplash.com/photo-1583511655826-05700d52f4d9?w=400&auto=format&fit=crop&q=80' },
+    { id:5, name:'Collar LED Recargable', price:349, old:499, rating:5, reviews:143, badge:'sale', img:'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&auto=format&fit=crop&q=80' },
+    { id:6, name:'Purina Pro Plan Cachorro', price:479, old:null, rating:5, reviews:89, badge:'Recomendado', img:'https://images.unsplash.com/photo-1601758065893-25c11bdd7453?w=400&auto=format&fit=crop&q=80' },
+    { id:7, name:'Rascador Gato 5 Niveles', price:649, old:849, rating:4, reviews:67, badge:'sale', img:'https://images.unsplash.com/photo-1513245543132-31f507417b26?w=400&auto=format&fit=crop&q=80' },
+    { id:8, name:'Correa Retractil 5m Pro', price:259, old:329, rating:5, reviews:201, badge:'Popular', img:'https://images.unsplash.com/photo-1568640347023-a616a30bc3bd?w=400&auto=format&fit=crop&q=80' }
+  ];
+
+  var cartCount = 0;
+
+  function renderProducts() {
+    var grid = document.getElementById('productsGrid');
+    if (!grid) return;
+    var html = '';
+    for (var i = 0; i < products.length; i++) {
+      var p = products[i];
+      var stars = '';
+      for (var s = 0; s < p.rating; s++) stars += '★';
+      for (var s = p.rating; s < 5; s++) stars += '☆';
+      var oldHtml = p.old ? ('<small>$' + p.old + '</small> ') : '';
+      var badgeCls = p.badge === 'sale' ? 'sale' : '';
+      var badgeTxt = p.badge === 'sale' ? 'OFERTA' : p.badge;
+      html += '<div class="product-card reveal" style="transition-delay:' + (i*0.07) + 's">'
+        + '<div class="product-img-wrap">'
+        + '<img src="' + p.img + '" alt="' + p.name + '" class="product-img" loading="lazy">'
+        + '<span class="product-badge ' + badgeCls + '">' + badgeTxt + '</span>'
+        + '</div><div class="product-body"><h3>' + p.name + '</h3>'
+        + '<div class="rating">' + stars + '<span>(' + p.reviews + ' resenas)</span></div>'
+        + '<div class="product-footer"><div class="product-price">' + oldHtml + '$' + p.price + '</div>'
+        + '<button class="btn-cart" data-id="' + p.id + '">🛒</button>'
+        + '</div></div></div>';
+    }
+    grid.innerHTML = html;
+    grid.querySelectorAll('.reveal').forEach(function(el) { revealObserver.observe(el); });
+    setTimeout(function() {
+      grid.querySelectorAll('.reveal:not(.visible)').forEach(function(el) { el.classList.add('visible'); });
+    }, 600);
+    // Attach cart events via JS (no onclick in HTML)
+    grid.querySelectorAll('.btn-cart').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var id = parseInt(btn.getAttribute('data-id'));
+        cartCount++;
+        var badge = document.getElementById('cartBadge');
+        if (badge) {
+          badge.textContent = cartCount;
+          badge.classList.remove('bump');
+          void badge.offsetWidth;
+          badge.classList.add('bump');
+        }
+        btn.classList.add('added');
+        btn.textContent = 'OK';
+        setTimeout(function() { btn.classList.remove('added'); btn.textContent = '🛒'; }, 1400);
+        var p = null;
+        for (var i = 0; i < products.length; i++) { if (products[i].id === id) { p = products[i]; break; } }
+        if (p) showToast('Agregado: ' + p.name);
+      });
+    });
+  }
+
+  var cartBtn = document.getElementById('cartBtn');
+  if (cartBtn) {
+    cartBtn.addEventListener('click', function() {
+      showToast('Tienes ' + cartCount + ' producto(s) en tu carrito.');
+    });
+  }
+
+  renderProducts();
+
+  // ---- TESTIMONIALS ----
+  var testimonials = [
+    { pet:'Max', text:'Desde que le compramos el alimento Royal Canin, Max tiene un pelaje increible y lleno de energia.', owner:'Maria G.', role:'Mama de Max', petImg:'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=100&auto=format&fit=crop&q=80' },
+    { pet:'Luna', text:'El servicio es increible! Llego al dia siguiente y Luna ya esta encantada con su nueva cama.', owner:'Carlos R.', role:'Papa de Luna', petImg:'https://images.unsplash.com/photo-1513245543132-31f507417b26?w=100&auto=format&fit=crop&q=80' },
+    { pet:'Coco', text:'Los precios son super accesibles y la calidad es excelente. Definitivamente recomendado!', owner:'Sofia M.', role:'Mama de Coco', petImg:'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=100&auto=format&fit=crop&q=80' },
+    { pet:'Thor', text:'El recomendador de productos es una maravilla. Funciono perfecto para Thor!', owner:'Andres L.', role:'Dueno de Thor', petImg:'https://images.unsplash.com/photo-1560807707-8cc77767d783?w=100&auto=format&fit=crop&q=80' },
+    { pet:'Mimi', text:'Excelente atencion al cliente. Me respondieron en minutos. Los juguetes llegaron perfectos.', owner:'Valentina C.', role:'Mama de Mimi', petImg:'https://images.unsplash.com/photo-1583511655826-05700d52f4d9?w=100&auto=format&fit=crop&q=80' },
+    { pet:'Rocky', text:'El collar LED que compre para Rocky es perfecto para los paseos nocturnos!', owner:'David P.', role:'Dueno de Rocky', petImg:'https://images.unsplash.com/photo-1601758065893-25c11bdd7453?w=100&auto=format&fit=crop&q=80' }
+  ];
+
+  function renderTestimonials() {
+    var track = document.getElementById('testiTrack');
+    if (!track) return;
+    var doubled = testimonials.concat(testimonials);
+    var html = '';
+    for (var i = 0; i < doubled.length; i++) {
+      var t = doubled[i];
+      html += '<div class="testi-card">'
+        + '<img src="' + t.petImg + '" alt="' + t.pet + '" class="testi-pet-img" loading="lazy">'
+        + '<div class="testi-stars">★★★★★</div>'
+        + '<p class="testi-text">' + t.text + '</p>'
+        + '<div class="testi-author"><div class="testi-author-info">'
+        + '<strong>' + t.owner + '</strong><span>' + t.role + '</span>'
+        + '</div></div></div>';
+    }
+    track.innerHTML = html;
+  }
+  renderTestimonials();
+
+  // ---- RECOMMENDER ----
+  var recommendations = {
+    perro: {
+      bajo:  [{e:'🛏️',n:'Cama Ortopedica Premium',d:'Perfecta para perritos tranquilos'},{e:'🍖',n:'Royal Canin Adulto Comfort',d:'Alimento para baja actividad'},{e:'🧸',n:'Peluche Anti-estres',d:'Juguete suave ideal'}],
+      medio: [{e:'🎾',n:'Kong Classic Rellenable',d:'Mantiene la mente activa'},{e:'🍖',n:'Purina Pro Plan Adulto',d:'Nutricion completa'},{e:'🦮',n:'Correa Retractil 5m',d:'Ideal para paseos'}],
+      alto:  [{e:'🌪️',n:'Set Kong Sport Pack',d:'Para el torbellino de la casa'},{e:'🏃',n:'Pro Plan Sport Active',d:'Alta energia'},{e:'🎯',n:'Lanzador de Pelotas',d:'Fetch interminable'}]
+    },
+    gato: {
+      bajo:  [{e:'😴',n:'Arbol Rascador Premium',d:'Para gatos observadores'},{e:'🐟',n:'Whiskas Senior',d:'Sabor que encanta'},{e:'🧶',n:'Cama Cueva',d:'El refugio ideal'}],
+      medio: [{e:'🐾',n:'Royal Canin Indoor',d:'Para gatos caseros'},{e:'🎣',n:'Cana con Pluma',d:'Estimulacion perfecta'},{e:'🏠',n:'Rascador 5 Niveles',d:'Todo en uno'}],
+      alto:  [{e:'⚡',n:'Circuito de Pelotas',d:'Accion las 24 horas'},{e:'🐟',n:'Hills Science Active',d:'Combustible para traviesos'},{e:'🎯',n:'Puntero Laser Auto',d:'Caza interminable'}]
+    },
+    otro: {
+      bajo:  [{e:'🏠',n:'Jaula Comfort Premium',d:'Espacio tranquilo y seguro'},{e:'🥕',n:'Mix Vitaminico',d:'Nutricion completa'},{e:'🌿',n:'Snacks Naturales',d:'Premios saludables'}],
+      medio: [{e:'🎪',n:'Laberinto de Ejercicio',d:'Estimulacion mental'},{e:'🌻',n:'Mezcla de Semillas',d:'Dieta variada'},{e:'🪁',n:'Juguete de Forrajeo',d:'Activa el instinto'}],
+      alto:  [{e:'🎢',n:'Rueda de Ejercicio XL',d:'Para el mas energico'},{e:'⚡',n:'Pelota con Sensor',d:'Juego autonomo'},{e:'🥜',n:'Alimento Energetico',d:'Carga extra'}]
+    }
+  };
+
+  var funMessages = {
+    perro: { bajo:'Tu peludito es un maestro zen! Aqui lo mejor para su estilo relajado.', medio:'El perro perfecto para la familia! Aqui estan sus favoritos.', alto:'Tu mascota es un torbellino! Aqui lo mejor para su energia sin limites.' },
+    gato:  { bajo:'Un gato zen y elegante, merece lo mejor.', medio:'Equilibrio felino perfecto! Activo pero con clase.', alto:'Gato ultraenergico detectado! Necesita esto urgentemente.' },
+    otro:  { bajo:'Una mascota tranquila y especial, merece calidad.', medio:'Una mascota con personalidad increible!', alto:'Vaya energia tiene tu mascota! Estos productos son para ella.' }
+  };
+
+  var selectedType = 'perro';
+  var selectedEnergy = 'medio';
+
+  document.querySelectorAll('.pet-type-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.pet-type-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      selectedType = btn.getAttribute('data-type');
+    });
+  });
+
+  document.querySelectorAll('.energy-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.energy-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      selectedEnergy = btn.getAttribute('data-energy');
+    });
+  });
+
+  var ageSlider = document.getElementById('ageSlider');
+  if (ageSlider) {
+    ageSlider.addEventListener('input', function() {
+      var val = parseInt(this.value);
+      var label = val === 0 ? 'Menos de 1 año' : val === 1 ? '1 año' : val + ' años';
+      var el = document.getElementById('ageDisplay');
+      if (el) el.textContent = label;
+    });
+  }
+
+  var findBtn = document.querySelector('.btn-find');
+  if (findBtn) {
+    findBtn.addEventListener('click', function() {
+      var nameEl = document.getElementById('petName');
+      var name = (nameEl && nameEl.value.trim()) ? nameEl.value.trim() : 'tu mascota';
+      var typeData = recommendations[selectedType] || recommendations.perro;
+      var recs = typeData[selectedEnergy] || typeData.medio;
+      var msgData = funMessages[selectedType] || funMessages.perro;
+      var msg = msgData[selectedEnergy] || msgData.medio;
+      var petEmoji = selectedType === 'perro' ? '🐶' : selectedType === 'gato' ? '🐱' : '🐹';
+
+      var titleEl = document.getElementById('recTitle');
+      var msgEl2  = document.getElementById('recMsg');
+      var itemsEl = document.getElementById('recItems');
+      var resultsEl = document.getElementById('recResults');
+      if (!resultsEl) return;
+
+      if (titleEl) titleEl.textContent = 'Encontramos algo para ' + name + '! ' + petEmoji;
+      if (msgEl2)  msgEl2.textContent = msg;
+
+      if (itemsEl) {
+        var html = '';
+        for (var i = 0; i < recs.length; i++) {
+          html += '<div class="rec-item">'
+            + '<span class="rec-item-emoji">' + recs[i].e + '</span>'
+            + '<div class="rec-item-info"><h5>' + recs[i].n + '</h5><p>' + recs[i].d + '</p></div>'
+            + '</div>';
+        }
+        itemsEl.innerHTML = html;
+      }
+
+      resultsEl.classList.remove('visible');
+      void resultsEl.offsetWidth;
+      resultsEl.classList.add('visible');
+      resultsEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      showToast('Recomendaciones listas para ' + name + '!');
+    });
+  }
+
+  // ---- CONTACT FORM ----
+  var contactForm = document.getElementById('contactForm');
+  if (contactForm) {
+    contactForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      var nameEl  = document.getElementById('cName');
+      var emailEl = document.getElementById('cEmail');
+      var msgEl3  = document.getElementById('cMsg');
+      var ffName  = document.getElementById('ff-name');
+      var ffEmail = document.getElementById('ff-email');
+      var ffMsg   = document.getElementById('ff-msg');
+      var valid = true;
+
+      if (!nameEl.value.trim())  { ffName.classList.add('has-error');  valid = false; } else { ffName.classList.remove('has-error'); }
+      if (!msgEl3.value.trim())  { ffMsg.classList.add('has-error');   valid = false; } else { ffMsg.classList.remove('has-error'); }
+      var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value);
+      if (!emailOk) { ffEmail.classList.add('has-error'); valid = false; } else { ffEmail.classList.remove('has-error'); }
+
+      if (valid) {
+        contactForm.style.display = 'none';
+        var succ = document.getElementById('formSuccess');
+        if (succ) succ.classList.add('show');
+        showToast('Mensaje enviado con exito!');
+      } else {
+        showToast('Por favor completa todos los campos');
+      }
+    });
+  }
+
+  // ---- NEWSLETTER ----
+  var newsletterBtn = document.querySelector('.newsletter-btn');
+  if (newsletterBtn) {
+    newsletterBtn.addEventListener('click', function() {
+      var input = document.getElementById('newsletterInput');
+      if (!input) return;
+      var val = input.value.trim();
+      if (!val || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
+        showToast('Ingresa un correo valido');
+        return;
+      }
+      input.value = '';
+      showToast('Suscripcion exitosa! Bienvenido a Patitas Felices!');
+    });
+  }
+
+  // ---- TOAST ----
+  function showToast(msg) {
+    var container = document.getElementById('toastContainer');
+    if (!container) return;
+    var toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.innerHTML = '<span>' + msg + '</span>';
+    container.appendChild(toast);
+    setTimeout(function() {
+      toast.classList.add('hide');
+      setTimeout(function() { if (toast.parentNode) toast.parentNode.removeChild(toast); }, 300);
+    }, 3500);
+  }
+
+  // ---- MOBILE NAV ----
+  var mobileCloseBtn = document.getElementById('mobileClose');
+  if (mobileCloseBtn) mobileCloseBtn.addEventListener('click', function() {
+    document.getElementById('mobileMenu').classList.remove('open');
+    document.body.style.overflow = '';
+  });
+
+  var hamburger = document.getElementById('hamburger');
+  if (hamburger) hamburger.addEventListener('click', function() {
+    document.getElementById('mobileMenu').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+
+  var mobileLinks = document.querySelectorAll('.mobile-menu a');
+  mobileLinks.forEach(function(a) {
+    a.addEventListener('click', function() {
+      document.getElementById('mobileMenu').classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
+
+  // ---- SCROLL TOP ----
+  var scrollTopBtn = document.getElementById('scrollTop');
+  if (scrollTopBtn) scrollTopBtn.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+}); // end DOMContentLoaded
+
+</script>
+</body>
+</html>

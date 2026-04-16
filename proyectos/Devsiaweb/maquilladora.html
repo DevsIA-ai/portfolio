@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valeria Ríos · Maquillista Profesional</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --cream: #faf7f2;
+    --warm-white: #fff9f4;
+    --blush: #e8c4b0;
+    --rose: #c97a5e;
+    --deep-rose: #9d5a42;
+    --mocha: #6b3f2a;
+    --charcoal: #2a2220;
+    --text: #3d2b24;
+    --text-light: #8a6d64;
+    --gold: #c9a96e;
+    --gold-light: #e8d5aa;
+    --font-display: 'Cormorant Garamond', serif;
+    --font-body: 'Jost', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 1.5rem 4rem;
+    display: flex; justify-content: space-between; align-items: center;
+    transition: background 0.4s, backdrop-filter 0.4s;
+  }
+  nav.scrolled {
+    background: rgba(250,247,242,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(201,169,110,0.2);
+  }
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    letter-spacing: 0.08em;
+    color: var(--charcoal);
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text);
+    text-decoration: none;
+    position: relative;
+    transition: color 0.3s;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute; bottom: -3px; left: 0; right: 0;
+    height: 1px; background: var(--gold);
+    transform: scaleX(0); transform-origin: right;
+    transition: transform 0.3s;
+  }
+  .nav-links a:hover { color: var(--rose); }
+  .nav-links a:hover::after { transform: scaleX(1); transform-origin: left; }
+  .nav-cta {
+    background: var(--charcoal);
+    color: var(--cream) !important;
+    padding: 0.6rem 1.4rem !important;
+    border-radius: 0 !important;
+    letter-spacing: 0.2em !important;
+  }
+  .nav-cta::after { display: none !important; }
+  .nav-cta:hover { background: var(--rose); color: var(--cream) !important; }
+  .nav-cta { transition: background 0.3s !important; }
+
+  /* ── HERO ── */
+  #hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    min-height: 600px;
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* Video de fondo */
+  .hero-video-bg {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: 0;
+  }
+
+  /* Overlay oscuro sobre el video */
+  .hero-video-overlay {
+    position: absolute; inset: 0; z-index: 1;
+    background: linear-gradient(
+      to bottom,
+      rgba(42,34,32,0.35) 0%,
+      rgba(42,34,32,0.5) 50%,
+      rgba(42,34,32,0.75) 100%
+    );
+  }
+
+  /* Fallback cuando no hay video: gradiente animado */
+  .hero-video-fallback {
+    position: absolute; inset: 0; z-index: 0;
+    background: linear-gradient(135deg, #3d2b24 0%, #9d5a42 35%, #c97a5e 60%, #6b3f2a 100%);
+    background-size: 300% 300%;
+    animation: gradientShift 8s ease infinite;
+  }
+  @keyframes gradientShift {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  .hero-video-fallback-icon {
+    position: absolute; inset: 0; z-index: 1;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 1rem;
+    color: rgba(255,255,255,0.2);
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+  }
+  .hero-video-fallback-icon svg { opacity: 0.2; }
+
+  /* Contenido centrado sobre el video */
+  .hero-content-col {
+    position: relative; z-index: 2;
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center;
+    padding: 2rem 2rem;
+    max-width: 800px;
+    width: 100%;
+  }
+  .hero-eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    opacity: 0; animation: fadeUp 0.8s 0.3s forwards;
+  }
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(4rem, 8vw, 8rem);
+    font-weight: 300;
+    line-height: 1;
+    color: var(--cream);
+    margin-bottom: 0.3rem;
+    opacity: 0; animation: fadeUp 0.8s 0.5s forwards;
+    text-shadow: 0 2px 40px rgba(42,34,32,0.4);
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--blush);
+    display: block;
+  }
+  .hero-tagline {
+    font-family: var(--font-display);
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    font-weight: 300;
+    font-style: italic;
+    color: rgba(250,247,242,0.85);
+    margin: 1.5rem 0 2.5rem;
+    line-height: 1.5;
+    opacity: 0; animation: fadeUp 0.8s 0.7s forwards;
+  }
+  .hero-actions {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    justify-content: center;
+    opacity: 0; animation: fadeUp 0.8s 0.9s forwards;
+  }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    background: var(--charcoal);
+    color: var(--cream);
+    padding: 1rem 2rem;
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.3s, transform 0.2s;
+    border: none; cursor: pointer;
+  }
+  .btn-primary:hover { background: var(--rose); transform: translateY(-2px); }
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    border: 1px solid var(--gold);
+    color: var(--text);
+    padding: 1rem 2rem;
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.3s, color 0.3s;
+    cursor: pointer;
+  }
+  .btn-secondary:hover { background: var(--gold); color: var(--warm-white); }
+
+  .hero-stats {
+    display: flex; gap: 3rem; margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(201,169,110,0.3);
+    opacity: 0; animation: fadeUp 0.8s 1.1s forwards;
+    justify-content: center;
+  }
+  .stat-item {}
+  .stat-number {
+    font-family: var(--font-display);
+    font-size: 2.4rem;
+    font-weight: 300;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(250,247,242,0.65);
+    margin-top: 0.3rem;
+  }
+
+  .hero-actions .btn-secondary {
+    border-color: rgba(250,247,242,0.5);
+    color: var(--cream);
+  }
+  .hero-actions .btn-secondary:hover { background: rgba(250,247,242,0.15); color: var(--cream); }
+
+  .hero-scroll-hint {
+    position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--text-light);
+    animation: bounce 2s 2s infinite;
+    opacity: 0; animation: fadeIn 1s 2s forwards, bounce 2s 3s infinite;
+  }
+  .scroll-line {
+    width: 1px; height: 40px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+  }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes bounce { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(8px); } }
+
+  /* ── REVEAL ANIMATION ── */
+  .reveal {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ── SECTION SHARED ── */
+  section { padding: 7rem 0; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 4rem; }
+  .section-eyebrow {
+    font-size: 0.68rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    display: block;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 4vw, 3.8rem);
+    font-weight: 300;
+    color: var(--charcoal);
+    line-height: 1.1;
+  }
+  .section-title em { font-style: italic; color: var(--rose); }
+  .divider {
+    width: 60px; height: 1px;
+    background: var(--gold);
+    margin: 2rem 0;
+  }
+
+  /* ── ABOUT ── */
+  #about {
+    background: var(--warm-white);
+    position: relative; overflow: hidden;
+  }
+  #about::before {
+    content: 'VR';
+    position: absolute; right: -1rem; top: 50%; transform: translateY(-50%);
+    font-family: var(--font-display);
+    font-size: 25rem;
+    font-weight: 300;
+    color: rgba(201,169,110,0.06);
+    line-height: 1;
+    user-select: none;
+  }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+  }
+  .about-image-wrap {
+    position: relative;
+  }
+  .about-img-placeholder {
+    width: 100%; aspect-ratio: 3/4;
+    background: linear-gradient(160deg, #e8c4b0 0%, #c97a5e 40%, #9d5a42 100%);
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .about-img-placeholder svg { opacity: 0.2; }
+  .about-img-frame {
+    position: absolute; top: 1.5rem; left: 1.5rem; right: -1.5rem; bottom: -1.5rem;
+    border: 1px solid var(--gold-light);
+    z-index: -1;
+  }
+  .about-badge {
+    position: absolute; bottom: -1.5rem; right: -1.5rem;
+    width: 120px; height: 120px;
+    background: var(--charcoal);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 0.2rem;
+  }
+  .about-badge-num {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .about-badge-text {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--cream);
+    text-align: center;
+  }
+  .about-text p {
+    font-size: 1.05rem;
+    line-height: 1.9;
+    color: var(--text-light);
+    margin-bottom: 1.5rem;
+  }
+  .about-specialties {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1rem; margin-top: 2rem;
+  }
+  .specialty-item {
+    display: flex; align-items: center; gap: 0.75rem;
+    font-size: 0.82rem;
+    letter-spacing: 0.05em;
+    color: var(--text);
+  }
+  .specialty-dot {
+    width: 6px; height: 6px;
+    background: var(--gold); flex-shrink: 0;
+  }
+
+  /* ── SERVICES ── */
+  #services { background: var(--cream); }
+  .services-header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 4rem;
+  }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5px;
+    background: rgba(201,169,110,0.15);
+  }
+  .service-card {
+    background: var(--warm-white);
+    padding: 3rem 2.5rem;
+    position: relative; overflow: hidden;
+    transition: background 0.3s;
+    cursor: default;
+  }
+  .service-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--gold);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.4s;
+  }
+  .service-card:hover { background: var(--charcoal); }
+  .service-card:hover::before { transform: scaleX(1); }
+  .service-card:hover .service-icon svg path,
+  .service-card:hover .service-icon svg circle,
+  .service-card:hover .service-icon svg line { stroke: var(--gold); }
+  .service-card:hover .service-name,
+  .service-card:hover .service-desc { color: var(--cream); }
+  .service-card:hover .service-desc { color: rgba(250,247,242,0.6); }
+  .service-card:hover .service-num { color: rgba(250,247,242,0.1); }
+  .service-icon {
+    width: 42px; height: 42px; margin-bottom: 1.5rem;
+  }
+  .service-icon svg { width: 100%; height: 100%; }
+  .service-icon svg path, .service-icon svg circle, .service-icon svg line {
+    stroke: var(--rose); fill: none;
+    stroke-width: 1.5; stroke-linecap: round;
+    transition: stroke 0.3s;
+  }
+  .service-num {
+    position: absolute; top: 2rem; right: 2rem;
+    font-family: var(--font-display);
+    font-size: 3.5rem;
+    font-weight: 300;
+    color: rgba(201,169,110,0.12);
+    line-height: 1;
+    transition: color 0.3s;
+  }
+  .service-name {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--charcoal);
+    margin-bottom: 0.8rem;
+    transition: color 0.3s;
+  }
+  .service-desc {
+    font-size: 0.85rem;
+    line-height: 1.8;
+    color: var(--text-light);
+    transition: color 0.3s;
+  }
+
+  /* ── PACKAGES ── */
+  #packages { background: var(--charcoal); padding: 7rem 0; }
+  .packages-header { text-align: center; margin-bottom: 4rem; }
+  .packages-header .section-title { color: var(--cream); }
+  .packages-header .section-eyebrow { color: var(--gold); }
+  .packages-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 2px; background: rgba(255,255,255,0.05);
+  }
+  .package-card {
+    background: rgba(250,247,242,0.04);
+    padding: 3rem 2.5rem;
+    position: relative; overflow: hidden;
+    transition: background 0.3s;
+    border-top: 1px solid transparent;
+  }
+  .package-card.featured {
+    background: var(--rose);
+    border-top-color: var(--gold);
+  }
+  .package-card:not(.featured):hover { background: rgba(250,247,242,0.08); }
+  .package-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.8rem;
+    display: block;
+  }
+  .package-card.featured .package-label { color: rgba(250,247,242,0.7); }
+  .package-name {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    font-weight: 300;
+    color: var(--cream);
+    margin-bottom: 0.5rem;
+  }
+  .package-price {
+    font-family: var(--font-display);
+    font-size: 2.8rem;
+    font-weight: 300;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+  .package-card.featured .package-price { color: var(--cream); }
+  .package-price-note {
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    color: rgba(250,247,242,0.4);
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(250,247,242,0.1);
+  }
+  .package-features { list-style: none; margin-bottom: 2.5rem; }
+  .package-features li {
+    font-size: 0.85rem;
+    color: rgba(250,247,242,0.75);
+    padding: 0.5rem 0;
+    display: flex; align-items: center; gap: 0.6rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .package-features li::before {
+    content: '✦';
+    font-size: 0.5rem;
+    color: var(--gold);
+    flex-shrink: 0;
+  }
+  .package-card.featured .package-features li { color: rgba(250,247,242,0.9); }
+  .btn-package {
+    display: block; width: 100%;
+    padding: 0.9rem;
+    background: transparent;
+    border: 1px solid rgba(250,247,242,0.25);
+    color: var(--cream);
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.3s, border-color 0.3s;
+  }
+  .btn-package:hover { background: rgba(250,247,242,0.1); border-color: var(--gold); }
+  .package-card.featured .btn-package {
+    background: var(--charcoal);
+    border-color: var(--charcoal);
+  }
+  .package-card.featured .btn-package:hover { background: var(--mocha); }
+  .featured-badge {
+    position: absolute; top: 1.5rem; right: 1.5rem;
+    background: var(--gold);
+    color: var(--charcoal);
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.7rem;
+  }
+
+  /* ── GALLERY ── */
+  #gallery { background: var(--warm-white); }
+  .gallery-header { margin-bottom: 3rem; }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: repeat(3, 220px);
+    gap: 6px;
+  }
+  .gallery-item {
+    overflow: hidden; position: relative;
+    cursor: pointer;
+  }
+  .gallery-item:nth-child(1) { grid-column: 1 / 5; grid-row: 1 / 3; }
+  .gallery-item:nth-child(2) { grid-column: 5 / 8; grid-row: 1 / 2; }
+  .gallery-item:nth-child(3) { grid-column: 8 / 13; grid-row: 1 / 3; }
+  .gallery-item:nth-child(4) { grid-column: 5 / 8; grid-row: 2 / 3; }
+  .gallery-item:nth-child(5) { grid-column: 1 / 5; grid-row: 3 / 4; }
+  .gallery-item:nth-child(6) { grid-column: 5 / 9; grid-row: 3 / 4; }
+  .gallery-item:nth-child(7) { grid-column: 9 / 13; grid-row: 3 / 4; }
+
+  .gallery-placeholder {
+    width: 100%; height: 100%;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .gallery-item:hover .gallery-placeholder { transform: scale(1.05); }
+  .gallery-placeholder::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(42,34,32,0.5) 0%, transparent 60%);
+    opacity: 0; transition: opacity 0.4s;
+  }
+  .gallery-item:hover .gallery-placeholder::after { opacity: 1; }
+  .gallery-label {
+    position: absolute; bottom: 1rem; left: 1rem;
+    font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--cream);
+    opacity: 0; transition: opacity 0.4s 0.1s;
+    z-index: 2;
+  }
+  .gallery-item:hover .gallery-label { opacity: 1; }
+
+  /* Gallery color palettes */
+  .g1 { background: linear-gradient(135deg, #d4a898, #9d5a42); }
+  .g2 { background: linear-gradient(135deg, #c9a96e, #8a6d64); }
+  .g3 { background: linear-gradient(135deg, #e8c4b0, #c97a5e, #6b3f2a); }
+  .g4 { background: linear-gradient(135deg, #f0d5c8, #d4a898); }
+  .g5 { background: linear-gradient(135deg, #9d5a42, #3d2b24); }
+  .g6 { background: linear-gradient(135deg, #c97a5e, #e8c4b0); }
+  .g7 { background: linear-gradient(135deg, #6b3f2a, #c9a96e); }
+
+  /* ── TESTIMONIALS ── */
+  #testimonials { background: var(--cream); }
+  .testimonials-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 2px; background: rgba(201,169,110,0.12);
+    margin-top: 4rem;
+  }
+  .testimonial-card {
+    background: var(--warm-white);
+    padding: 3rem;
+    position: relative;
+  }
+  .quote-mark {
+    font-family: var(--font-display);
+    font-size: 5rem;
+    font-weight: 300;
+    color: var(--gold-light);
+    line-height: 0.8;
+    margin-bottom: 1rem;
+    display: block;
+  }
+  .testimonial-text {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--text);
+    margin-bottom: 2rem;
+  }
+  .testimonial-author {
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .author-avatar {
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--blush), var(--rose));
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: var(--cream);
+    flex-shrink: 0;
+  }
+  .author-name {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--charcoal);
+    letter-spacing: 0.05em;
+  }
+  .author-detail {
+    font-size: 0.72rem;
+    color: var(--text-light);
+    letter-spacing: 0.1em;
+    margin-top: 0.1rem;
+  }
+  .stars {
+    display: flex; gap: 0.2rem; margin-bottom: 1rem;
+  }
+  .star { color: var(--gold); font-size: 0.8rem; }
+
+  /* ── PROCESS ── */
+  #process { background: var(--charcoal); }
+  .process-header { text-align: center; margin-bottom: 5rem; }
+  .process-header .section-title { color: var(--cream); }
+  .process-header .divider { margin: 2rem auto; }
+  .process-steps {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    position: relative;
+  }
+  .process-steps::before {
+    content: '';
+    position: absolute; top: 3rem; left: 12.5%; right: 12.5%;
+    height: 1px; background: rgba(201,169,110,0.25);
+  }
+  .process-step {
+    padding: 0 2rem;
+    text-align: center;
+    position: relative;
+  }
+  .step-icon {
+    width: 60px; height: 60px;
+    border: 1px solid rgba(201,169,110,0.3);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1.5rem;
+    background: var(--charcoal);
+    position: relative; z-index: 1;
+    transition: background 0.3s, border-color 0.3s;
+  }
+  .process-step:hover .step-icon { background: var(--rose); border-color: var(--rose); }
+  .step-icon svg { width: 22px; height: 22px; }
+  .step-icon svg path, .step-icon svg circle, .step-icon svg polyline { stroke: var(--gold); fill: none; stroke-width: 1.5; stroke-linecap: round; }
+  .step-num {
+    font-family: var(--font-display);
+    font-size: 0.7rem;
+    color: var(--gold);
+    letter-spacing: 0.2em;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+  .step-name {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 300;
+    color: var(--cream);
+    margin-bottom: 0.8rem;
+  }
+  .step-desc {
+    font-size: 0.82rem;
+    line-height: 1.7;
+    color: rgba(250,247,242,0.5);
+  }
+
+  /* ── CONTACT ── */
+  #contact { background: var(--warm-white); }
+  .contact-grid {
+    display: grid; grid-template-columns: 1fr 1.2fr;
+    gap: 6rem; align-items: start;
+  }
+  .contact-info-title {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: var(--charcoal);
+    margin-bottom: 1rem;
+  }
+  .contact-info p {
+    font-size: 0.9rem;
+    line-height: 1.9;
+    color: var(--text-light);
+    margin-bottom: 2rem;
+  }
+  .contact-detail {
+    display: flex; align-items: center; gap: 1rem;
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+    color: var(--text);
+  }
+  .contact-detail-icon {
+    width: 36px; height: 36px;
+    border: 1px solid var(--gold-light);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .contact-detail-icon svg { width: 16px; height: 16px; }
+  .contact-detail-icon svg path, .contact-detail-icon svg circle { stroke: var(--rose); fill: none; stroke-width: 1.5; stroke-linecap: round; }
+
+  .form-group { margin-bottom: 1.5rem; }
+  .form-label {
+    display: block;
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 0.5rem;
+  }
+  .form-input, .form-select, .form-textarea {
+    width: 100%;
+    padding: 1rem 1.2rem;
+    background: var(--cream);
+    border: 1px solid rgba(201,169,110,0.25);
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.3s, background 0.3s;
+    appearance: none;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    border-color: var(--gold);
+    background: var(--warm-white);
+  }
+  .form-textarea { resize: vertical; min-height: 120px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .form-submit {
+    width: 100%;
+    padding: 1.1rem;
+    background: var(--charcoal);
+    color: var(--cream);
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s;
+    display: flex; align-items: center; justify-content: center; gap: 0.6rem;
+  }
+  .form-submit:hover { background: var(--rose); }
+  .form-success {
+    display: none;
+    text-align: center; padding: 2rem;
+    background: rgba(201,169,110,0.1);
+    border: 1px solid var(--gold-light);
+  }
+  .form-success.show { display: block; }
+  .form-success p {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-style: italic;
+    color: var(--charcoal);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--charcoal);
+    padding: 4rem 0 2rem;
+    border-top: 1px solid rgba(201,169,110,0.15);
+  }
+  .footer-grid {
+    display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 4rem; margin-bottom: 3rem;
+  }
+  .footer-brand-name {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    font-weight: 300;
+    color: var(--cream);
+    margin-bottom: 1rem;
+  }
+  .footer-tagline {
+    font-size: 0.8rem;
+    line-height: 1.7;
+    color: rgba(250,247,242,0.4);
+    margin-bottom: 1.5rem;
+  }
+  .social-links { display: flex; gap: 0.75rem; }
+  .social-link {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(250,247,242,0.15);
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(250,247,242,0.5);
+    text-decoration: none;
+    font-size: 0.75rem;
+    transition: border-color 0.3s, color 0.3s, background 0.3s;
+  }
+  .social-link:hover { border-color: var(--gold); color: var(--gold); }
+  .footer-col-title {
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+  }
+  .footer-links { list-style: none; }
+  .footer-links li { margin-bottom: 0.7rem; }
+  .footer-links a {
+    font-size: 0.82rem;
+    color: rgba(250,247,242,0.5);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .footer-links a:hover { color: var(--cream); }
+  .footer-bottom {
+    padding-top: 2rem;
+    border-top: 1px solid rgba(250,247,242,0.07);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-copy {
+    font-size: 0.72rem;
+    color: rgba(250,247,242,0.25);
+    letter-spacing: 0.05em;
+  }
+  .footer-city {
+    font-size: 0.72rem;
+    color: rgba(250,247,242,0.25);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    display: flex; align-items: center; gap: 0.4rem;
+  }
+
+  /* ── WHATSAPP FLOAT ── */
+  .wa-float {
+    position: fixed; bottom: 2rem; right: 2rem;
+    z-index: 999;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .wa-tooltip {
+    background: var(--charcoal);
+    color: var(--cream);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    padding: 0.6rem 1rem;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateX(10px);
+    transition: opacity 0.3s, transform 0.3s;
+    pointer-events: none;
+  }
+  .wa-float:hover .wa-tooltip { opacity: 1; transform: translateX(0); }
+  .wa-btn {
+    width: 58px; height: 58px;
+    background: #25d366;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 20px rgba(37,211,102,0.35);
+    text-decoration: none;
+    transition: transform 0.3s, box-shadow 0.3s;
+    animation: waPulse 2.5s 3s infinite;
+  }
+  .wa-btn:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(37,211,102,0.5); }
+  @keyframes waPulse {
+    0%, 100% { box-shadow: 0 4px 20px rgba(37,211,102,0.35); }
+    50% { box-shadow: 0 4px 30px rgba(37,211,102,0.6); }
+  }
+  .wa-btn svg { width: 28px; height: 28px; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1024px) {
+    nav { padding: 1.2rem 2rem; }
+    .nav-links { gap: 1.5rem; }
+    .container { padding: 0 2rem; }
+    .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .about-image-wrap { max-width: 400px; margin: 0 auto; }
+    .services-grid { grid-template-columns: repeat(2, 1fr); }
+    .packages-grid { grid-template-columns: 1fr; }
+    .process-steps { grid-template-columns: repeat(2, 1fr); gap: 3rem; }
+    .process-steps::before { display: none; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    .gallery-grid { grid-template-columns: repeat(2, 1fr); grid-template-rows: auto; }
+    .gallery-item { grid-column: auto !important; grid-row: auto !important; height: 250px; }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .services-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+  }
+  @media (max-width: 640px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .services-grid { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+    .hero-stats { flex-wrap: wrap; gap: 1.5rem; }
+    .process-steps { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">Valeria Ríos</a>
+  <ul class="nav-links">
+    <li><a href="#about">Sobre mí</a></li>
+    <li><a href="#services">Servicios</a></li>
+    <li><a href="#gallery">Galería</a></li>
+    <li><a href="#testimonials">Testimonios</a></li>
+    <li><a href="#contact" class="nav-cta">Agendar cita</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+
+  <!-- VIDEO DE FONDO — reemplaza el src con tu video real (.mp4) -->
+   <video class="hero-video-bg" autoplay muted loop playsinline>
+    <source src="maquillaje/maquillaje.mp4" type="video/mp4">
+  </video> 
+
+  <!-- Fallback visual mientras no hay video 
+  <div class="hero-video-fallback">
+    <div class="hero-video-fallback-icon">
+      <svg width="64" height="64" viewBox="0 0 80 80" fill="none">
+        <rect x="8" y="18" width="50" height="44" rx="3" stroke="white" stroke-width="1.5"/>
+        <polygon points="72,40 58,32 58,48" fill="white" opacity="0.5"/>
+        <circle cx="33" cy="40" r="10" stroke="white" stroke-width="1.5"/>
+        <circle cx="33" cy="40" r="3" fill="white" opacity="0.4"/>
+      </svg>
+      <span>Agrega tu video aquí</span>
+    </div>
+  </div>
+   -->
+  <!-- Overlay oscuro -->
+  <div class="hero-video-overlay"></div>
+
+  <!-- Contenido centrado -->
+  <div class="hero-content-col">
+    <span class="hero-eyebrow">Maquillista Profesional · Ciudad de México</span>
+    <h1 class="hero-title">
+      Valeria<em>Ríos</em>
+    </h1>
+    <p class="hero-tagline">Resalta tu belleza natural<br>con la elegancia que mereces</p>
+    <div class="hero-actions">
+      <a href="https://wa.me/521XXXXXXXXXX?text=Hola%20Valeria%2C%20me%20gustaría%20agendar%20una%20cita" class="btn-primary" target="_blank">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Agenda tu cita por WhatsApp
+      </a>
+      <a href="#services" class="btn-secondary">Ver servicios</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-number">8+</div>
+        <div class="stat-label">Años de experiencia</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">500+</div>
+        <div class="stat-label">Novias felices</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">100%</div>
+        <div class="stat-label">Satisfacción</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-image-wrap reveal">
+        <div class="about-img-placeholder">
+<img src="maquillaje/maquilladora.jpg" alt="Valeria Ríos" style="width:100%;height:100%;object-fit:cover;">
+        </div>
+        <div class="about-img-frame"></div>
+        <div class="about-badge">
+          <span class="about-badge-num">8</span>
+          <span class="about-badge-text">años de<br>experiencia</span>
+        </div>
+      </div>
+      <div class="about-text">
+        <span class="section-eyebrow reveal">Sobre mí</span>
+        <h2 class="section-title reveal reveal-delay-1">Arte que<br><em>transforma</em></h2>
+        <div class="divider reveal reveal-delay-2"></div>
+        <p class="reveal reveal-delay-2">Soy Valeria Ríos, maquillista profesional con más de 8 años de experiencia creando looks únicos que realzan la belleza natural de cada persona. Me apasiona el arte del maquillaje como una herramienta para que cada mujer brille con confianza en sus momentos más especiales.</p>
+        <p class="reveal reveal-delay-3">Especializada en maquillaje para novias, eventos sociales y sesiones fotográficas, mi enfoque siempre es entender la personalidad y visión de cada clienta para crear un look perfecto y duradero que las haga sentir extraordinarias.</p>
+        <div class="about-specialties reveal reveal-delay-3">
+          <div class="specialty-item"><div class="specialty-dot"></div>Maquillaje para novias</div>
+          <div class="specialty-item"><div class="specialty-dot"></div>Eventos sociales</div>
+          <div class="specialty-item"><div class="specialty-dot"></div>Sesiones fotográficas</div>
+          <div class="specialty-item"><div class="specialty-dot"></div>Maquillaje artístico</div>
+          <div class="specialty-item"><div class="specialty-dot"></div>Prueba de maquillaje</div>
+          <div class="specialty-item"><div class="specialty-dot"></div>Maquillaje a domicilio</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="container">
+    <div class="services-header">
+      <div>
+        <span class="section-eyebrow reveal">Lo que ofrezco</span>
+        <h2 class="section-title reveal reveal-delay-1">Mis <em>servicios</em></h2>
+      </div>
+      <a href="#contact" class="btn-secondary reveal reveal-delay-2">Solicitar cotización</a>
+    </div>
+    <div class="services-grid">
+
+      <div class="service-card reveal">
+        <span class="service-num">01</span>
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+        </div>
+        <h3 class="service-name">Maquillaje para Novias</h3>
+        <p class="service-desc">El look más especial de tu vida. Diseñamos juntas el maquillaje perfecto para tu día de boda, garantizando duración y fotografía impecable.</p>
+      </div>
+
+      <div class="service-card reveal reveal-delay-1">
+        <span class="service-num">02</span>
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M12 14c-6 0-8 2-8 4v1h16v-1c0-2-2-4-8-4z"/></svg>
+        </div>
+        <h3 class="service-name">Maquillaje Social</h3>
+        <p class="service-desc">Para cenas, reuniones y compromisos especiales. Un look elegante y natural que te haga destacar en cualquier ocasión.</p>
+      </div>
+
+      <div class="service-card reveal reveal-delay-2">
+        <span class="service-num">03</span>
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3 class="service-name">Maquillaje para Eventos</h3>
+        <p class="service-desc">Quinceañeras, graduaciones, galas y más. Looks glamorosos que duran toda la noche y lucen perfectos bajo cualquier iluminación.</p>
+      </div>
+
+      <div class="service-card reveal">
+        <span class="service-num">04</span>
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        </div>
+        <h3 class="service-name">Sesiones de Fotos</h3>
+        <p class="service-desc">Maquillaje editorial diseñado específicamente para fotografía. Técnicas y productos que lucen perfectos en cámara bajo cualquier tipo de luz.</p>
+      </div>
+
+      <div class="service-card reveal reveal-delay-1">
+        <span class="service-num">05</span>
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8zm0-12a1 1 0 0 0-1 1v4a1 1 0 0 0 .5.87l3 1.73a1 1 0 0 0 1-1.73L13 12.27V9a1 1 0 0 0-1-1z"/></svg>
+        </div>
+        <h3 class="service-name">Prueba de Maquillaje</h3>
+        <p class="service-desc">Sesión previa ideal para novias donde exploramos estilos, texturas y colores para llegar al gran día con total confianza y seguridad.</p>
+      </div>
+
+      <div class="service-card reveal reveal-delay-2" style="background:var(--rose); cursor:pointer;" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+        <span class="service-num" style="color:rgba(255,255,255,0.15);">→</span>
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <h3 class="service-name" style="color:var(--cream);">¿Necesitas algo especial?</h3>
+        <p class="service-desc" style="color:rgba(250,247,242,0.75);">Cuéntame tu idea y creo un look personalizado para ti. Sin límites, sin moldes — solo tu belleza.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="container">
+    <div class="gallery-header">
+      <span class="section-eyebrow reveal">Portfolio</span>
+      <h2 class="section-title reveal reveal-delay-1">Mi <em>trabajo</em></h2>
+    </div>
+    <div class="gallery-grid reveal reveal-delay-1">
+      <div class="gallery-item"><img src="maquillaje/novia.png" style="width:100%;height:100%;object-fit:cover;"><span class="gallery-label">Novia</span></div>      <div class="gallery-item"><img src="maquillaje/editorial.png" style="width:100%;height:100%;object-fit:cover;"><span class="gallery-label">Editorial</span></div>
+      <div class="gallery-item"><img src="maquillaje/novios.png" style="width:100%;height:100%;object-fit:cover;"><span class="gallery-label">Novia</span></div>
+      <div class="gallery-item"><img src="maquillaje/social.png" style="width:100%;height:100%;object-fit:cover;"><span class="gallery-label">Social</span></div>
+      <div class="gallery-item"><img src="maquillaje/evento.png" style="width:100%;height:100%;object-fit:cover;"><span class="gallery-label">Evento</span></div>
+      <div class="gallery-item"><img src="maquillaje/sesionfotos.png" style="width:100%;height:100%;object-fit:cover;"><span class="gallery-label">Sesión</span></div>
+      <div class="gallery-item"><img src="maquillaje/gala.png" style="width:100%;height:100%;object-fit:cover;"><span class="gallery-label">Gala</span></div>
+    </div>
+    <p style="text-align:center;margin-top:2rem;font-size:0.8rem;color:var(--text-light);letter-spacing:0.1em;">
+      Reemplaza los colores de la galería con tus fotos reales en el código HTML
+    </p>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="container">
+    <span class="section-eyebrow reveal">Lo que dicen</span>
+    <h2 class="section-title reveal reveal-delay-1">Palabras de mis <em>clientas</em></h2>
+    <div class="testimonials-grid">
+
+      <div class="testimonial-card reveal">
+        <div class="stars">★★★★★</div>
+        <span class="quote-mark">"</span>
+        <p class="testimonial-text">Valeria hizo realidad exactamente el look que siempre soñé para mi boda. Me sentí la versión más bella de mí misma. El maquillaje duró perfecto toda la noche y en las fotos se ve increíble.</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">S</div>
+          <div>
+            <div class="author-name">Sofía Mendoza</div>
+            <div class="author-detail">Novia · Mayo 2024</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card reveal reveal-delay-1">
+        <div class="stars">★★★★★</div>
+        <span class="quote-mark">"</span>
+        <p class="testimonial-text">Para mi quinceañera Valeria creó un look que me hizo sentir princesa. Ella escuchó todo lo que quería y lo superó con creces. Todas mis amigas preguntaron quién fue mi maquillista.</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">L</div>
+          <div>
+            <div class="author-name">Lucía Torres</div>
+            <div class="author-detail">Quinceañera · Enero 2024</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card reveal reveal-delay-2">
+        <div class="stars">★★★★★</div>
+        <span class="quote-mark">"</span>
+        <p class="testimonial-text">Contraté a Valeria para una sesión fotográfica y los resultados son espectaculares. Sabe exactamente cómo aplicar el maquillaje para que luzca perfecto en cámara. ¡La recomiendo al 100%!</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">A</div>
+          <div>
+            <div class="author-name">Andrea Ruiz</div>
+            <div class="author-detail">Sesión fotográfica · Marzo 2024</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="container">
+    <div class="process-header">
+      <span class="section-eyebrow reveal">Cómo funciona</span>
+      <h2 class="section-title reveal reveal-delay-1">El <em>proceso</em></h2>
+      <div class="divider reveal"></div>
+    </div>
+    <div class="process-steps">
+
+      <div class="process-step reveal">
+        <div class="step-icon">
+          <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.6 3.38 2 2 0 0 1 3.56 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.5A16 16 0 0 0 16 16.59l.91-.91a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </div>
+        <span class="step-num">Paso 01</span>
+        <h3 class="step-name">Contacto por WhatsApp</h3>
+        <p class="step-desc">Escríbeme y cuéntame sobre tu evento, fecha y el look que tienes en mente.</p>
+      </div>
+
+      <div class="process-step reveal reveal-delay-1">
+        <div class="step-icon">
+          <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        </div>
+        <span class="step-num">Paso 02</span>
+        <h3 class="step-name">Selección del servicio</h3>
+        <p class="step-desc">Juntas elegimos el servicio o paquete que mejor se adapte a tus necesidades y presupuesto.</p>
+      </div>
+
+      <div class="process-step reveal reveal-delay-2">
+        <div class="step-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <span class="step-num">Paso 03</span>
+        <h3 class="step-name">Confirmación de cita</h3>
+        <p class="step-desc">Apartamos tu fecha con un anticipo y confirmamos los detalles de lugar y hora.</p>
+      </div>
+
+      <div class="process-step reveal reveal-delay-3">
+        <div class="step-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        </div>
+        <span class="step-num">Paso 04</span>
+        <h3 class="step-name">Día del maquillaje</h3>
+        <p class="step-desc">Llego puntual con todo el equipo profesional listo para que luzcas increíble.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PACKAGES -->
+<section id="packages">
+  <div class="container">
+    <div class="packages-header">
+      <span class="section-eyebrow reveal">Paquetes exclusivos</span>
+      <h2 class="section-title reveal reveal-delay-1">Paquetes para <em>Novias</em></h2>
+      <div class="divider reveal" style="margin:2rem auto;"></div>
+    </div>
+    <div class="packages-grid">
+
+      <div class="package-card reveal">
+        <span class="package-label">Esencial</span>
+        <h3 class="package-name">Paquete Amor</h3>
+        <div class="package-price">$2,500</div>
+        <p class="package-price-note">MXN · Precio base</p>
+        <ul class="package-features">
+          <li>Maquillaje de novia</li>
+          <li>1 prueba de maquillaje</li>
+          <li>Aplicación de pestañas</li>
+          <li>Maquillaje de larga duración</li>
+          <li>Asesoría de imagen</li>
+        </ul>
+        <a href="https://wa.me/521XXXXXXXXXX?text=Hola%2C%20me%20interesa%20el%20Paquete%20Amor" class="btn-package" target="_blank">Consultar disponibilidad</a>
+      </div>
+
+      <div class="package-card featured reveal reveal-delay-1">
+        <div class="featured-badge">Más popular</div>
+        <span class="package-label">Premium</span>
+        <h3 class="package-name">Paquete Sueño</h3>
+        <div class="package-price">$4,200</div>
+        <p class="package-price-note">MXN · Incluye damas</p>
+        <ul class="package-features">
+          <li>Maquillaje de novia</li>
+          <li>2 pruebas de maquillaje</li>
+          <li>1 dama de honor incluida</li>
+          <li>Peinado de novia</li>
+          <li>Servicio a domicilio</li>
+          <li>Touch-up kit de regalo</li>
+        </ul>
+        <a href="https://wa.me/521XXXXXXXXXX?text=Hola%2C%20me%20interesa%20el%20Paquete%20Sue%C3%B1o" class="btn-package" target="_blank">¡Lo quiero!</a>
+      </div>
+
+      <div class="package-card reveal reveal-delay-2">
+        <span class="package-label">Completo</span>
+        <h3 class="package-name">Paquete Magia</h3>
+        <div class="package-price">$7,500</div>
+        <p class="package-price-note">MXN · Toda la boda</p>
+        <ul class="package-features">
+          <li>Maquillaje de novia</li>
+          <li>Pruebas ilimitadas</li>
+          <li>Hasta 4 damas de honor</li>
+          <li>Peinado novia + damas</li>
+          <li>Servicio a domicilio</li>
+          <li>Presencia el día del evento</li>
+          <li>Kit de retoque premium</li>
+        </ul>
+        <a href="https://wa.me/521XXXXXXXXXX?text=Hola%2C%20me%20interesa%20el%20Paquete%20Magia" class="btn-package" target="_blank">Consultar disponibilidad</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="contact-info">
+        <span class="section-eyebrow reveal">Hablemos</span>
+        <h2 class="section-title reveal reveal-delay-1">Agenda tu <em>cita</em></h2>
+        <div class="divider reveal reveal-delay-2"></div>
+        <p class="reveal reveal-delay-2">¿Lista para brillar? Cuéntame sobre tu evento especial y creamos juntas el look perfecto para ti.</p>
+
+        <div class="contact-detail reveal reveal-delay-2">
+          <div class="contact-detail-icon">
+            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.6 3.38 2 2 0 0 1 3.56 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.5A16 16 0 0 0 16 16.59l.91-.91a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </div>
+          <span>+52 1 55 XXXX XXXX</span>
+        </div>
+
+        <div class="contact-detail reveal reveal-delay-3">
+          <div class="contact-detail-icon">
+            <svg viewBox="0 0 24 24"><path d="M21 2H3v16h5l4 4 4-4h5V2z"/></svg>
+          </div>
+          <span>@valeriaríos.mua</span>
+        </div>
+
+        <div class="contact-detail reveal reveal-delay-3">
+          <div class="contact-detail-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
+          </div>
+          <span>Ciudad de México · Servicio a domicilio</span>
+        </div>
+      </div>
+
+      <div class="reveal reveal-delay-1">
+        <div id="contact-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Nombre completo</label>
+              <input type="text" class="form-input" placeholder="Tu nombre" id="f-name">
+            </div>
+            <div class="form-group">
+              <label class="form-label">WhatsApp</label>
+              <input type="tel" class="form-input" placeholder="+52 55 XXXX XXXX" id="f-phone">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Fecha del evento</label>
+              <input type="date" class="form-input" id="f-date">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Tipo de servicio</label>
+              <select class="form-select" id="f-service">
+                <option value="">Selecciona un servicio</option>
+                <option>Maquillaje para Novia</option>
+                <option>Maquillaje Social</option>
+                <option>Maquillaje para Evento</option>
+                <option>Sesión Fotográfica</option>
+                <option>Prueba de Maquillaje</option>
+                <option>Paquete para Novias</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Mensaje</label>
+            <textarea class="form-textarea" placeholder="Cuéntame sobre tu evento, el look que deseas, número de personas..." id="f-msg"></textarea>
+          </div>
+          <button class="form-submit" onclick="handleSubmit()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Enviar por WhatsApp
+          </button>
+        </div>
+        <div class="form-success" id="form-success">
+          <p>¡Gracias! En breve me pongo en contacto contigo ✨</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand-name">Valeria Ríos</div>
+        <p class="footer-tagline">Maquillista profesional especializada en resaltar la belleza natural de cada mujer en sus momentos más especiales.</p>
+        <div class="social-links">
+          <a href="#" class="social-link" title="Instagram">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+            </svg>
+          </a>
+          <a href="#" class="social-link" title="TikTok">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/></svg>
+          </a>
+          <a href="#" class="social-link" title="WhatsApp">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Servicios</div>
+        <ul class="footer-links">
+          <li><a href="#services">Maquillaje para Novias</a></li>
+          <li><a href="#services">Maquillaje Social</a></li>
+          <li><a href="#services">Eventos Especiales</a></li>
+          <li><a href="#services">Sesiones Fotográficas</a></li>
+          <li><a href="#services">Prueba de Maquillaje</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Paquetes</div>
+        <ul class="footer-links">
+          <li><a href="#packages">Paquete Amor</a></li>
+          <li><a href="#packages">Paquete Sueño</a></li>
+          <li><a href="#packages">Paquete Magia</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Contacto</div>
+        <ul class="footer-links">
+          <li><a href="https://wa.me/521XXXXXXXXXX">WhatsApp</a></li>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">TikTok</a></li>
+          <li><a href="#contact">Formulario</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2025 Valeria Ríos · Maquillista Profesional</span>
+      <span class="footer-city">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
+        Ciudad de México
+      </span>
+    </div>
+  </div>
+</footer>
+
+<!-- WHATSAPP FLOAT -->
+<div class="wa-float">
+  <span class="wa-tooltip">¡Escríbeme ahora!</span>
+  <a href="https://wa.me/521XXXXXXXXXX?text=Hola%20Valeria%2C%20me%20gustar%C3%ADa%20agendar%20una%20cita" class="wa-btn" target="_blank" title="Contactar por WhatsApp">
+    <svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+</div>
+
+<script>
+  // Navbar scroll
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => observer.observe(el));
+
+  // Form → WhatsApp
+  function handleSubmit() {
+    const name = document.getElementById('f-name').value.trim();
+    const phone = document.getElementById('f-phone').value.trim();
+    const date = document.getElementById('f-date').value;
+    const service = document.getElementById('f-service').value;
+    const msg = document.getElementById('f-msg').value.trim();
+
+    if (!name || !phone) {
+      alert('Por favor ingresa tu nombre y WhatsApp para continuar.');
+      return;
+    }
+
+    const text = `Hola Valeria! 👋%0A%0AMi nombre es *${encodeURIComponent(name)}*%0AWhatsApp: ${encodeURIComponent(phone)}%0AServicio: ${encodeURIComponent(service || 'Por definir')}%0AFecha: ${date ? encodeURIComponent(date) : 'Por definir'}%0A%0AMensaje: ${encodeURIComponent(msg || 'Me gustaría agendar una cita.')}`;
+    window.open(`https://wa.me/521XXXXXXXXXX?text=${text}`, '_blank');
+
+    document.getElementById('contact-form').style.display = 'none';
+    document.getElementById('form-success').classList.add('show');
+  }
+</script>
+</body>
+</html>

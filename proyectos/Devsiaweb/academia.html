@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LinguaVox — Academia de Idiomas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0f2244;
+  --blue: #1a4080;
+  --accent: #2563c7;
+  --gold: #c9963a;
+  --cream: #f7f4ef;
+  --white: #ffffff;
+  --gray: #6b7280;
+  --light: #eef2f9;
+  --text: #1a1f2e;
+  --shadow: 0 8px 40px rgba(15,34,68,0.13);
+  --radius: 16px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--white);
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 5%; height: 72px;
+  background: rgba(15,34,68,0.97);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  transition: background .3s;
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem; font-weight: 700;
+  color: var(--white); letter-spacing: .5px;
+}
+.logo span { color: var(--gold); }
+
+.nav-tabs { display: flex; gap: 4px; }
+.nav-tab {
+  padding: 8px 20px; border-radius: 8px;
+  color: rgba(255,255,255,0.75); font-size: .9rem;
+  cursor: pointer; border: none; background: transparent;
+  font-family: 'DM Sans', sans-serif; font-weight: 500;
+  transition: all .2s;
+}
+.nav-tab:hover { color: var(--white); background: rgba(255,255,255,0.08); }
+.nav-tab.active { color: var(--white); background: rgba(37,99,199,0.45); }
+
+.nav-cta {
+  padding: 10px 22px; border-radius: 8px;
+  background: var(--gold); color: var(--navy);
+  font-weight: 600; font-size: .88rem; cursor: pointer;
+  border: none; font-family: 'DM Sans', sans-serif;
+  transition: all .2s; white-space: nowrap;
+}
+.nav-cta:hover { background: #dba53e; transform: translateY(-1px); }
+
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+.hamburger span { width: 24px; height: 2px; background: white; border-radius: 2px; transition: .3s; }
+
+/* ── PAGES ── */
+.page { display: none; padding-top: 72px; min-height: 100vh; }
+.page.active { display: block; }
+
+/* ── HERO ── */
+#page-inicio { padding-top: 0; }
+
+.hero {
+  position: relative; height: 100vh; min-height: 600px;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; text-align: center;
+}
+
+.hero-bg {
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(160deg, rgba(10,20,50,0.88) 0%, rgba(26,64,128,0.75) 60%, rgba(10,20,50,0.92) 100%),
+    url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1600&q=80') center/cover no-repeat;
+}
+
+.hero-particles {
+  position: absolute; inset: 0; overflow: hidden; pointer-events: none;
+}
+.hero-particles::before, .hero-particles::after {
+  content: ''; position: absolute;
+  border-radius: 50%;
+  animation: float 8s ease-in-out infinite;
+}
+.hero-particles::before {
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(37,99,199,0.18) 0%, transparent 70%);
+  top: -10%; left: -5%; animation-delay: 0s;
+}
+.hero-particles::after {
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(201,150,58,0.12) 0%, transparent 70%);
+  bottom: -5%; right: 5%; animation-delay: -4s;
+}
+@keyframes float {
+  0%,100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-30px) scale(1.05); }
+}
+
+.hero-content {
+  position: relative; z-index: 2;
+  max-width: 780px; padding: 0 24px;
+  animation: heroFade .9s ease both;
+}
+@keyframes heroFade {
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(201,150,58,0.18); border: 1px solid rgba(201,150,58,0.4);
+  color: #f0c96a; border-radius: 50px; padding: 6px 18px;
+  font-size: .82rem; font-weight: 600; letter-spacing: 1px;
+  text-transform: uppercase; margin-bottom: 28px;
+}
+
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.4rem, 6vw, 4rem);
+  color: var(--white); line-height: 1.18;
+  margin-bottom: 18px; font-weight: 700;
+}
+.hero h1 em { color: var(--gold); font-style: normal; }
+
+.hero-sub {
+  font-size: 1.1rem; color: rgba(255,255,255,0.8);
+  margin-bottom: 40px; line-height: 1.7; max-width: 560px; margin-inline: auto;
+}
+
+.hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+.btn-primary {
+  padding: 15px 34px; border-radius: 10px;
+  background: var(--gold); color: var(--navy);
+  font-weight: 700; font-size: .95rem; cursor: pointer;
+  border: none; font-family: 'DM Sans', sans-serif;
+  transition: all .25s; letter-spacing: .3px;
+}
+.btn-primary:hover { background: #dba53e; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,150,58,0.35); }
+
+.btn-outline {
+  padding: 14px 32px; border-radius: 10px;
+  background: transparent; color: var(--white);
+  font-weight: 600; font-size: .95rem; cursor: pointer;
+  border: 2px solid rgba(255,255,255,0.45);
+  font-family: 'DM Sans', sans-serif;
+  transition: all .25s;
+}
+.btn-outline:hover { background: rgba(255,255,255,0.12); border-color: white; }
+
+.hero-scroll {
+  position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+  z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 6px;
+  color: rgba(255,255,255,0.5); font-size: .75rem; letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.hero-scroll-dot {
+  width: 20px; height: 32px; border: 2px solid rgba(255,255,255,0.3);
+  border-radius: 12px; position: relative;
+}
+.hero-scroll-dot::after {
+  content: ''; position: absolute;
+  top: 5px; left: 50%; transform: translateX(-50%);
+  width: 4px; height: 7px; background: rgba(255,255,255,0.6);
+  border-radius: 3px; animation: scrollPulse 2s infinite;
+}
+@keyframes scrollPulse {
+  0%,100% { opacity: 1; top: 5px; }
+  50% { opacity: 0; top: 14px; }
+}
+
+/* ── BENEFITS ── */
+.benefits {
+  background: var(--navy);
+  padding: 60px 5%;
+}
+.benefits-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px; max-width: 1100px; margin: 0 auto;
+}
+.benefit-card {
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius); padding: 28px 24px;
+  text-align: center; transition: all .3s;
+}
+.benefit-card:hover { background: rgba(255,255,255,0.09); transform: translateY(-4px); }
+.benefit-icon {
+  font-size: 2.2rem; margin-bottom: 14px; display: block;
+}
+.benefit-card h3 {
+  color: var(--white); font-size: .95rem; font-weight: 600; margin-bottom: 8px;
+}
+.benefit-card p {
+  color: rgba(255,255,255,0.55); font-size: .83rem; line-height: 1.6;
+}
+
+/* ── SECTION HEADERS ── */
+.section-header { text-align: center; margin-bottom: 56px; }
+.section-tag {
+  display: inline-block; font-size: .75rem; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 14px;
+}
+.section-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.9rem, 4vw, 2.7rem);
+  color: var(--navy); line-height: 1.22; margin-bottom: 14px;
+}
+.section-header p {
+  color: var(--gray); font-size: 1rem; max-width: 540px;
+  margin: 0 auto; line-height: 1.7;
+}
+
+/* ── CURSOS ── */
+#page-cursos { background: var(--cream); }
+
+.courses-wrap { max-width: 1200px; margin: 0 auto; padding: 80px 5%; }
+
+.filters {
+  display: flex; flex-wrap: wrap; gap: 10px;
+  margin-bottom: 48px; justify-content: center;
+}
+.filter-group { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
+.filter-btn {
+  padding: 8px 18px; border-radius: 50px;
+  background: white; border: 1.5px solid #d1d9e8;
+  color: var(--gray); font-size: .83rem; font-weight: 500;
+  cursor: pointer; font-family: 'DM Sans', sans-serif;
+  transition: all .2s;
+}
+.filter-btn:hover, .filter-btn.active {
+  background: var(--accent); color: white; border-color: var(--accent);
+}
+.filter-divider {
+  width: 1px; background: #d1d9e8; margin: 0 4px; align-self: stretch;
+}
+
+.courses-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  gap: 28px;
+}
+
+.course-card {
+  background: white; border-radius: var(--radius);
+  overflow: hidden; box-shadow: 0 4px 24px rgba(15,34,68,0.07);
+  transition: all .3s; cursor: pointer;
+}
+.course-card * { pointer-events: none; }
+.course-card:hover { transform: translateY(-6px); box-shadow: var(--shadow); }
+
+.course-img {
+  position: relative; height: 190px; overflow: hidden;
+}
+.course-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+.course-card:hover .course-img img { transform: scale(1.05); }
+
+.course-level {
+  position: absolute; top: 14px; right: 14px;
+  padding: 5px 14px; border-radius: 50px;
+  font-size: .73rem; font-weight: 700; letter-spacing: .5px;
+}
+.level-basico { background: #dcfce7; color: #166534; }
+.level-intermedio { background: #fef3c7; color: #92400e; }
+.level-avanzado { background: #fee2e2; color: #991b1b; }
+
+.course-flag {
+  position: absolute; top: 14px; left: 14px;
+  font-size: 1.5rem; line-height: 1;
+}
+
+.course-body { padding: 22px 22px 24px; }
+.course-lang {
+  font-size: .75rem; font-weight: 700; color: var(--accent);
+  letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px;
+}
+.course-body h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem; color: var(--navy); margin-bottom: 10px;
+}
+.course-body p {
+  color: var(--gray); font-size: .85rem; line-height: 1.65;
+  margin-bottom: 16px;
+}
+.course-meta {
+  display: flex; gap: 16px; margin-bottom: 20px;
+}
+.course-meta-item {
+  display: flex; align-items: center; gap: 6px;
+  color: var(--gray); font-size: .8rem;
+}
+.course-meta-item span:first-child { font-size: 1rem; }
+.course-btns { display: flex; gap: 10px; }
+.btn-card-primary {
+  flex: 1; padding: 11px; border-radius: 8px;
+  background: var(--accent); color: white;
+  font-weight: 600; font-size: .85rem;
+  border: none; cursor: pointer; font-family: 'DM Sans', sans-serif;
+  transition: all .2s;
+}
+.btn-card-primary:hover { background: #1d4fa8; }
+.btn-card-outline {
+  flex: 1; padding: 11px; border-radius: 8px;
+  background: transparent; color: var(--accent);
+  font-weight: 600; font-size: .85rem;
+  border: 1.5px solid var(--accent); cursor: pointer;
+  font-family: 'DM Sans', sans-serif; transition: all .2s;
+}
+.btn-card-outline:hover { background: var(--light); }
+
+/* ── NOSOTROS ── */
+#page-nosotros { background: white; }
+
+.nosotros-wrap { max-width: 1200px; margin: 0 auto; padding: 80px 5%; }
+
+.about-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 64px; align-items: center; margin-bottom: 80px;
+}
+.about-text .section-header { text-align: left; margin-bottom: 32px; }
+.about-text .section-header h2 { font-size: clamp(1.7rem, 3vw, 2.3rem); }
+.about-stat { display: flex; gap: 8px; margin-bottom: 12px; align-items: flex-start; }
+.about-stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.4rem; color: var(--accent);
+  font-weight: 700; line-height: 1;
+}
+.about-stat-text { padding-top: 4px; }
+.about-stat-text strong { display: block; color: var(--navy); font-size: .9rem; }
+.about-stat-text span { color: var(--gray); font-size: .8rem; }
+.about-stats { display: flex; gap: 32px; margin-top: 32px; }
+
+.about-img-wrap {
+  position: relative;
+}
+.about-img-wrap img {
+  width: 100%; border-radius: 20px;
+  box-shadow: var(--shadow); display: block;
+}
+.about-img-badge {
+  position: absolute; bottom: -20px; left: -20px;
+  background: var(--gold); border-radius: 14px;
+  padding: 16px 22px; box-shadow: 0 6px 30px rgba(201,150,58,0.4);
+}
+.about-img-badge strong {
+  display: block; font-size: 1.5rem; color: var(--navy);
+  font-family: 'Playfair Display', serif; font-weight: 700;
+}
+.about-img-badge span { color: var(--navy); font-size: .8rem; font-weight: 600; opacity: .8; }
+
+.mv-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 24px; margin-bottom: 80px;
+}
+.mv-card {
+  background: var(--light); border-radius: var(--radius);
+  padding: 32px; border-left: 4px solid var(--accent);
+}
+.mv-card h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem; color: var(--navy); margin-bottom: 10px;
+}
+.mv-card p { color: var(--gray); font-size: .9rem; line-height: 1.7; }
+
+.team-section { margin-bottom: 80px; }
+.team-section .section-header { margin-bottom: 40px; }
+.team-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 24px;
+}
+.team-card {
+  background: white; border-radius: var(--radius);
+  padding: 28px 24px; text-align: center;
+  box-shadow: 0 4px 20px rgba(15,34,68,0.07);
+  border: 1px solid rgba(15,34,68,0.07);
+  transition: all .3s;
+}
+.team-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+.team-avatar {
+  width: 80px; height: 80px; border-radius: 50%;
+  margin: 0 auto 16px; display: flex; align-items: center; justify-content: center;
+  font-size: 2rem; font-weight: 700; color: white;
+}
+.team-card h4 { font-size: .95rem; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+.team-card .role { font-size: .8rem; color: var(--accent); font-weight: 600; margin-bottom: 8px; }
+.team-card p { font-size: .8rem; color: var(--gray); line-height: 1.6; }
+.team-card .cert { display: inline-flex; align-items: center; gap: 4px; margin-top: 10px; font-size: .75rem; color: var(--gold); font-weight: 600; }
+
+/* ── CAROUSEL ── */
+.testimonials-section { background: var(--navy); padding: 80px 5%; }
+.testimonials-section .section-header h2 { color: white; }
+.testimonials-section .section-header p { color: rgba(255,255,255,0.6); }
+
+.carousel-wrap { position: relative; max-width: 860px; margin: 0 auto; overflow: hidden; }
+.carousel-track {
+  display: flex; transition: transform .6s cubic-bezier(.4,0,.2,1);
+}
+.testimonial-slide { min-width: 100%; padding: 0 16px; }
+
+.testimonial-card {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px; padding: 40px 44px;
+  text-align: center; position: relative;
+}
+.testimonial-card::before {
+  content: '"'; font-family: 'Playfair Display', serif;
+  font-size: 6rem; color: var(--gold); opacity: .3;
+  position: absolute; top: -10px; left: 28px;
+  line-height: 1; pointer-events: none;
+}
+.test-photo {
+  width: 72px; height: 72px; border-radius: 50%; border: 3px solid var(--gold);
+  margin: 0 auto 16px; display: flex; align-items: center; justify-content: center;
+  font-size: 1.8rem; font-weight: 700; color: white;
+}
+.test-name { font-weight: 700; color: white; font-size: 1rem; margin-bottom: 4px; }
+.test-role { color: rgba(255,255,255,0.5); font-size: .8rem; margin-bottom: 14px; }
+.test-stars { color: var(--gold); font-size: 1.1rem; margin-bottom: 20px; letter-spacing: 2px; }
+.test-text { color: rgba(255,255,255,0.85); font-size: 1rem; line-height: 1.75; font-style: italic; }
+
+.carousel-dots {
+  display: flex; justify-content: center; gap: 8px; margin-top: 32px;
+}
+.carousel-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: rgba(255,255,255,0.3); cursor: pointer; transition: all .3s;
+  border: none;
+}
+.carousel-dot.active { background: var(--gold); width: 24px; border-radius: 4px; }
+
+/* ── CONTACTO ── */
+#page-contacto { background: var(--cream); }
+
+.contacto-wrap { max-width: 1200px; margin: 0 auto; padding: 80px 5%; }
+
+.contact-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 56px; margin-bottom: 56px;
+}
+
+.contact-form-wrap {
+  background: white; border-radius: 20px;
+  padding: 44px; box-shadow: 0 4px 30px rgba(15,34,68,0.08);
+}
+.contact-form-wrap h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem; color: var(--navy); margin-bottom: 24px;
+}
+
+.form-group { margin-bottom: 18px; }
+.form-group label {
+  display: block; font-size: .83rem; font-weight: 600;
+  color: var(--navy); margin-bottom: 6px;
+}
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%; padding: 12px 16px;
+  border: 1.5px solid #d1d9e8; border-radius: 10px;
+  font-family: 'DM Sans', sans-serif; font-size: .9rem;
+  color: var(--text); background: var(--cream);
+  transition: border .2s; outline: none;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus { border-color: var(--accent); background: white; }
+.form-group textarea { resize: vertical; min-height: 120px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+.btn-submit {
+  width: 100%; padding: 15px;
+  background: var(--accent); color: white;
+  border: none; border-radius: 10px; font-size: 1rem;
+  font-weight: 700; font-family: 'DM Sans', sans-serif;
+  cursor: pointer; transition: all .25s; margin-top: 4px;
+  letter-spacing: .3px;
+}
+.btn-submit:hover { background: #1d4fa8; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(37,99,199,0.3); }
+
+.contact-info { padding: 10px 0; }
+.contact-info h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem; color: var(--navy); margin-bottom: 10px;
+}
+.contact-info > p { color: var(--gray); margin-bottom: 32px; line-height: 1.7; }
+
+.info-item {
+  display: flex; align-items: flex-start; gap: 16px;
+  margin-bottom: 24px;
+}
+.info-icon {
+  width: 46px; height: 46px; border-radius: 12px;
+  background: var(--light); display: flex; align-items: center;
+  justify-content: center; font-size: 1.25rem; flex-shrink: 0;
+}
+.info-item h4 { font-size: .83rem; font-weight: 700; color: var(--navy); margin-bottom: 3px; }
+.info-item p { font-size: .88rem; color: var(--gray); line-height: 1.5; }
+
+.social-links { margin-top: 32px; }
+.social-links h4 { font-size: .83rem; font-weight: 700; color: var(--navy); margin-bottom: 14px; }
+.social-row { display: flex; gap: 12px; }
+.social-btn {
+  display: flex; align-items: center; gap: 8px;
+  padding: 9px 18px; border-radius: 9px; text-decoration: none;
+  font-size: .82rem; font-weight: 600; transition: all .2s;
+}
+.social-fb { background: #e7f0ff; color: #1877f2; }
+.social-fb:hover { background: #1877f2; color: white; }
+.social-ig { background: #fce7f3; color: #e1306c; }
+.social-ig:hover { background: #e1306c; color: white; }
+.social-tt { background: #f0f0f0; color: #333; }
+.social-tt:hover { background: #333; color: white; }
+
+/* ── MAP ── */
+.map-section {
+  background: white; border-radius: 20px;
+  overflow: hidden; box-shadow: 0 4px 30px rgba(15,34,68,0.08);
+}
+.map-header { padding: 24px 28px; border-bottom: 1px solid #eee; }
+.map-header h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--navy); }
+.map-container {
+  position: relative; height: 420px; background: #e5eaf2;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.map-container iframe {
+  width: 100%; height: 100%; border: none; display: block;
+}
+.map-overlay-btn {
+  position: absolute; bottom: 20px; right: 20px;
+  background: var(--accent); color: white;
+  padding: 10px 18px; border-radius: 9px;
+  font-size: .82rem; font-weight: 600; text-decoration: none;
+  display: flex; align-items: center; gap: 6px;
+  box-shadow: 0 4px 16px rgba(37,99,199,0.35); transition: all .2s;
+}
+.map-overlay-btn:hover { background: #1d4fa8; transform: translateY(-1px); }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--navy); color: rgba(255,255,255,0.55);
+  text-align: center; padding: 28px 5%;
+  font-size: .83rem;
+}
+footer strong { color: white; }
+
+/* ── MODAL ── */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 9999;
+  background: rgba(10,20,45,0.75); backdrop-filter: blur(6px);
+  display: none; align-items: center; justify-content: center; padding: 20px;
+}
+.modal-overlay.open { display: flex; }
+.modal-box {
+  background: white; border-radius: 20px;
+  max-width: 460px; width: 100%; padding: 44px;
+  text-align: center; position: relative;
+  animation: modalIn .3s ease;
+}
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(.93) translateY(16px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+.modal-box .modal-icon { font-size: 3.5rem; margin-bottom: 16px; }
+.modal-box h3 { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--navy); margin-bottom: 10px; }
+.modal-box p { color: var(--gray); line-height: 1.7; margin-bottom: 28px; }
+.modal-close {
+  position: absolute; top: 16px; right: 20px;
+  background: none; border: none; font-size: 1.4rem;
+  cursor: pointer; color: var(--gray); transition: color .2s;
+}
+.modal-close:hover { color: var(--navy); }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(80px);
+  background: #16a34a; color: white; padding: 14px 28px;
+  border-radius: 50px; font-weight: 600; font-size: .9rem;
+  box-shadow: 0 6px 30px rgba(0,0,0,0.2); z-index: 9998;
+  transition: transform .4s cubic-bezier(.4,0,.2,1);
+  display: flex; align-items: center; gap: 10px;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ── MOBILE NAV ── */
+.mobile-menu {
+  display: none; position: fixed; inset: 72px 0 0; z-index: 999;
+  background: var(--navy); flex-direction: column; padding: 24px;
+  gap: 4px;
+}
+.mobile-menu.open { display: flex; }
+.mobile-tab {
+  padding: 14px 20px; border-radius: 10px;
+  color: rgba(255,255,255,0.8); font-size: 1rem; font-weight: 500;
+  cursor: pointer; border: none; background: transparent;
+  font-family: 'DM Sans', sans-serif; text-align: left;
+  transition: all .2s;
+}
+.mobile-tab:hover, .mobile-tab.active { background: rgba(255,255,255,0.1); color: white; }
+
+/* ── LANGUAGES SECTION ── */
+.languages-section {
+  background: #f0f4fb;
+  padding: 90px 5% 100px;
+  position: relative;
+  overflow: hidden;
+}
+.languages-section::before {
+  content: '';
+  position: absolute;
+  top: -100px; left: -60px;
+  width: 380px; height: 380px;
+  background: radial-gradient(circle, rgba(37,99,199,0.09) 0%, transparent 70%);
+  pointer-events: none;
+}
+.languages-section::after {
+  content: '';
+  position: absolute;
+  bottom: -60px; right: -40px;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(201,150,58,0.09) 0%, transparent 70%);
+  pointer-events: none;
+}
+.languages-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative; z-index: 1;
+}
+
+/* ── GRID ── */
+.lang-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+/* ── CARD ── */
+.lang-card {
+  background: var(--white);
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 6px 30px rgba(15,34,68,0.10);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  transition: transform .32s cubic-bezier(.34,1.2,.64,1), box-shadow .32s ease;
+}
+.lang-card * { pointer-events: none; }
+.lang-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 24px 60px rgba(15,34,68,0.18);
+}
+
+/* TOP FLAG AREA — 1/3 height */
+.lang-flag-area {
+  position: relative;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.lc-ingles    .lang-flag-area { background: linear-gradient(135deg, #1a3a8f 0%, #3b82f6 100%); }
+.lc-frances   .lang-flag-area { background: linear-gradient(135deg, #1a1a6e 0%, #c0392b 100%); }
+.lc-aleman    .lang-flag-area { background: linear-gradient(135deg, #1a1a1a 0%, #e63946 100%); }
+.lc-italiano  .lang-flag-area { background: linear-gradient(135deg, #1a6e2e 0%, #c0392b 100%); }
+.lc-portugues .lang-flag-area { background: linear-gradient(135deg, #155724 0%, #d4ac0d 100%); }
+.lc-japones   .lang-flag-area { background: linear-gradient(135deg, #7b1a1a 0%, #e63946 100%); }
+
+.lang-flag-area::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.12);
+}
+.lang-flag-emoji {
+  font-size: 4.5rem;
+  line-height: 1;
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
+  transition: transform .35s cubic-bezier(.34,1.6,.64,1);
+}
+.lang-card:hover .lang-flag-emoji {
+  transform: scale(1.2) rotate(-5deg);
+}
+.lang-flag-ribbon {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(4px);
+}
+.lang-flag-ribbon span {
+  color: rgba(255,255,255,0.9);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+/* BOTTOM INFO AREA */
+.lang-body {
+  padding: 22px 20px 24px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.lang-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 6px;
+}
+.lang-tagline {
+  font-size: .83rem;
+  color: var(--gray);
+  line-height: 1.55;
+  margin-bottom: 14px;
+}
+.lang-speakers {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--light);
+  border-radius: 50px;
+  padding: 4px 12px;
+  font-size: .73rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 18px;
+  width: fit-content;
+}
+.btn-lang {
+  display: block;
+  width: 100%;
+  padding: 11px;
+  border-radius: 10px;
+  background: var(--navy);
+  color: white;
+  font-size: .85rem;
+  font-weight: 700;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  border: none;
+  transition: all .22s;
+  letter-spacing: .4px;
+  margin-top: auto;
+}
+.btn-lang:hover {
+  background: var(--accent);
+  box-shadow: 0 6px 20px rgba(37,99,199,0.35);
+  transform: translateY(-1px);
+}
+
+/* CTA STRIP */
+.lang-cta-strip {
+  margin-top: 56px;
+  text-align: center;
+}
+.lang-cta-strip p {
+  color: var(--gray);
+  font-size: .93rem;
+  margin-bottom: 20px;
+}
+.lang-cta-strip p strong { color: var(--navy); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1100px) {
+  .lang-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 900px) {
+  .about-grid { grid-template-columns: 1fr; }
+  .about-img-wrap { order: -1; }
+  .mv-grid { grid-template-columns: 1fr; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .lang-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 700px) {
+  .nav-tabs, .nav-cta { display: none; }
+  .hamburger { display: flex; }
+  .hero h1 { font-size: 2.1rem; }
+  .hero-btns { flex-direction: column; align-items: center; }
+  .form-row { grid-template-columns: 1fr; }
+  .about-stats { flex-direction: column; gap: 16px; }
+  .testimonial-card { padding: 32px 24px; }
+  .contact-form-wrap { padding: 28px; }
+  .lang-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .lang-flag-area { height: 130px; }
+  .lang-flag-emoji { font-size: 3.5rem; }
+  .languages-section { padding: 64px 5% 72px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="logo">Lingua<span>Vox</span></div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('inicio')">Inicio</button>
+    <button class="nav-tab" onclick="showPage('cursos')">Cursos</button>
+    <button class="nav-tab" onclick="showPage('nosotros')">Nosotros</button>
+    <button class="nav-tab" onclick="showPage('contacto')">Contacto</button>
+  </div>
+  <button class="nav-cta" onclick="openModal()">Inscribirme ahora</button>
+  <div class="hamburger" onclick="toggleMobile()" id="hamburger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-tab active" onclick="showPage('inicio');closeMobile()">Inicio</button>
+  <button class="mobile-tab" onclick="showPage('cursos');closeMobile()">Cursos</button>
+  <button class="mobile-tab" onclick="showPage('nosotros');closeMobile()">Nosotros</button>
+  <button class="mobile-tab" onclick="showPage('contacto');closeMobile()">Contacto</button>
+</div>
+
+<!-- ═══════════════════════════════════
+     PAGE: INICIO
+════════════════════════════════════ -->
+<div class="page active" id="page-inicio">
+
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-particles"></div>
+    <div class="hero-content">
+      <div class="hero-badge">🌍 &nbsp;Academia certificada internacionalmente</div>
+      <h1>Aprende idiomas de forma <em>rápida y efectiva</em></h1>
+      <p class="hero-sub">Cursos de inglés, francés, alemán, italiano y más, con profesores certificados y horarios flexibles para tu ritmo de vida.</p>
+      <div class="hero-btns">
+        <button class="btn-primary" onclick="openModal()">✦ Inscribirme ahora</button>
+        <button class="btn-outline" onclick="showPage('cursos')">Ver cursos →</button>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <div class="hero-scroll-dot"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- ── LANGUAGES SECTION ── -->
+  <section class="languages-section">
+    <div class="languages-inner">
+
+      <div class="section-header">
+        <span class="section-tag">Nuestra oferta</span>
+        <h2>Elige el idioma que quieres dominar</h2>
+        <p>Seis lenguas, miles de puertas abiertas. Cada idioma es un mundo nuevo esperando por ti.</p>
+      </div>
+
+      <div class="lang-grid" id="langGrid">
+
+        <!-- INGLÉS -->
+        <div class="lang-card lc-ingles" onclick="goToCourse('ingles')">
+          <div class="lang-flag-area">
+            <span class="lang-flag-emoji">🇺🇸</span>
+            <div class="lang-flag-ribbon"><span>🌍 1,500 M hablantes</span></div>
+          </div>
+          <div class="lang-body">
+            <div class="lang-name">Inglés</div>
+            <div class="lang-tagline">Domina el idioma más hablado del mundo y abre puertas en todo el planeta.</div>
+            <div class="lang-speakers">📖 Nivel A1 → C2</div>
+            <div class="btn-lang">Ver curso →</div>
+          </div>
+        </div>
+
+        <!-- FRANCÉS -->
+        <div class="lang-card lc-frances" onclick="goToCourse('frances')">
+          <div class="lang-flag-area">
+            <span class="lang-flag-emoji">🇫🇷</span>
+            <div class="lang-flag-ribbon"><span>🌍 280 M hablantes</span></div>
+          </div>
+          <div class="lang-body">
+            <div class="lang-name">Francés</div>
+            <div class="lang-tagline">La lengua del arte, la diplomacia y la gastronomía mundial.</div>
+            <div class="lang-speakers">📖 Nivel A1 → B2</div>
+            <div class="btn-lang">Ver curso →</div>
+          </div>
+        </div>
+
+        <!-- ALEMÁN -->
+        <div class="lang-card lc-aleman" onclick="goToCourse('aleman')">
+          <div class="lang-flag-area">
+            <span class="lang-flag-emoji">🇩🇪</span>
+            <div class="lang-flag-ribbon"><span>🌍 130 M hablantes</span></div>
+          </div>
+          <div class="lang-body">
+            <div class="lang-name">Alemán</div>
+            <div class="lang-tagline">Abre puertas en la economía más grande de Europa.</div>
+            <div class="lang-speakers">📖 Nivel A1 → B2</div>
+            <div class="btn-lang">Ver curso →</div>
+          </div>
+        </div>
+
+        <!-- ITALIANO -->
+        <div class="lang-card lc-italiano" onclick="goToCourse('italiano')">
+          <div class="lang-flag-area">
+            <span class="lang-flag-emoji">🇮🇹</span>
+            <div class="lang-flag-ribbon"><span>🌍 85 M hablantes</span></div>
+          </div>
+          <div class="lang-body">
+            <div class="lang-name">Italiano</div>
+            <div class="lang-tagline">El idioma del arte, la música y la alta cocina italiana.</div>
+            <div class="lang-speakers">📖 Nivel A1 → B1</div>
+            <div class="btn-lang">Ver curso →</div>
+          </div>
+        </div>
+
+        <!-- PORTUGUÉS -->
+        <div class="lang-card lc-portugues" onclick="openModal()">
+          <div class="lang-flag-area">
+            <span class="lang-flag-emoji">🇧🇷</span>
+            <div class="lang-flag-ribbon"><span>🌍 260 M hablantes</span></div>
+          </div>
+          <div class="lang-body">
+            <div class="lang-name">Portugués</div>
+            <div class="lang-tagline">Conecta con Brasil y el mundo lusófono en expansión.</div>
+            <div class="lang-speakers">📖 Nivel A1 → B1</div>
+            <div class="btn-lang">Ver curso →</div>
+          </div>
+        </div>
+
+        <!-- JAPONÉS -->
+        <div class="lang-card lc-japones" onclick="openModal()">
+          <div class="lang-flag-area">
+            <span class="lang-flag-emoji">🇯🇵</span>
+            <div class="lang-flag-ribbon"><span>🌍 125 M hablantes</span></div>
+          </div>
+          <div class="lang-body">
+            <div class="lang-name">Japonés</div>
+            <div class="lang-tagline">Descubre la cultura y la tecnología de la tierra del sol naciente.</div>
+            <div class="lang-speakers">📖 Nivel N5 → N3</div>
+            <div class="btn-lang">Ver curso →</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="lang-cta-strip">
+        <p>¿No encuentras el idioma que buscas? <strong>Contáctanos</strong> y diseñamos un programa para ti.</p>
+        <button class="btn-primary" style="font-size:.9rem;padding:13px 30px;" onclick="showPage('contacto')">Solicitar idioma personalizado</button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── BENEFITS ── -->
+  <section class="benefits">
+    <div class="benefits-grid">
+      <div class="benefit-card">
+        <span class="benefit-icon">🎥</span>
+        <h3>Clases en vivo</h3>
+        <p>Sesiones interactivas en tiempo real con tus compañeros y profesor.</p>
+      </div>
+      <div class="benefit-card">
+        <span class="benefit-icon">🎓</span>
+        <h3>Profesores certificados</h3>
+        <p>Docentes con certificaciones internacionales CELTA, DELF y TELC.</p>
+      </div>
+      <div class="benefit-card">
+        <span class="benefit-icon">🕐</span>
+        <h3>Horarios flexibles</h3>
+        <p>Mañana, tarde y noche. Adapta las clases a tu agenda.</p>
+      </div>
+      <div class="benefit-card">
+        <span class="benefit-icon">🏆</span>
+        <h3>Certificado al finalizar</h3>
+        <p>Recibe un certificado válido reconocido a nivel internacional.</p>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ═══════════════════════════════════
+     PAGE: CURSOS
+════════════════════════════════════ -->
+<div class="page" id="page-cursos">
+  <div class="courses-wrap">
+    <div class="section-header">
+      <span class="section-tag">Oferta educativa</span>
+      <h2>Nuestros cursos de idiomas</h2>
+      <p>Desde principiantes absolutos hasta niveles avanzados. Encuentra el programa perfecto para ti.</p>
+    </div>
+
+    <div class="filters">
+      <div class="filter-group">
+        <button class="filter-btn active" onclick="filterCourses('all','lang')">Todos</button>
+        <button class="filter-btn" onclick="filterCourses('ingles','lang')">🇬🇧 Inglés</button>
+        <button class="filter-btn" onclick="filterCourses('frances','lang')">🇫🇷 Francés</button>
+        <button class="filter-btn" onclick="filterCourses('aleman','lang')">🇩🇪 Alemán</button>
+        <button class="filter-btn" onclick="filterCourses('italiano','lang')">🇮🇹 Italiano</button>
+      </div>
+      <div style="width:1px;background:#d1d9e8;margin:0 6px;"></div>
+      <div class="filter-group">
+        <button class="filter-btn" onclick="filterCourses('all','level')">Todos niveles</button>
+        <button class="filter-btn" onclick="filterCourses('basico','level')">Básico</button>
+        <button class="filter-btn" onclick="filterCourses('intermedio','level')">Intermedio</button>
+        <button class="filter-btn" onclick="filterCourses('avanzado','level')">Avanzado</button>
+      </div>
+      <div style="width:1px;background:#d1d9e8;margin:0 6px;"></div>
+      <div class="filter-group">
+        <button class="filter-btn" onclick="filterCourses('all','mode')">Online + Presencial</button>
+        <button class="filter-btn" onclick="filterCourses('online','mode')">🖥 Online</button>
+        <button class="filter-btn" onclick="filterCourses('presencial','mode')">🏫 Presencial</button>
+      </div>
+    </div>
+
+    <div class="courses-grid" id="coursesGrid">
+
+      <div class="course-card" onclick="openModal()" data-lang="ingles" data-level="basico" data-mode="online">
+        <div class="course-img">
+          <img src="https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=600&q=80" alt="Inglés">
+          <span class="course-flag">🇬🇧</span>
+          <span class="course-level level-basico">Básico</span>
+        </div>
+        <div class="course-body">
+          <div class="course-lang">Inglés</div>
+          <h3>Inglés Básico A1–A2</h3>
+          <p>Ideal para quienes empiezan desde cero. Aprende vocabulario esencial, gramática y conversación cotidiana.</p>
+          <div class="course-meta">
+            <div class="course-meta-item"><span>⏱</span><span>3 meses</span></div>
+            <div class="course-meta-item"><span>🖥</span><span>Online</span></div>
+            <div class="course-meta-item"><span>👥</span><span>Grupos pequeños</span></div>
+          </div>
+          <div class="course-btns">
+            <button class="btn-card-outline" onclick="openModal()">Más info</button>
+            <button class="btn-card-primary" onclick="openModal()">Inscribirme</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="course-card" onclick="openModal()" data-lang="ingles" data-level="intermedio" data-mode="presencial">
+        <div class="course-img">
+          <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&q=80" alt="Inglés Intermedio">
+          <span class="course-flag">🇬🇧</span>
+          <span class="course-level level-intermedio">Intermedio</span>
+        </div>
+        <div class="course-body">
+          <div class="course-lang">Inglés</div>
+          <h3>Inglés Intermedio B1–B2</h3>
+          <p>Perfecciona tu fluidez, amplía tu vocabulario y prepárate para entornos profesionales en inglés.</p>
+          <div class="course-meta">
+            <div class="course-meta-item"><span>⏱</span><span>4 meses</span></div>
+            <div class="course-meta-item"><span>🏫</span><span>Presencial</span></div>
+            <div class="course-meta-item"><span>👥</span><span>Grupos pequeños</span></div>
+          </div>
+          <div class="course-btns">
+            <button class="btn-card-outline" onclick="openModal()">Más info</button>
+            <button class="btn-card-primary" onclick="openModal()">Inscribirme</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="course-card" onclick="openModal()" data-lang="ingles" data-level="avanzado" data-mode="online">
+        <div class="course-img">
+          <img src="https://images.unsplash.com/photo-1485546246426-74dc88dec4d9?w=600&q=80" alt="Inglés Avanzado">
+          <span class="course-flag">🇬🇧</span>
+          <span class="course-level level-avanzado">Avanzado</span>
+        </div>
+        <div class="course-body">
+          <div class="course-lang">Inglés</div>
+          <h3>Inglés Avanzado C1–C2</h3>
+          <p>Domina el idioma con fluidez nativa: debate, escritura académica y preparación de exámenes Cambridge.</p>
+          <div class="course-meta">
+            <div class="course-meta-item"><span>⏱</span><span>5 meses</span></div>
+            <div class="course-meta-item"><span>🖥</span><span>Online</span></div>
+            <div class="course-meta-item"><span>👤</span><span>Personalizado</span></div>
+          </div>
+          <div class="course-btns">
+            <button class="btn-card-outline" onclick="openModal()">Más info</button>
+            <button class="btn-card-primary" onclick="openModal()">Inscribirme</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="course-card" onclick="openModal()" data-lang="frances" data-level="basico" data-mode="online">
+        <div class="course-img">
+          <img src="https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=600&q=80" alt="Francés">
+          <span class="course-flag">🇫🇷</span>
+          <span class="course-level level-basico">Básico</span>
+        </div>
+        <div class="course-body">
+          <div class="course-lang">Francés</div>
+          <h3>Francés Básico A1–A2</h3>
+          <p>Descubre la lengua de Molière desde cero. Pronunciación, vocabulario y primeras conversaciones.</p>
+          <div class="course-meta">
+            <div class="course-meta-item"><span>⏱</span><span>3 meses</span></div>
+            <div class="course-meta-item"><span>🖥</span><span>Online</span></div>
+            <div class="course-meta-item"><span>👥</span><span>Grupos pequeños</span></div>
+          </div>
+          <div class="course-btns">
+            <button class="btn-card-outline" onclick="openModal()">Más info</button>
+            <button class="btn-card-primary" onclick="openModal()">Inscribirme</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="course-card" onclick="openModal()" data-lang="aleman" data-level="basico" data-mode="presencial">
+        <div class="course-img">
+          <img src="https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=600&q=80" alt="Alemán">
+          <span class="course-flag">🇩🇪</span>
+          <span class="course-level level-basico">Básico</span>
+        </div>
+        <div class="course-body">
+          <div class="course-lang">Alemán</div>
+          <h3>Alemán Básico A1–A2</h3>
+          <p>Empieza con la lengua de Goethe. Fonética, estructuras base y comunicación en situaciones diarias.</p>
+          <div class="course-meta">
+            <div class="course-meta-item"><span>⏱</span><span>4 meses</span></div>
+            <div class="course-meta-item"><span>🏫</span><span>Presencial</span></div>
+            <div class="course-meta-item"><span>👥</span><span>Grupos pequeños</span></div>
+          </div>
+          <div class="course-btns">
+            <button class="btn-card-outline" onclick="openModal()">Más info</button>
+            <button class="btn-card-primary" onclick="openModal()">Inscribirme</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="course-card" onclick="openModal()" data-lang="italiano" data-level="intermedio" data-mode="online">
+        <div class="course-img">
+          <img src="https://images.unsplash.com/photo-1555992336-03a23c7b20ee?w=600&q=80" alt="Italiano">
+          <span class="course-flag">🇮🇹</span>
+          <span class="course-level level-intermedio">Intermedio</span>
+        </div>
+        <div class="course-body">
+          <div class="course-lang">Italiano</div>
+          <h3>Italiano Intermedio B1</h3>
+          <p>Avanza en el idioma del arte y la gastronomía. Conversación fluida, cultura italiana y gramática intermedia.</p>
+          <div class="course-meta">
+            <div class="course-meta-item"><span>⏱</span><span>3 meses</span></div>
+            <div class="course-meta-item"><span>🖥</span><span>Online</span></div>
+            <div class="course-meta-item"><span>👥</span><span>Grupos pequeños</span></div>
+          </div>
+          <div class="course-btns">
+            <button class="btn-card-outline" onclick="openModal()">Más info</button>
+            <button class="btn-card-primary" onclick="openModal()">Inscribirme</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     PAGE: NOSOTROS
+════════════════════════════════════ -->
+<div class="page" id="page-nosotros">
+  <div class="nosotros-wrap">
+
+    <!-- About Grid -->
+    <div class="about-grid">
+      <div class="about-text">
+        <div class="section-header">
+          <span class="section-tag">Nuestra academia</span>
+          <h2>Más de 15 años transformando vidas a través del lenguaje</h2>
+          <p>LinguaVox nació en 2008 con una misión clara: hacer que aprender un idioma sea una experiencia inspiradora, accesible y efectiva para todos.</p>
+        </div>
+        <div class="about-stats">
+          <div class="about-stat">
+            <div class="about-stat-num">+8K</div>
+            <div class="about-stat-text">
+              <strong>Estudiantes</strong>
+              <span>graduados con éxito</span>
+            </div>
+          </div>
+          <div class="about-stat">
+            <div class="about-stat-num">18</div>
+            <div class="about-stat-text">
+              <strong>Profesores</strong>
+              <span>certificados internacionales</span>
+            </div>
+          </div>
+          <div class="about-stat">
+            <div class="about-stat-num">96%</div>
+            <div class="about-stat-text">
+              <strong>Satisfacción</strong>
+              <span>de nuestros alumnos</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="about-img-wrap">
+        <img src="https://images.unsplash.com/photo-1529390079861-591de354faf5?w=700&q=80" alt="Equipo LinguaVox">
+        <div class="about-img-badge">
+          <strong>15+</strong>
+          <span>Años de experiencia</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Misión & Visión -->
+    <div class="mv-grid">
+      <div class="mv-card">
+        <h3>🎯 Nuestra Misión</h3>
+        <p>Brindar una educación lingüística de excelencia, accesible y adaptada a las necesidades individuales de cada estudiante, promoviendo la conexión intercultural y el desarrollo personal y profesional.</p>
+      </div>
+      <div class="mv-card">
+        <h3>🔭 Nuestra Visión</h3>
+        <p>Ser la academia de idiomas de referencia en Latinoamérica, reconocida por la calidad de su enseñanza, la innovación pedagógica y el impacto positivo en la vida de miles de personas.</p>
+      </div>
+    </div>
+
+    <!-- Equipo -->
+    <div class="team-section">
+      <div class="section-header">
+        <span class="section-tag">Nuestro equipo</span>
+        <h2>Profesores apasionados por enseñar</h2>
+        <p>Todos nuestros docentes cuentan con certificaciones internacionales y años de experiencia formando estudiantes exitosos.</p>
+      </div>
+      <div class="team-grid">
+        <div class="team-card">
+          <div class="team-avatar" style="background: linear-gradient(135deg,#1a4080,#2563c7);">S</div>
+          <h4>Sarah Thompson</h4>
+          <div class="role">Inglés & TOEFL Prep</div>
+          <p>Cambridge CELTA certified. Nativa de Toronto con 12 años de experiencia en EFL.</p>
+          <div class="cert">✦ CELTA · Cambridge</div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar" style="background: linear-gradient(135deg,#be185d,#db2777);">M</div>
+          <h4>Marie Dubois</h4>
+          <div class="role">Francés & DELF Prep</div>
+          <p>Nativa de Lyon, profesora titulada por la Université Sorbonne con 9 años de trayectoria.</p>
+          <div class="cert">✦ DELF · Sorbonne</div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar" style="background: linear-gradient(135deg,#065f46,#059669);">H</div>
+          <h4>Hans Müller</h4>
+          <div class="role">Alemán & TestDaF</div>
+          <p>Berlín, certificado por el Goethe-Institut. Experto en metodología comunicativa.</p>
+          <div class="cert">✦ Goethe · TestDaF</div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar" style="background: linear-gradient(135deg,#9c2a0a,#ea580c);">G</div>
+          <h4>Giulia Ricci</h4>
+          <div class="role">Italiano & Cultura</div>
+          <p>Florencia. Doctora en Lingüística Aplicada con especialización en italiano para negocios.</p>
+          <div class="cert">✦ DITALS · CILS</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TESTIMONIALS CAROUSEL -->
+  <div class="testimonials-section">
+    <div class="section-header">
+      <span class="section-tag" style="color:#f0c96a;">Lo que dicen nuestros alumnos</span>
+      <h2>Historias de éxito reales</h2>
+      <p>Miles de estudiantes ya transformaron su vida aprendiendo un nuevo idioma con nosotros.</p>
+    </div>
+
+    <div class="carousel-wrap">
+      <div class="carousel-track" id="carouselTrack">
+
+        <div class="testimonial-slide">
+          <div class="testimonial-card">
+            <div class="test-photo" style="background: linear-gradient(135deg,#1a4080,#2563c7);">A</div>
+            <div class="test-name">Andrea Martínez</div>
+            <div class="test-role">Estudiante de Inglés Avanzado</div>
+            <div class="test-stars">★★★★★</div>
+            <p class="test-text">"Aprendí inglés mucho más rápido de lo que esperaba. Los profesores crean un ambiente increíble y cada clase es diferente. Ahora trabajo en una empresa internacional y no lo hubiera logrado sin LinguaVox."</p>
+          </div>
+        </div>
+
+        <div class="testimonial-slide">
+          <div class="testimonial-card">
+            <div class="test-photo" style="background: linear-gradient(135deg,#7c3aed,#a855f7);">C</div>
+            <div class="test-name">Carlos Reyes</div>
+            <div class="test-role">Alumno de Francés Intermedio</div>
+            <div class="test-stars">★★★★★</div>
+            <p class="test-text">"Los profesores explican muy bien y las clases son dinámicas. Jamás me aburrí. En 4 meses pasé de no saber nada de francés a tener conversaciones fluidas. Definitivamente recomiendo esta academia."</p>
+          </div>
+        </div>
+
+        <div class="testimonial-slide">
+          <div class="testimonial-card">
+            <div class="test-photo" style="background: linear-gradient(135deg,#065f46,#10b981);">L</div>
+            <div class="test-name">Laura Sánchez</div>
+            <div class="test-role">Egresada de Inglés Profesional</div>
+            <div class="test-stars">★★★★★</div>
+            <p class="test-text">"Gracias a este curso conseguí un mejor trabajo. Me prepararon para entrevistas en inglés, presentaciones y redacción de correos. La inversión valió completamente la pena. ¡Gracias, LinguaVox!"</p>
+          </div>
+        </div>
+
+        <div class="testimonial-slide">
+          <div class="testimonial-card">
+            <div class="test-photo" style="background: linear-gradient(135deg,#92400e,#d97706);">P</div>
+            <div class="test-name">Pablo Torres</div>
+            <div class="test-role">Estudiante de Alemán Básico</div>
+            <div class="test-stars">★★★★★</div>
+            <p class="test-text">"Tenía miedo de que el alemán fuera imposible, pero el método de Hans lo hace muy digerible. El ritmo es perfecto, nunca me sentí perdido. Ahora me estoy preparando para el examen Goethe A2."</p>
+          </div>
+        </div>
+
+        <div class="testimonial-slide">
+          <div class="testimonial-card">
+            <div class="test-photo" style="background: linear-gradient(135deg,#be185d,#f43f5e);">V</div>
+            <div class="test-name">Valeria Gómez</div>
+            <div class="test-role">Alumna de Italiano</div>
+            <div class="test-stars">★★★★★</div>
+            <p class="test-text">"Siempre soñé con hablar italiano para mis viajes a Europa. Con LinguaVox lo logré en solo 6 meses. Giulia es una profesora extraordinaria que ama lo que hace y eso se nota en cada clase."</p>
+          </div>
+        </div>
+
+      </div>
+      <div class="carousel-dots" id="carouselDots"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════
+     PAGE: CONTACTO
+════════════════════════════════════ -->
+<div class="page" id="page-contacto">
+  <div class="contacto-wrap">
+    <div class="section-header">
+      <span class="section-tag">Contáctanos</span>
+      <h2>¿Listo para dar el siguiente paso?</h2>
+      <p>Escríbenos y un asesor te contactará en menos de 24 horas para orientarte en tu elección.</p>
+    </div>
+
+    <div class="contact-grid">
+      <!-- FORM -->
+      <div class="contact-form-wrap">
+        <h3>Envíanos un mensaje</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nombre completo *</label>
+            <input type="text" placeholder="Tu nombre" id="cNombre">
+          </div>
+          <div class="form-group">
+            <label>Email *</label>
+            <input type="email" placeholder="correo@email.com" id="cEmail">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Teléfono</label>
+            <input type="tel" placeholder="+52 55 0000 0000" id="cTel">
+          </div>
+          <div class="form-group">
+            <label>Idioma de interés *</label>
+            <select id="cIdioma">
+              <option value="">Selecciona un idioma</option>
+              <option>Inglés</option>
+              <option>Francés</option>
+              <option>Alemán</option>
+              <option>Italiano</option>
+              <option>Otro</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Mensaje</label>
+          <textarea placeholder="¿En qué podemos ayudarte? Cuéntanos tu nivel actual, tus metas..."></textarea>
+        </div>
+        <button class="btn-submit" onclick="sendForm()">Enviar mensaje ✦</button>
+      </div>
+
+      <!-- INFO -->
+      <div class="contact-info">
+        <h3>Información de contacto</h3>
+        <p>Estamos aquí para resolver todas tus dudas. Elige el canal que prefieras.</p>
+
+        <div class="info-item">
+          <div class="info-icon">📍</div>
+          <div>
+            <h4>Dirección</h4>
+            <p>Av. Insurgentes Sur 1457, Col. Insurgentes Mixcoac, Ciudad de México, CDMX, CP 03920</p>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon">💬</div>
+          <div>
+            <h4>WhatsApp</h4>
+            <p>+52 55 1234 5678<br><small style="color:#16a34a;">Respuesta en menos de 1 hora</small></p>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon">📧</div>
+          <div>
+            <h4>Email</h4>
+            <p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="9cf4f3f0fddcf0f5f2fbe9fdeaf3e4b2f1e4">[email&#160;protected]</a><br><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="83eaede5ecc3efeaede4f6e2f5ecfbadeefb">[email&#160;protected]</a></p>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon">🕐</div>
+          <div>
+            <h4>Horario de atención</h4>
+            <p>Lunes a viernes: 8:00 – 20:00 h<br>Sábados: 9:00 – 14:00 h</p>
+          </div>
+        </div>
+
+        <div class="social-links">
+          <h4>Síguenos en redes</h4>
+          <div class="social-row">
+            <a href="#" class="social-btn social-fb">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+              Facebook
+            </a>
+            <a href="#" class="social-btn social-ig">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+              Instagram
+            </a>
+            <a href="#" class="social-btn social-tt">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M9 12a4 4 0 100 8 4 4 0 000-8zm-1-6v10M15 3s0 5 5 5"/></svg>
+              TikTok
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAP -->
+    <div class="map-section">
+      <div class="map-header">
+        <h3>📍 Encuéntranos aquí</h3>
+      </div>
+      <div class="map-container">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3764.027246823702!2d-99.17768!3d19.37326!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d1ff38c6a5aa37%3A0x70cdfbf89e3bd38f!2sAv.%20Insurgentes%20Sur%201457%2C%20Insurgentes%20Mixcoac%2C%2003920%20Ciudad%20de%20M%C3%A9xico%2C%20CDMX!5e0!3m2!1ses-419!2smx!4v1690000000000"
+          allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+        <a href="https://maps.google.com" target="_blank" class="map-overlay-btn">
+          📍 Abrir en Google Maps
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2025 <strong>LinguaVox Academia de Idiomas</strong> · Todos los derechos reservados · Ciudad de México</p>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-icon">🎓</div>
+    <h3>¡Un paso hacia tu nuevo idioma!</h3>
+    <p>Completa el formulario de contacto y un asesor te ayudará a elegir el curso perfecto para ti. ¡El primer paso es el más importante!</p>
+    <button class="btn-primary" style="width:100%;padding:15px;" onclick="closeModal();showPage('contacto')">Ir al formulario de contacto</button>
+    <p style="margin-top:16px;font-size:.8rem;color:#9ca3af;">También puedes escribirnos por WhatsApp al <strong>+52 55 1234 5678</strong></p>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">✅ ¡Mensaje enviado! Te contactaremos pronto.</div>
+
+<script>
+// ── PAGE NAVIGATION ──
+var activeFilters = { lang: 'all', level: 'all', mode: 'all' };
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.nav-tab').forEach(function(t){ t.classList.remove('active'); });
+  document.querySelectorAll('.mobile-tab').forEach(function(t){ t.classList.remove('active'); });
+  document.getElementById('page-' + id).classList.add('active');
+  document.querySelectorAll('.nav-tab, .mobile-tab').forEach(function(t){
+    if (t.textContent.toLowerCase().trim() === id) t.classList.add('active');
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── GO TO COURSE from lang card ──
+function goToCourse(lang) {
+  showPage('cursos');
+  activeFilters = { lang: lang, level: 'all', mode: 'all' };
+  var groups = document.querySelectorAll('.filter-group');
+  if (groups[0]) {
+    groups[0].querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
+    var langMap = { ingles:1, frances:2, aleman:3, italiano:4 };
+    var idx = langMap[lang];
+    if (idx !== undefined) groups[0].querySelectorAll('.filter-btn')[idx].classList.add('active');
+    else groups[0].querySelectorAll('.filter-btn')[0].classList.add('active');
+  }
+  if (groups[1]) groups[1].querySelectorAll('.filter-btn').forEach(function(b,i){ b.classList.toggle('active',i===0); });
+  if (groups[2]) groups[2].querySelectorAll('.filter-btn').forEach(function(b,i){ b.classList.toggle('active',i===0); });
+  document.querySelectorAll('.course-card').forEach(function(card){
+    card.style.display = (card.dataset.lang === lang) ? 'block' : 'none';
+  });
+}
+
+// ── MOBILE NAV ──
+function toggleMobile() {
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+function closeMobile() {
+  document.getElementById('mobileMenu').classList.remove('open');
+}
+
+// ── FILTERS (courses page) ──
+function filterCourses(val, type) {
+  activeFilters[type] = val;
+  var groupMap = { lang:0, level:1, mode:2 };
+  var groups = document.querySelectorAll('.filter-group');
+  var gi = groupMap[type];
+  if (groups[gi]) {
+    groups[gi].querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
+    event.target.classList.add('active');
+  }
+  document.querySelectorAll('.course-card').forEach(function(card){
+    var ml = activeFilters.lang  === 'all' || card.dataset.lang  === activeFilters.lang;
+    var mv = activeFilters.level === 'all' || card.dataset.level === activeFilters.level;
+    var mm = activeFilters.mode  === 'all' || card.dataset.mode  === activeFilters.mode;
+    card.style.display = (ml && mv && mm) ? 'block' : 'none';
+  });
+}
+
+// ── CAROUSEL ──
+var slide = 0;
+var total = 5;
+var track = document.getElementById('carouselTrack');
+var dotsWrap = document.getElementById('carouselDots');
+
+for (var i = 0; i < total; i++) {
+  (function(idx){
+    var d = document.createElement('button');
+    d.className = 'carousel-dot' + (idx === 0 ? ' active' : '');
+    d.onclick = function(){ goSlide(idx); };
+    dotsWrap.appendChild(d);
+  })(i);
+}
+
+function goSlide(n) {
+  slide = n;
+  track.style.transform = 'translateX(-' + (slide * 100) + '%)';
+  document.querySelectorAll('.carousel-dot').forEach(function(d, i){
+    d.classList.toggle('active', i === slide);
+  });
+}
+setInterval(function(){ goSlide((slide + 1) % total); }, 4500);
+
+// ── MODAL ──
+function openModal() {
+  document.getElementById('modal').classList.add('open');
+}
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+}
+document.getElementById('modal').addEventListener('click', function(e){
+  if (e.target === this) closeModal();
+});
+
+// ── FORM ──
+function sendForm() {
+  var nombre = document.getElementById('cNombre').value.trim();
+  var email  = document.getElementById('cEmail').value.trim();
+  var idioma = document.getElementById('cIdioma').value;
+  if (!nombre || !email || !idioma) {
+    alert('Por favor completa los campos requeridos: Nombre, Email e Idioma de interés.');
+    return;
+  }
+  var toast = document.getElementById('toast');
+  toast.classList.add('show');
+  setTimeout(function(){ toast.classList.remove('show'); }, 3800);
+}
+
+// ── NAV SCROLL ──
+window.addEventListener('scroll', function(){
+  document.getElementById('navbar').style.background =
+    window.scrollY > 10 ? 'rgba(15,34,68,0.99)' : 'rgba(15,34,68,0.97)';
+});
+</script>
+</body>
+</html>

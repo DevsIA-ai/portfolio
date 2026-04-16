@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fussion Girls RG — Transforma Tu Cuerpo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #080810;
+    --dark: #10101a;
+    --card: #14141f;
+    --border: #2a1a3a;
+    --pink: #ff2d78;
+    --pink-light: #ff6aaa;
+    --purple: #9b30ff;
+    --violet: #c060ff;
+    --neon: #ff2d78;
+    --neon-purple: #b44dff;
+    --white: #ffffff;
+    --muted: #9090b0;
+    --text: #e0d0f0;
+    --gradient: linear-gradient(135deg, #ff2d78 0%, #9b30ff 100%);
+    --gradient-soft: linear-gradient(135deg, rgba(255,45,120,0.15) 0%, rgba(155,48,255,0.15) 100%);
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-body: 'Outfit', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--black);
+    color: var(--text);
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--dark); }
+  ::-webkit-scrollbar-thumb { background: var(--pink); border-radius: 4px; }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 9999; opacity: 0.4;
+  }
+
+  /* ── UTILITIES ── */
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+  .section { padding: 6rem 0; }
+  .section-tag {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(255,45,120,0.1); border: 1px solid rgba(255,45,120,0.3);
+    color: var(--pink); font-size: 0.75rem; font-weight: 700;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    padding: 0.4rem 1rem; border-radius: 100px; margin-bottom: 1.5rem;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 0.95; color: var(--white);
+    margin-bottom: 1.5rem;
+  }
+  .section-title span { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.85rem 2rem; border-radius: 100px;
+    font-family: var(--font-body); font-weight: 700; font-size: 0.9rem;
+    letter-spacing: 0.05em; text-decoration: none; cursor: pointer;
+    border: none; transition: all 0.3s ease; position: relative; overflow: hidden;
+  }
+  .btn-primary {
+    background: var(--gradient); color: #fff;
+    box-shadow: 0 0 30px rgba(255,45,120,0.4);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 50px rgba(255,45,120,0.6); }
+  .btn-outline {
+    background: transparent; color: var(--white);
+    border: 1.5px solid rgba(255,255,255,0.3);
+  }
+  .btn-outline:hover { border-color: var(--pink); color: var(--pink); transform: translateY(-2px); }
+
+  /* ── REVEAL ANIMATION ── */
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ══════════════════════════════════════
+     NAV
+  ══════════════════════════════════════ */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    padding: 1.2rem 0;
+    transition: all 0.4s ease;
+  }
+  .nav.scrolled {
+    background: rgba(8,8,16,0.9);
+    backdrop-filter: blur(20px);
+    padding: 0.8rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; }
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 1.8rem; color: var(--white); text-decoration: none;
+    letter-spacing: 0.05em;
+  }
+  .nav-logo span { color: var(--pink); }
+  .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+  .nav-links a {
+    color: var(--muted); text-decoration: none; font-weight: 500; font-size: 0.9rem;
+    transition: color 0.2s; letter-spacing: 0.03em;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-cta { display: flex; align-items: center; gap: 1rem; }
+  .hamburger {
+    display: none; flex-direction: column; gap: 5px;
+    background: none; border: none; cursor: pointer; padding: 4px;
+  }
+  .hamburger span { display: block; width: 24px; height: 2px; background: var(--white); border-radius: 2px; transition: all 0.3s; }
+  .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+  .mobile-menu {
+    display: none; position: fixed; inset: 0; z-index: 999;
+    background: rgba(8,8,16,0.98); backdrop-filter: blur(20px);
+    flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    font-family: var(--font-display); font-size: 3rem; color: var(--white);
+    text-decoration: none; letter-spacing: 0.05em; transition: color 0.2s;
+  }
+  .mobile-menu a:hover { color: var(--pink); }
+
+  /* ══════════════════════════════════════
+     HERO
+  ══════════════════════════════════════ */
+  .hero {
+    min-height: 100vh; position: relative;
+    display: flex; align-items: center;
+    background: var(--black); overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 70% 50%, rgba(155,48,255,0.2) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 80% at 20% 80%, rgba(255,45,120,0.2) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255,45,120,0.1) 0%, transparent 50%);
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,45,120,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,45,120,0.06) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+  }
+  .hero-content { position: relative; z-index: 2; max-width: 800px; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(255,45,120,0.12); border: 1px solid rgba(255,45,120,0.4);
+    color: var(--pink-light); font-size: 0.8rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 0.45rem 1rem; border-radius: 100px;
+    margin-bottom: 2rem;
+    animation: pulse-border 2s infinite;
+  }
+  @keyframes pulse-border {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255,45,120,0.3); }
+    50% { box-shadow: 0 0 0 8px rgba(255,45,120,0); }
+  }
+  .hero-badge .dot { width: 6px; height: 6px; background: var(--pink); border-radius: 50%; animation: blink 1.2s infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(3.5rem, 10vw, 8rem);
+    line-height: 0.92; color: var(--white);
+    margin-bottom: 1.5rem;
+  }
+  .hero-title .gradient-text { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .hero-sub {
+    font-size: clamp(1rem, 2vw, 1.2rem); color: var(--muted); font-weight: 400;
+    max-width: 500px; line-height: 1.7; margin-bottom: 2.5rem;
+  }
+  .hero-cta { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 4rem; }
+  .hero-stats { display: flex; flex-wrap: wrap; gap: 2.5rem; }
+  .stat { display: flex; flex-direction: column; }
+  .stat-num {
+    font-family: var(--font-display); font-size: 2.8rem; color: var(--white); line-height: 1;
+    background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .stat-label { font-size: 0.8rem; color: var(--muted); font-weight: 500; letter-spacing: 0.05em; margin-top: 0.3rem; }
+  .hero-visual {
+    position: absolute; right: -5%; top: 50%; transform: translateY(-50%);
+    width: 48%; display: flex; align-items: center; justify-content: center;
+    z-index: 1;
+  }
+  .hero-orb {
+    width: 500px; height: 500px; border-radius: 50%;
+    background: radial-gradient(ellipse at 40% 40%, rgba(255,45,120,0.3), rgba(155,48,255,0.2), transparent 70%);
+    filter: blur(40px);
+    animation: orb-float 6s ease-in-out infinite;
+  }
+  @keyframes orb-float {
+    0%,100% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.08) rotate(5deg); }
+  }
+
+  /* ══════════════════════════════════════
+     CLASS OF THE DAY BANNER
+  ══════════════════════════════════════ */
+  .cotd-banner {
+    background: var(--gradient); padding: 1rem 0; overflow: hidden;
+    position: relative;
+  }
+  .cotd-track {
+    display: flex; gap: 3rem; animation: marquee 20s linear infinite;
+    white-space: nowrap;
+  }
+  .cotd-item {
+    display: flex; align-items: center; gap: 0.7rem;
+    font-family: var(--font-display); font-size: 1.1rem; color: #fff; letter-spacing: 0.08em;
+    flex-shrink: 0;
+  }
+  @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+  /* ══════════════════════════════════════
+     ABOUT
+  ══════════════════════════════════════ */
+  .about { background: var(--dark); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+  .about-visual {
+    position: relative;
+    border-radius: 24px; overflow: hidden;
+  }
+  .about-img-placeholder {
+    width: 100%; aspect-ratio: 3/4;
+    background: linear-gradient(135deg, #1a0a2e 0%, #2a0a1e 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 6rem;
+    border-radius: 24px;
+    border: 1px solid var(--border);
+    position: relative; overflow: hidden;
+  }
+  .about-img-placeholder::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: var(--gradient-soft);
+  }
+  .about-glow {
+    position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%);
+    width: 200px; height: 60px;
+    background: var(--pink); filter: blur(60px); opacity: 0.4; border-radius: 50%;
+  }
+  .about-badge-float {
+    position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+    background: rgba(8,8,16,0.85); backdrop-filter: blur(12px);
+    border: 1px solid var(--border); border-radius: 16px;
+    padding: 1rem 1.5rem; text-align: center; white-space: nowrap;
+  }
+  .about-badge-float .num {
+    font-family: var(--font-display); font-size: 2.5rem;
+    background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .about-badge-float .label { font-size: 0.75rem; color: var(--muted); font-weight: 600; letter-spacing: 0.1em; }
+  .about-text p { color: var(--muted); line-height: 1.8; margin-bottom: 1.5rem; font-size: 1.05rem; }
+  .pillars { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
+  .pillar {
+    background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+    padding: 1.2rem; display: flex; align-items: flex-start; gap: 0.8rem;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .pillar:hover { border-color: var(--pink); transform: translateY(-3px); }
+  .pillar-icon { font-size: 1.5rem; line-height: 1; }
+  .pillar-name { font-weight: 700; font-size: 0.9rem; color: var(--white); }
+  .pillar-desc { font-size: 0.78rem; color: var(--muted); margin-top: 0.2rem; }
+
+  /* ══════════════════════════════════════
+     SCHEDULE / CALENDAR
+  ══════════════════════════════════════ */
+  .schedule { background: var(--black); }
+  .schedule-controls {
+    display: flex; flex-wrap: wrap; gap: 0.5rem;
+    margin-bottom: 2.5rem;
+  }
+  .day-btn {
+    padding: 0.55rem 1.3rem; border-radius: 100px;
+    border: 1.5px solid var(--border); background: transparent;
+    color: var(--muted); font-family: var(--font-body); font-weight: 600; font-size: 0.85rem;
+    cursor: pointer; transition: all 0.25s;
+    letter-spacing: 0.04em;
+  }
+  .day-btn:hover { border-color: var(--pink); color: var(--pink); }
+  .day-btn.active { background: var(--gradient); border-color: transparent; color: #fff; }
+  .schedule-grid { display: flex; flex-direction: column; gap: 2rem; }
+  .time-block { display: grid; grid-template-columns: 100px 1fr; gap: 1.5rem; align-items: start; }
+  .time-label {
+    font-family: var(--font-display); font-size: 1.6rem;
+    color: var(--muted); line-height: 1;
+    padding-top: 0.5rem;
+    position: sticky; top: 100px;
+  }
+  .classes-row { display: flex; flex-wrap: wrap; gap: 1rem; }
+  .class-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 18px; padding: 1.2rem 1.4rem;
+    min-width: 200px; flex: 1; max-width: 280px;
+    transition: all 0.3s; cursor: pointer; position: relative; overflow: hidden;
+  }
+  .class-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: var(--gradient); opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .class-card:hover { border-color: rgba(255,45,120,0.4); transform: translateY(-4px); }
+  .class-card:hover::before { opacity: 1; }
+  .class-card.cancelled { opacity: 0.5; filter: grayscale(0.6); }
+  .class-card.popular { border-color: rgba(255,45,120,0.5); }
+  .class-card.popular::before { opacity: 1; }
+  .class-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 0.7rem; }
+  .class-emoji { font-size: 1.8rem; line-height: 1; }
+  .class-status-dot {
+    width: 10px; height: 10px; border-radius: 50%; margin-top: 4px;
+    transition: background 0.3s;
+  }
+  .status-active { background: #22c55e; box-shadow: 0 0 8px rgba(34,197,94,0.6); }
+  .status-cancelled { background: #ef4444; box-shadow: 0 0 8px rgba(239,68,68,0.6); }
+  .class-name { font-weight: 700; font-size: 0.95rem; color: var(--white); margin-bottom: 0.3rem; }
+  .class-instructor { font-size: 0.78rem; color: var(--pink-light); font-weight: 600; }
+  .class-day-tag { font-size: 0.72rem; color: var(--muted); margin-top: 0.4rem; }
+  .popular-badge {
+    position: absolute; top: 0.8rem; right: 0.8rem;
+    background: var(--gradient); color: #fff;
+    font-size: 0.6rem; font-weight: 800; letter-spacing: 0.08em;
+    padding: 0.2rem 0.5rem; border-radius: 100px;
+  }
+  .status-toggle {
+    margin-top: 0.8rem; display: flex; align-items: center; gap: 0.5rem;
+    font-size: 0.72rem; color: var(--muted); cursor: pointer;
+    user-select: none;
+    transition: color 0.2s;
+  }
+  .status-toggle:hover { color: var(--pink); }
+
+  /* ══════════════════════════════════════
+     GALLERY
+  ══════════════════════════════════════ */
+  .gallery-item{
+  position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  border-radius: 14px;
+}
+
+.gallery-item.tall{
+  height: 320px;
+}
+
+.gallery-media{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+  .gallery { background: var(--dark); }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+    margin-top: 3rem;
+  }
+  .gallery-item {
+    border-radius: 20px; overflow: hidden;
+    aspect-ratio: 1;
+    background: var(--card); border: 1px solid var(--border);
+    position: relative; cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .gallery-item:hover { transform: scale(1.02); box-shadow: 0 20px 60px rgba(255,45,120,0.2); }
+  .gallery-item.tall { grid-row: span 2; aspect-ratio: unset; }
+  .gallery-placeholder {
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 1rem; padding: 2rem;
+    background: linear-gradient(135deg, #1a0a2e, #1a0a18);
+    min-height: 250px;
+  }
+  .gallery-placeholder .icon { font-size: 3rem; }
+  .gallery-placeholder .label { font-size: 0.85rem; color: var(--muted); text-align: center; font-weight: 600; }
+  .video-badge {
+    position: absolute; top: 1rem; left: 1rem;
+    background: rgba(255,45,120,0.9); backdrop-filter: blur(8px);
+    color: #fff; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
+    padding: 0.3rem 0.7rem; border-radius: 100px;
+    display: flex; align-items: center; gap: 0.4rem;
+  }
+  .play-btn {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .gallery-item:hover .play-btn { opacity: 1; }
+  .play-circle {
+    width: 60px; height: 60px; border-radius: 50%;
+    background: rgba(255,45,120,0.9); backdrop-filter: blur(8px);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    box-shadow: 0 0 30px rgba(255,45,120,0.5);
+  }
+  .gallery-overlay {
+    position: absolute; inset: 0; background: linear-gradient(to top, rgba(8,8,16,0.8) 0%, transparent 50%);
+    opacity: 0; transition: opacity 0.3s;
+    display: flex; align-items: flex-end; padding: 1.5rem;
+  }
+  .gallery-item:hover .gallery-overlay { opacity: 1; }
+  .gallery-overlay-text { font-weight: 700; font-size: 0.9rem; color: #fff; }
+
+  /* VIDEO MODAL */
+  .video-modal {
+    position: fixed; inset: 0; z-index: 2000;
+    background: rgba(0,0,0,0.95); backdrop-filter: blur(20px);
+    display: none; align-items: center; justify-content: center;
+    padding: 2rem;
+  }
+  .video-modal.open { display: flex; }
+  .video-modal-inner {
+    width: 100%; max-width: 900px;
+    background: var(--card); border-radius: 24px; overflow: hidden;
+    border: 1px solid var(--border); position: relative;
+  }
+  .video-modal-header {
+    padding: 1.2rem 1.5rem; display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+  }
+  .video-modal-title { font-weight: 700; font-size: 1rem; color: var(--white); }
+  .video-close {
+    background: none; border: none; color: var(--muted); font-size: 1.5rem;
+    cursor: pointer; transition: color 0.2s; line-height: 1;
+    width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+    border-radius: 8px;
+  }
+  .video-close:hover { color: var(--pink); background: rgba(255,45,120,0.1); }
+  .video-embed {
+    width: 100%; aspect-ratio: 16/9; background: #000;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted); font-size: 0.9rem;
+  }
+  .video-embed iframe { width: 100%; height: 100%; border: none; }
+
+  /* ══════════════════════════════════════
+     TESTIMONIALS
+  ══════════════════════════════════════ */
+  .testimonials { background: var(--black); }
+  .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+  .testi-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 24px; padding: 2rem;
+    transition: border-color 0.3s, transform 0.3s;
+    position: relative; overflow: hidden;
+  }
+  .testi-card::after {
+    content: '"';
+    position: absolute; bottom: -1rem; right: 1rem;
+    font-family: var(--font-display); font-size: 8rem; color: rgba(255,45,120,0.06);
+    line-height: 1;
+  }
+  .testi-card:hover { border-color: rgba(255,45,120,0.4); transform: translateY(-4px); }
+  .testi-stars { color: var(--pink); font-size: 0.9rem; margin-bottom: 1rem; letter-spacing: 0.1em; }
+  .testi-text { color: var(--muted); line-height: 1.7; margin-bottom: 1.5rem; font-size: 0.95rem; font-style: italic; }
+  .testi-author { display: flex; align-items: center; gap: 0.8rem; }
+  .testi-avatar {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--gradient); display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; flex-shrink: 0;
+  }
+  .testi-name { font-weight: 700; font-size: 0.9rem; color: var(--white); }
+  .testi-since { font-size: 0.75rem; color: var(--muted); }
+
+  /* ══════════════════════════════════════
+     PRICING
+  ══════════════════════════════════════ */
+  .pricing { background: var(--dark); }
+  .pricing-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+  .price-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 28px;
+    padding: 2.5rem; position: relative; overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .price-card:hover { transform: translateY(-6px); }
+  .price-card.featured { border-color: var(--pink); }
+  .price-card.featured::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: var(--gradient-soft);
+  }
+  .price-card > * { position: relative; z-index: 1; }
+  .featured-badge {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    background: var(--gradient); color: #fff;
+    font-size: 0.72rem; font-weight: 800; letter-spacing: 0.1em;
+    padding: 0.35rem 0.8rem; border-radius: 100px;
+    margin-bottom: 1.5rem;
+  }
+  .price-plan { font-weight: 800; font-size: 1rem; color: var(--white); margin-bottom: 0.5rem; }
+  .price-desc { font-size: 0.85rem; color: var(--muted); margin-bottom: 2rem; }
+  .price-amount {
+    display: flex; align-items: flex-end; gap: 0.2rem; margin-bottom: 0.5rem;
+  }
+  .price-currency { font-size: 1.2rem; color: var(--pink); font-weight: 700; padding-bottom: 0.5rem; }
+  .price-number { font-family: var(--font-display); font-size: 4rem; color: var(--white); line-height: 1; }
+  .price-period { font-size: 0.85rem; color: var(--muted); padding-bottom: 0.8rem; }
+  .price-features { list-style: none; margin: 1.5rem 0 2rem; display: flex; flex-direction: column; gap: 0.8rem; }
+  .price-features li { display: flex; align-items: center; gap: 0.7rem; font-size: 0.88rem; color: var(--muted); }
+  .price-features li::before { content: '✓'; color: var(--pink); font-weight: 800; flex-shrink: 0; }
+
+  /* ══════════════════════════════════════
+     CONTACT
+  ══════════════════════════════════════ */
+  .contact { background: var(--black); }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; }
+  .contact-info-item { display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1.5rem; }
+  .contact-info-icon {
+    width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0;
+    background: rgba(255,45,120,0.1); border: 1px solid rgba(255,45,120,0.3);
+    display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+  }
+  .contact-info-label { font-size: 0.78rem; color: var(--muted); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+  .contact-info-value { font-size: 0.95rem; color: var(--white); font-weight: 600; margin-top: 0.2rem; }
+  .form-group { margin-bottom: 1.2rem; }
+  .form-label { display: block; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; }
+  .form-input, .form-textarea {
+    width: 100%; background: var(--card); border: 1.5px solid var(--border);
+    border-radius: 14px; padding: 0.9rem 1.2rem;
+    color: var(--white); font-family: var(--font-body); font-size: 0.95rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    outline: none;
+  }
+  .form-input:focus, .form-textarea:focus {
+    border-color: var(--pink);
+    box-shadow: 0 0 0 4px rgba(255,45,120,0.1);
+  }
+  .form-textarea { resize: vertical; min-height: 120px; }
+  .form-actions { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem; }
+  .whatsapp-btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: #25d366; color: #fff;
+    padding: 0.85rem 1.5rem; border-radius: 100px;
+    font-weight: 700; font-size: 0.9rem; text-decoration: none;
+    transition: all 0.3s;
+    border: none; cursor: pointer;
+  }
+  .whatsapp-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(37,211,102,0.4); }
+
+  /* ══════════════════════════════════════
+     FOOTER
+  ══════════════════════════════════════ */
+  .footer {
+    background: var(--dark); border-top: 1px solid var(--border);
+    padding: 4rem 0 2rem;
+  }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; margin-bottom: 3rem; }
+  .footer-brand-desc { color: var(--muted); font-size: 0.88rem; line-height: 1.7; margin: 1rem 0 1.5rem; }
+  .footer-socials { display: flex; gap: 0.7rem; }
+  .social-btn {
+    width: 38px; height: 38px; border-radius: 10px;
+    background: var(--card); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; text-decoration: none; color: var(--muted);
+    transition: all 0.3s;
+  }
+  .social-btn:hover { background: var(--gradient); border-color: transparent; color: #fff; transform: translateY(-2px); }
+  .footer-col-title { font-weight: 800; font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--white); margin-bottom: 1.2rem; }
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+  .footer-links a { color: var(--muted); text-decoration: none; font-size: 0.88rem; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--pink); }
+  .footer-bottom { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+  .footer-copy { font-size: 0.8rem; color: var(--muted); }
+  .footer-copy span { color: var(--pink); }
+
+  /* ══════════════════════════════════════
+     FLOATING WHATSAPP
+  ══════════════════════════════════════ */
+  .float-wa {
+    position: fixed; bottom: 2rem; right: 2rem; z-index: 500;
+    width: 58px; height: 58px; border-radius: 50%;
+    background: #25d366; display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem; text-decoration: none; color: #fff;
+    box-shadow: 0 8px 30px rgba(37,211,102,0.5);
+    transition: all 0.3s;
+    animation: float-pulse 3s infinite;
+  }
+  .float-wa:hover { transform: scale(1.1); box-shadow: 0 12px 40px rgba(37,211,102,0.7); }
+  @keyframes float-pulse {
+    0%,100% { box-shadow: 0 8px 30px rgba(37,211,102,0.5), 0 0 0 0 rgba(37,211,102,0.4); }
+    50% { box-shadow: 0 8px 30px rgba(37,211,102,0.5), 0 0 0 12px rgba(37,211,102,0); }
+  }
+  .float-wa-tooltip {
+    position: absolute; right: 70px; top: 50%; transform: translateY(-50%);
+    background: var(--dark); border: 1px solid var(--border);
+    color: var(--white); font-size: 0.78rem; font-weight: 600;
+    padding: 0.4rem 0.8rem; border-radius: 8px; white-space: nowrap;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s;
+  }
+  .float-wa:hover .float-wa-tooltip { opacity: 1; }
+
+  /* ══════════════════════════════════════
+     RESPONSIVE
+  ══════════════════════════════════════ */
+  @media (max-width: 1024px) {
+    .hero-visual { display: none; }
+    .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .nav-links, .nav-cta { display: none; }
+    .hamburger { display: flex; }
+  }
+  @media (max-width: 768px) {
+    .section { padding: 4rem 0; }
+    .time-block { grid-template-columns: 80px 1fr; gap: 1rem; }
+    .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .pillars { grid-template-columns: 1fr; }
+    .hero-stats { gap: 1.5rem; }
+    .pricing-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 480px) {
+    .hero-cta { flex-direction: column; }
+    .hero-cta .btn { text-align: center; justify-content: center; }
+    .time-block { grid-template-columns: 1fr; }
+    .time-label { position: static; margin-bottom: -0.5rem; }
+    .schedule-controls { gap: 0.4rem; }
+    .day-btn { padding: 0.45rem 0.9rem; font-size: 0.8rem; }
+  }
+
+  /* GLOW DIVIDERS */
+  .glow-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--pink), var(--purple), transparent);
+    opacity: 0.4;
+  }
+
+  /* TOAST */
+  .toast {
+    position: fixed; top: 100px; right: 2rem; z-index: 3000;
+    background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+    padding: 1rem 1.5rem; box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    display: flex; align-items: center; gap: 0.8rem;
+    transform: translateX(200%); transition: transform 0.4s ease;
+    font-size: 0.9rem; font-weight: 600; color: var(--white);
+  }
+  .toast.show { transform: translateX(0); }
+  .toast-icon { font-size: 1.2rem; }
+</style>
+</head>
+<body>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span class="toast-icon">✅</span>
+  <span id="toast-msg">¡Estado actualizado!</span>
+</div>
+
+<!-- VIDEO MODAL -->
+<div class="video-modal" id="videoModal">
+  <div class="video-modal-inner">
+    <div class="video-modal-header">
+      <span class="video-modal-title" id="modalTitle">Video</span>
+      <button class="video-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="video-embed" id="videoEmbed">
+      <div style="text-align:center;padding:3rem">
+        <div style="font-size:3rem;margin-bottom:1rem">🎬</div>
+        <p>Agrega la URL de tu video aquí para reproducirlo.</p>
+        <p style="font-size:0.8rem;margin-top:0.5rem;opacity:0.6">Compatible con YouTube, Vimeo, TikTok, Instagram Reels</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#inicio" onclick="closeMobile()">Inicio</a>
+  <a href="#nosotras" onclick="closeMobile()">Nosotras</a>
+  <a href="#horarios" onclick="closeMobile()">Horarios</a>
+  <a href="#galeria" onclick="closeMobile()">Galería</a>
+  <a href="#precios" onclick="closeMobile()">Precios</a>
+  <a href="#contacto" onclick="closeMobile()">Contacto</a>
+</div>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="#inicio" class="nav-logo">FUSSION<span>GIRLS</span></a>
+      <ul class="nav-links">
+        <li><a href="#nosotras">Nosotras</a></li>
+        <li><a href="#horarios">Horarios</a></li>
+        <li><a href="#galeria">Galería</a></li>
+        <li><a href="#precios">Precios</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+      <div class="nav-cta">
+        <a href="#contacto" class="btn btn-primary">Inscribirme 🔥</a>
+      </div>
+      <button class="hamburger" id="hamburger" onclick="toggleMobile()">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="inicio">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-badge reveal"><span class="dot"></span> Únete a la comunidad</div>
+      <h1 class="hero-title reveal reveal-delay-1">
+        TRANSFORMA<br>
+        TU <span class="gradient-text">CUERPO</span><br>
+        EN FUSSION<br>
+        GIRLS RG
+      </h1>
+      <p class="hero-sub reveal reveal-delay-2">
+        💪🔥 El gimnasio femenino donde la energía, la comunidad y los resultados se fusionan. ¡Tú puedes!
+      </p>
+      <div class="hero-cta reveal reveal-delay-3">
+        <a href="#horarios" class="btn btn-primary">Ver Clases 🗓️</a>
+        <a href="#contacto" class="btn btn-outline">Inscribirme Ahora</a>
+      </div>
+      <div class="hero-stats reveal reveal-delay-4">
+        <div class="stat"><span class="stat-num">500+</span><span class="stat-label">Clientas activas</span></div>
+        <div class="stat"><span class="stat-num">15+</span><span class="stat-label">Clases por semana</span></div>
+        <div class="stat"><span class="stat-num">5★</span><span class="stat-label">Calificación</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-orb"></div>
+  </div>
+</section>
+
+<!-- COTD BANNER -->
+<div class="cotd-banner">
+  <div class="cotd-track" id="cotdTrack"></div>
+</div>
+
+<div class="glow-divider"></div>
+
+<!-- ABOUT -->
+<section class="about section" id="nosotras">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-visual reveal">
+        <div class="about-img-placeholder">
+          <div style="position:relative;z-index:1;text-align:center">
+            <div style="font-size:5rem">💪🏻</div>
+            <div style="font-family:var(--font-display);font-size:1.5rem;color:var(--white);margin-top:0.5rem">FUSSION GIRLS RG</div>
+            <div style="font-size:0.8rem;color:var(--muted);margin-top:0.3rem">Tu foto aquí</div>
+          </div>
+        </div>
+        <div class="about-glow"></div>
+        <div class="about-badge-float">
+          <div class="num">+5</div>
+          <div class="label">Años transformando vidas</div>
+        </div>
+      </div>
+      <div class="about-text">
+        <div class="section-tag reveal">💜 Sobre Nosotras</div>
+        <h2 class="section-title reveal reveal-delay-1">SOMOS ENERGÍA.<br><span>SOMOS FUSSION.</span></h2>
+        <p class="reveal reveal-delay-2">
+          En <strong style="color:var(--white)">Fussion Girls RG</strong> creemos que el fitness no es solo ejercicio, es un estilo de vida. Somos un espacio diseñado especialmente para mujeres que quieren sentirse fuertes, seguras y vibrantes.
+        </p>
+        <p class="reveal reveal-delay-3">
+          Nuestra comunidad es nuestra mayor fortaleza. Aquí encontrarás instructoras apasionadas, clases emocionantes y un ambiente lleno de positividad que te mantendrá regresando semana tras semana.
+        </p>
+        <div class="pillars reveal reveal-delay-4">
+          <div class="pillar">
+            <span class="pillar-icon">🔥</span>
+            <div><div class="pillar-name">Energía Total</div><div class="pillar-desc">Clases que te hacen sudar y sonreír</div></div>
+          </div>
+          <div class="pillar">
+            <span class="pillar-icon">💜</span>
+            <div><div class="pillar-name">Comunidad</div><div class="pillar-desc">Amigas que te impulsan a crecer</div></div>
+          </div>
+          <div class="pillar">
+            <span class="pillar-icon">🏆</span>
+            <div><div class="pillar-name">Resultados</div><div class="pillar-desc">Transformaciones reales y duraderas</div></div>
+          </div>
+          <div class="pillar">
+            <span class="pillar-icon">✨</span>
+            <div><div class="pillar-name">Bienestar</div><div class="pillar-desc">Cuerpo, mente y alma en balance</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="glow-divider"></div>
+
+<!-- SCHEDULE -->
+<section class="schedule section" id="horarios">
+  <div class="container">
+    <div class="section-tag reveal">🗓️ Horarios</div>
+    <h2 class="section-title reveal reveal-delay-1">CALENDARIO DE <span>CLASES</span></h2>
+
+    <div class="schedule-controls reveal reveal-delay-3" id="dayControls"></div>
+    <div class="schedule-grid" id="scheduleGrid"></div>
+  </div>
+</section>
+
+<div class="glow-divider"></div>
+
+<!-- GALLERY -->
+<section class="gallery section" id="galeria">
+  <div class="container">
+    <div class="section-tag reveal">📸 Galería</div>
+    <h2 class="section-title reveal reveal-delay-1">MIRA LA <span>VIBRA</span></h2>
+    <p style="color:var(--muted);max-width:500px;" class="reveal reveal-delay-2">
+      Clases, sudor, sonrisas y mucha energía. ¡Así es Fussion Girls RG!
+    </p>
+    <div class="gallery-grid reveal reveal-delay-3" id="galleryGrid"></div>
+  </div>
+</section>
+
+<div class="glow-divider"></div>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials section" id="testimonios">
+  <div class="container">
+    <div class="section-tag reveal">⭐ Testimonios</div>
+    <h2 class="section-title reveal reveal-delay-1">ELLAS YA <span>LO VIVIERON</span></h2>
+    <div class="testimonials-grid" id="testiGrid"></div>
+  </div>
+</section>
+
+<div class="glow-divider"></div>
+
+<!-- PRICING -->
+<section class="pricing section" id="precios">
+  <div class="container">
+    <div class="section-tag reveal">💎 Planes</div>
+    <h2 class="section-title reveal reveal-delay-1">ELIGE TU <span>PLAN</span></h2>
+    <p style="color:var(--muted);max-width:500px;margin-bottom:1rem;" class="reveal reveal-delay-2">
+      Sin excusas. Encuentra el plan que se adapta a tu vida y empieza hoy.
+    </p>
+    <div class="pricing-grid reveal reveal-delay-3" id="pricingGrid"></div>
+  </div>
+</section>
+
+<div class="glow-divider"></div>
+
+<!-- CONTACT -->
+<section class="contact section" id="contacto">
+  <div class="container">
+    <div class="contact-grid">
+      <div>
+        <div class="section-tag reveal">📩 Contacto</div>
+        <h2 class="section-title reveal reveal-delay-1">EMPIEZA <span>HOY</span></h2>
+        <p style="color:var(--muted);margin-bottom:2.5rem;" class="reveal reveal-delay-2">
+          Escríbenos y te damos toda la info. ¡Tu transformación empieza con un mensaje!
+        </p>
+        <div class="contact-info-item reveal reveal-delay-2">
+          <div class="contact-info-icon">📍</div>
+          <div><div class="contact-info-label">Ubicación</div><div class="contact-info-value">Río Grande, Tierra del Fuego, Argentina</div></div>
+        </div>
+        <div class="contact-info-item reveal reveal-delay-3">
+          <div class="contact-info-icon">📱</div>
+          <div><div class="contact-info-label">WhatsApp</div><div class="contact-info-value">+54 9 XXXX XXXXXX</div></div>
+        </div>
+        <div class="contact-info-item reveal reveal-delay-4">
+          <div class="contact-info-icon">🕐</div>
+          <div><div class="contact-info-label">Horario de atención</div><div class="contact-info-value">Lun–Sáb: 7:30 AM – 9:30 PM</div></div>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-2">
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:28px;padding:2.5rem;">
+          <div class="form-group">
+            <label class="form-label">Nombre</label>
+            <input type="text" class="form-input" placeholder="Tu nombre completo" id="formName">
+          </div>
+          <div class="form-group">
+            <label class="form-label">WhatsApp</label>
+            <input type="tel" class="form-input" placeholder="+54 9 XXXX XXXXXX" id="formWA">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-input" placeholder="tu@email.com" id="formEmail">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Mensaje</label>
+            <textarea class="form-textarea" placeholder="¿Qué clase te interesa? ¿Alguna pregunta?" id="formMsg"></textarea>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-primary" onclick="submitForm()">Enviar 🚀</button>
+            <a href="https://wa.me/5490000000000" target="_blank" class="whatsapp-btn">
+              💬 WhatsApp directo
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a href="#inicio" class="nav-logo" style="font-size:2rem;">FUSSION<span>GIRLS</span></a>
+        <p class="footer-brand-desc">El gimnasio femenino de Río Grande donde cada clase es una fiesta y cada sudor vale la pena. 💪🔥</p>
+        <div class="footer-socials">
+          <a href="#" class="social-btn" title="Instagram">📷</a>
+          <a href="#" class="social-btn" title="TikTok">🎵</a>
+          <a href="#" class="social-btn" title="Facebook">💙</a>
+          <a href="#" class="social-btn" title="YouTube">▶️</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Menú</div>
+        <ul class="footer-links">
+          <li><a href="#nosotras">Nosotras</a></li>
+          <li><a href="#horarios">Horarios</a></li>
+          <li><a href="#galeria">Galería</a></li>
+          <li><a href="#testimonios">Testimonios</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Clases</div>
+        <ul class="footer-links">
+          <li><a href="#horarios">Jumping 🤸</a></li>
+          <li><a href="#horarios">Zumba 💃</a></li>
+          <li><a href="#horarios">Yoga 🪷</a></li>
+          <li><a href="#horarios">Step 🥊</a></li>
+          <li><a href="#horarios">Kids 👧</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Info</div>
+        <ul class="footer-links">
+          <li><a href="#precios">Planes y Precios</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+          <li><a href="https://wa.me/5490000000000">WhatsApp</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2025 <span>Fussion Girls RG</span>. Todos los derechos reservados. Hecho con 💜</div>
+      <div class="footer-copy">Río Grande, Tierra del Fuego, Argentina</div>
+    </div>
+  </div>
+</footer>
+
+<!-- FLOATING WA -->
+<a href="https://wa.me/5490000000000" target="_blank" class="float-wa">
+  <span class="float-wa-tooltip">¡Escríbenos! 💬</span>
+  💬
+</a>
+
+<script>
+// ═══════════════════════════════════════
+//  DATA
+// ═══════════════════════════════════════
+const DAYS = ['Lun','Mar','Mié','Jue','Vie','Sáb'];
+
+const scheduleData = {
+  '8:00am': [
+    { day:'Lun', name:'Jumping Básico + Zumba', instructor:'Charlie', emoji:'🤸🏻‍♀️', popular:true },
+    { day:'Mar', name:'Zumba', instructor:'Anita', emoji:'💃🏻' },
+    { day:'Mié', name:'Yoga', instructor:'Jess', emoji:'🪷' },
+    { day:'Jue', name:'Baile con Baquetas', instructor:'Azucena', emoji:'🪄' },
+    { day:'Vie', name:'Step Básico', instructor:'Nadia', emoji:'🥿' },
+  ],
+
+  '8:30am': [
+    { day:'Sáb', name:'Jumping', instructor:'', emoji:'🤸🏻', popular:true },
+  ],
+
+  '9:15am': [
+    { day:'Lun', name:'Escaladora', instructor:'', emoji:'🧗🏻‍♀️' },
+    { day:'Mié', name:'Escaladora', instructor:'', emoji:'🧗🏻‍♀️' },
+    { day:'Vie', name:'Escaladora', instructor:'', emoji:'🧗🏻‍♀️' },
+    { day:'Mar', name:'Jumping', instructor:'', emoji:'🤸🏻' },
+    { day:'Jue', name:'Jumping', instructor:'', emoji:'🤸🏻' },
+  ],
+
+  '9:30am': [
+    { day:'Sáb', name:'Escaladora', instructor:'', emoji:'🧗🏻‍♀️' },
+  ],
+
+  '10:30am': [
+    { day:'Sáb', name:'Yoga', instructor:'', emoji:'🪷' },
+  ],
+
+  '5:30pm': [
+    { day:'Lun', name:'Jumping Kids', instructor:'', emoji:'👧🏻', isKids:true },
+    { day:'Mié', name:'Jumping Kids', instructor:'', emoji:'👧🏻', isKids:true },
+    { day:'Jue', name:'Baile Peques', instructor:'', emoji:'🎵', isKids:true },
+  ],
+
+  '6:30pm': [
+    { day:'Mar', name:'Physical Training Kids', instructor:'', emoji:'🤸🏻', isKids:true, popular:true },
+  ],
+
+  '7:30pm': [
+    { day:'Lun', name:'Step', instructor:'', emoji:'🥿' },
+    { day:'Mar', name:'Baile (Zumba)', instructor:'', emoji:'💃🏻' },
+    { day:'Mié', name:'Step', instructor:'', emoji:'🥿' },
+    { day:'Jue', name:'Baile (Zumba)', instructor:'', emoji:'💃🏻', popular:true },
+    { day:'Vie', name:'Jumping', instructor:'', emoji:'🤸🏻' },
+  ],
+
+  '8:30pm': [
+    { day:'Lun', name:'Jumping', instructor:'', emoji:'🤸🏻' },
+    { day:'Mar', name:'Escaladora', instructor:'', emoji:'🧗🏻‍♀️' },
+    { day:'Mié', name:'Jumping', instructor:'', emoji:'🤸🏻' },
+    { day:'Jue', name:'Escaladora', instructor:'', emoji:'🧗🏻‍♀️' },
+    { day:'Vie', name:'Escaladora', instructor:'', emoji:'🧗🏻‍♀️' },
+    { day:'Sáb', name:'Jumping', instructor:'', emoji:'🤸🏻', popular:true },
+  ],
+};
+
+
+
+// Remove duplicates in 8:30pm saturday
+const t830 = scheduleData['8:30pm'];
+scheduleData['8:30pm'] = t830.filter((c, i, arr) => 
+  i === arr.findIndex(x => x.day === c.day && x.name === c.name)
+);
+
+// Build class IDs and status
+const classStates = {};
+let classId = 0;
+const allClasses = [];
+Object.entries(scheduleData).forEach(([time, classes]) => {
+  classes.forEach(c => {
+    const id = `class-${classId++}`;
+    c.id = id;
+    c.time = time;
+    classStates[id] = 'active';
+    allClasses.push(c);
+  });
+});
+
+let activeDay = 'Todos';
+
+// ═══════════════════════════════════════
+//  SCHEDULE RENDER
+// ═══════════════════════════════════════
+function renderSchedule() {
+  const grid = document.getElementById('scheduleGrid');
+  const filteredTimes = Object.entries(scheduleData);
+
+  grid.innerHTML = '';
+
+  const timesToShow = {};
+  filteredTimes.forEach(([time, classes]) => {
+    const filtered = activeDay === 'Todos'
+      ? classes
+      : classes.filter(c => c.day === activeDay);
+    if (filtered.length > 0) timesToShow[time] = filtered;
+  });
+
+  if (Object.keys(timesToShow).length === 0) {
+    grid.innerHTML = `<div style="text-align:center;padding:3rem;color:var(--muted)">
+      <div style="font-size:3rem;margin-bottom:1rem">😴</div>
+      <div>No hay clases este día</div>
+    </div>`;
+    return;
+  }
+
+  Object.entries(timesToShow).forEach(([time, classes]) => {
+    const block = document.createElement('div');
+    block.className = 'time-block';
+    block.innerHTML = `<div class="time-label">${time}</div><div class="classes-row" id="row-${time.replace(':','').replace('am','').replace('pm','')}"></div>`;
+    grid.appendChild(block);
+
+    const row = block.querySelector('.classes-row');
+    classes.forEach(c => {
+      const status = classStates[c.id];
+      const card = document.createElement('div');
+      card.className = `class-card${status === 'cancelled' ? ' cancelled' : ''}${c.popular ? ' popular' : ''}`;
+      card.id = `card-${c.id}`;
+      card.innerHTML = `
+        ${c.popular ? '<div class="popular-badge">⭐ Popular</div>' : ''}
+        <div class="class-header">
+          <span class="class-emoji">${c.emoji}</span>
+          <span class="class-status-dot ${status === 'active' ? 'status-active' : 'status-cancelled'}" id="dot-${c.id}"></span>
+        </div>
+        <div class="class-name">${c.name}</div>
+        ${c.instructor ? `<div class="class-instructor">👩‍🏫 ${c.instructor}</div>` : ''}
+        ${activeDay === 'Todos' ? `<div class="class-day-tag">📅 ${c.day}</div>` : ''}
+        ${c.isKids ? '<div class="class-day-tag">👶 Clase infantil</div>' : ''}
+
+      `;
+      row.appendChild(card);
+    });
+  });
+}
+//        <div class="status-toggle" onclick="toggleStatus('${c.id}')">
+//          ${status === 'active' ? '🟢 Activa — clic para cancelar' : '🔴 Cancelada — clic para activar'}
+//       </div>
+function toggleStatus(id) {
+  classStates[id] = classStates[id] === 'active' ? 'cancelled' : 'active';
+  renderSchedule();
+  showToast(classStates[id] === 'active' ? '✅ Clase activada' : '❌ Clase cancelada');
+}
+
+function renderDayControls() {
+  const el = document.getElementById('dayControls');
+
+  // limpiar contenido anterior
+  el.innerHTML = '';
+
+  ['Todos', ...DAYS].forEach(day => {
+    const btn = document.createElement('button');
+    btn.className = `day-btn${activeDay === day ? ' active' : ''}`;
+    btn.textContent = day;
+    btn.onclick = () => { 
+      activeDay = day; 
+      renderDayControls(); 
+      renderSchedule(); 
+    };
+    el.appendChild(btn);
+  });
+}
+
+// ═══════════════════════════════════════
+//  COTD BANNER
+// ═══════════════════════════════════════
+function renderCOTD() {
+  const today = new Date().getDay(); // 0=sun,1=mon...
+  const dayMap = {1:'Lun',2:'Mar',3:'Mié',4:'Jue',5:'Vie',6:'Sáb'};
+  const todayKey = dayMap[today] || 'Lun';
+  const todayClasses = allClasses.filter(c => c.day === todayKey);
+  
+  const track = document.getElementById('cotdTrack');
+  const items = todayClasses.length > 0 ? todayClasses : allClasses.slice(0, 5);
+  const repeated = [...items, ...items];
+  
+  track.innerHTML = repeated.map(c => `
+    <div class="cotd-item">
+      ${c.emoji} ${c.name}
+      ${c.time ? `<span style="opacity:0.7;font-size:0.9em">· ${c.time}</span>` : ''}
+      <span style="opacity:0.4;margin:0 0.5rem">✦</span>
+    </div>
+  `).join('');
+}
+
+// ═══════════════════════════════════════
+//  GALLERY
+// ═══════════════════════════════════════
+
+
+
+const galleryItems = [
+
+  { 
+    type:'video',
+    src:'fussion/video1.mp4',
+    label:'Clase de Jumping'
+  },
+
+
+  { 
+    type:'video',
+    src:'fussion/video2.mp4',
+    label:'Yoga matutino'
+  },
+
+
+  { 
+    type:'video',
+    src:'fussion/video3.mp4',
+    label:'Comunidad Fussion'
+  },
+
+  { 
+    type:'video',
+    src:'fussion/video4.mp4',
+    label:'Jumping Kids'
+  },
+
+  { 
+    type:'video',
+    src:'fussion/video5.mp4',
+    label:'Baile con Baquetas'
+  },
+
+  { 
+    type:'video',
+    src:'fussion/video6.mp4',
+    label:'Physical Training'
+  }
+
+];
+function renderGallery(){
+
+  const grid = document.getElementById('galleryGrid');
+
+  grid.innerHTML = '';
+
+  galleryItems.forEach(item => {
+
+    const el = document.createElement('div');
+
+    el.className = 'gallery-item';
+
+    el.innerHTML = `
+      
+      <video
+        class="gallery-media"
+        muted
+        playsinline
+        preload="metadata"
+      >
+        <source src="${item.src}" type="video/mp4">
+      </video>
+
+      <div class="gallery-overlay">
+        <span class="gallery-overlay-text">${item.label}</span>
+      </div>
+
+    `;
+
+    const video = el.querySelector('video');
+
+    el.addEventListener('mouseenter', () => {
+      video.play().catch(()=>{});
+    });
+
+    el.addEventListener('mouseleave', () => {
+      video.pause();
+      video.currentTime = 0;
+    });
+
+    grid.appendChild(el);
+
+  });
+
+}
+
+
+
+
+
+function openModal(title) {
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('videoModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('videoModal').classList.remove('open');
+  document.getElementById('videoEmbed').innerHTML = `
+    <div style="text-align:center;padding:3rem;color:var(--muted)">
+      <div style="font-size:3rem;margin-bottom:1rem">🎬</div>
+      <p>Agrega la URL de tu video aquí para reproducirlo.</p>
+      <p style="font-size:0.8rem;margin-top:0.5rem;opacity:0.6">Compatible con YouTube, Vimeo, TikTok, Instagram Reels</p>
+    </div>`;
+  document.body.style.overflow = '';
+}
+
+// ═══════════════════════════════════════
+//  TESTIMONIALS
+// ═══════════════════════════════════════
+const testimonials = [
+  { name:'Valentina M.', since:'Clienta desde 2022', text:'¡Fussion Girls cambió mi vida! Bajé 12 kilos y hice amigas increíbles. Las clases de Zumba con Anita son pura energía.', stars:'★★★★★', emoji:'💃' },
+  { name:'Rocío S.', since:'Clienta desde 2023', text:'Las clases de Yoga con Jess son lo mejor de mi semana. Un espacio de paz y fortaleza. 100% recomendado para todas.', stars:'★★★★★', emoji:'🧘' },
+  { name:'Florencia T.', since:'Clienta desde 2021', text:'Llevé a mi hija a Jumping Kids y ella ama cada clase. Las instructoras son geniales con los peques. ¡Gracias Fussion!', stars:'★★★★★', emoji:'👧' },
+  { name:'Carla P.', since:'Clienta desde 2024', text:'Vine por curiosidad y ya no puedo dejar de ir. El ambiente es increíble, las instructoras te motivan siempre. ¡Hermoso lugar!', stars:'★★★★★', emoji:'🏋️' },
+  { name:'Mia L.', since:'Clienta desde 2023', text:'El baile con baquetas de Azucena es ÚNICO. Nunca había disfrutado tanto el ejercicio. Fussion es mi segunda casa.', stars:'★★★★★', emoji:'🪄' },
+  { name:'Julieta R.', since:'Clienta desde 2022', text:'Resultados reales en pocas semanas. Las clases de Step y Escaladora son desafiantes pero súper divertidas. ¡Las amo!', stars:'★★★★★', emoji:'💪' },
+];
+
+function renderTestimonials() {
+  const grid = document.getElementById('testiGrid');
+  testimonials.forEach((t, i) => {
+    const el = document.createElement('div');
+    el.className = 'testi-card reveal';
+    el.style.transitionDelay = `${i * 0.08}s`;
+    el.innerHTML = `
+      <div class="testi-stars">${t.stars}</div>
+      <p class="testi-text">"${t.text}"</p>
+      <div class="testi-author">
+        <div class="testi-avatar">${t.emoji}</div>
+        <div>
+          <div class="testi-name">${t.name}</div>
+          <div class="testi-since">${t.since}</div>
+        </div>
+      </div>
+    `;
+    grid.appendChild(el);
+  });
+}
+
+// ═══════════════════════════════════════
+//  PRICING
+// ═══════════════════════════════════════
+const plans = [
+  {
+    plan:'Clase Individual', desc:'Prueba sin compromiso', price:'800', period:'/clase', currency:'$',
+    features:['1 clase a elección','Acceso a vestuario','Sin inscripción'],
+    featured:false
+  },
+  {
+    plan:'Plan Semanal', desc:'Para empezar la semana con todo', price:'2.500', period:'/semana', currency:'$',
+    features:['Clases ilimitadas 1 semana','Todas las disciplinas','Acceso a vestuario','Asesoramiento inicial'],
+    featured:false
+  },
+  {
+    plan:'Plan Mensual', desc:'El más popular ⭐', price:'6.500', period:'/mes', currency:'$',
+    features:['Clases ilimitadas todo el mes','Todas las disciplinas','Acceso completo al gym','Seguimiento personalizado','1 evaluación física gratis'],
+    featured:true
+  },
+];
+
+function renderPricing() {
+  const grid = document.getElementById('pricingGrid');
+  plans.forEach(p => {
+    const el = document.createElement('div');
+    el.className = `price-card${p.featured ? ' featured' : ''}`;
+    el.innerHTML = `
+      ${p.featured ? '<div class="featured-badge">⭐ Más Popular</div>' : ''}
+      <div class="price-plan">${p.plan}</div>
+      <div class="price-desc">${p.desc}</div>
+      <div class="price-amount">
+        <span class="price-currency">${p.currency}</span>
+        <span class="price-number">${p.price}</span>
+        <span class="price-period">${p.period}</span>
+      </div>
+      <ul class="price-features">
+        ${p.features.map(f => `<li>${f}</li>`).join('')}
+      </ul>
+      <a href="#contacto" class="btn ${p.featured ? 'btn-primary' : 'btn-outline'}" style="width:100%;justify-content:center">
+        Inscribirme 🔥
+      </a>
+    `;
+    grid.appendChild(el);
+  });
+}
+
+// ═══════════════════════════════════════
+//  SCROLL REVEAL
+// ═══════════════════════════════════════
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+function observeReveal() {
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+}
+
+// ═══════════════════════════════════════
+//  NAV SCROLL
+// ═══════════════════════════════════════
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('nav');
+  nav.classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// ═══════════════════════════════════════
+//  MOBILE MENU
+// ═══════════════════════════════════════
+function toggleMobile() {
+  document.getElementById('mobileMenu').classList.toggle('open');
+  document.getElementById('hamburger').classList.toggle('open');
+  document.body.style.overflow = document.getElementById('mobileMenu').classList.contains('open') ? 'hidden' : '';
+}
+function closeMobile() {
+  document.getElementById('mobileMenu').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ═══════════════════════════════════════
+//  FORM
+// ═══════════════════════════════════════
+function submitForm() {
+  const name = document.getElementById('formName').value.trim();
+  const wa = document.getElementById('formWA').value.trim();
+  const email = document.getElementById('formEmail').value.trim();
+
+  if (!name || (!wa && !email)) {
+    showToast('⚠️ Por favor llena nombre y contacto');
+    return;
+  }
+  showToast('🎉 ¡Mensaje enviado! Te contactamos pronto');
+  document.getElementById('formName').value = '';
+  document.getElementById('formWA').value = '';
+  document.getElementById('formEmail').value = '';
+  document.getElementById('formMsg').value = '';
+}
+
+// ═══════════════════════════════════════
+//  TOAST
+// ═══════════════════════════════════════
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  const msgEl = document.getElementById('toast-msg');
+  msgEl.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// Close modal on bg click
+document.getElementById('videoModal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+// ═══════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════
+renderDayControls();
+renderSchedule();
+renderCOTD();
+renderGallery();
+renderTestimonials();
+renderPricing();
+setTimeout(observeReveal, 100);
+
+// Re-observe after dynamic content
+setTimeout(() => {
+  observeReveal();
+  // Trigger visible for items already in view
+  document.querySelectorAll('.reveal').forEach(el => {
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight) el.classList.add('visible');
+  });
+}, 300);
+</script>
+</body>
+</html>
