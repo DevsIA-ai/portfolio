@@ -2,7 +2,7 @@
 <html lang="es" dir="ltr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>DevsIA — Desarrollo Digital para Negocios</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -170,7 +170,7 @@ body::before {
    ============================================ */
 #app {
   display: flex;
-  height: 100vh; width: 100vw;
+  height: 100vh; height: 100dvh; width: 100vw;
   overflow: hidden;
   opacity: 0;
   position: relative;
@@ -1117,9 +1117,9 @@ body::before {
    ============================================ */
 @media (max-width: 900px) {
   .sidebar { display: none; }
-  #app { flex-direction: column; }
-  .content-area { height: calc(100vh - 60px); }
-  .mobile-nav { display: flex; height: 60px; background: rgba(7,7,15,0.9); backdrop-filter: blur(20px); border-top: 1px solid var(--border); order: 1; }
+  #app { flex-direction: column; height: 100dvh; }
+  .content-area { height: calc(100dvh - 60px - env(safe-area-inset-bottom)); }
+  .mobile-nav { display: flex; height: calc(60px + env(safe-area-inset-bottom)); padding-bottom: env(safe-area-inset-bottom); background: rgba(7,7,15,0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-top: 1px solid var(--border); order: 1; position: relative; z-index: 9999; }
   .mobile-nav .nav-item { flex: 1; flex-direction: column; gap: 0.2rem; padding: 0.5rem; font-size: 0.65rem; justify-content: center; align-items: center; }
   .mobile-nav .nav-item::before { display: none; }
   .mobile-nav .nav-label { opacity: 1; font-size: 0.58rem; }
