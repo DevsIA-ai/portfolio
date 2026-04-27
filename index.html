@@ -1155,6 +1155,25 @@ body::before {
   .btn-primary, .btn-ghost { width: 100%; justify-content: center; }
   .bio-card { flex-direction: column; align-items: flex-start; }
 }
+
+/* ============================================
+   SOCIAL ICONS
+   ============================================ */
+.social-links { display: flex; gap: 0.65rem; align-items: center; margin-top: 1.5rem; }
+.social-icon {
+  display: flex; align-items: center; justify-content: center;
+  width: 42px; height: 42px; border-radius: 50%;
+  border: 1px solid var(--border-bright);
+  color: var(--text-2);
+  font-size: 1rem;
+  transition: all 0.25s var(--ease-out);
+  background: var(--surface);
+}
+.social-icon:hover { transform: translateY(-3px); }
+.social-icon.s-fb:hover  { color: #1877f2; border-color: #1877f2; background: rgba(24,119,242,0.12); }
+.social-icon.s-tt:hover  { color: var(--text-1); border-color: var(--text-1); background: rgba(255,255,255,0.08); }
+.social-icon.s-yt:hover  { color: #ff0000; border-color: #ff0000; background: rgba(255,0,0,0.12); }
+.social-icon.s-ig:hover  { color: #e1306c; border-color: #e1306c; background: rgba(225,48,108,0.12); }
 </style>
 </head>
 <body>
@@ -1226,6 +1245,12 @@ body::before {
             <button class="btn-ghost" onclick="switchTab('contacto')">
               <i class="fas fa-paper-plane"></i> Trabajemos juntos
             </button>
+          </div>
+          <div class="social-links">
+            <a href="https://www.facebook.com/devsiadigital/" target="_blank" rel="noopener" class="social-icon s-fb"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.tiktok.com/@Devsiadigital" target="_blank" rel="noopener" class="social-icon s-tt"><i class="fab fa-tiktok"></i></a>
+            <a href="https://www.youtube.com/@Devsiadigital" target="_blank" rel="noopener" class="social-icon s-yt"><i class="fab fa-youtube"></i></a>
+            <a href="https://www.instagram.com/devsiadigital/" target="_blank" rel="noopener" class="social-icon s-ig"><i class="fab fa-instagram"></i></a>
           </div>
         </div>
         <div class="hero-stats">
@@ -1579,6 +1604,13 @@ body::before {
               <div class="cinfo-label">Respuesta</div>
               <div class="cinfo-val">&lt; 24 horas hábiles</div>
             </div>
+          </div>
+
+          <div class="social-links" style="margin-top:1.2rem;">
+            <a href="https://www.facebook.com/devsiadigital/" target="_blank" rel="noopener" class="social-icon s-fb"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.tiktok.com/@Devsiadigital" target="_blank" rel="noopener" class="social-icon s-tt"><i class="fab fa-tiktok"></i></a>
+            <a href="https://www.youtube.com/@Devsiadigital" target="_blank" rel="noopener" class="social-icon s-yt"><i class="fab fa-youtube"></i></a>
+            <a href="https://www.instagram.com/devsiadigital/" target="_blank" rel="noopener" class="social-icon s-ig"><i class="fab fa-instagram"></i></a>
           </div>
 
           <!-- Terminal decorativa -->

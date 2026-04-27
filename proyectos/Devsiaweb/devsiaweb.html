@@ -667,7 +667,7 @@ footer{text-align:center;padding:28px;color:var(--muted);font-size:.82rem;border
 <script>
 /* CURSOR */
 /* LOADER */
-window.addEventListener('load',()=>setTimeout(()=>{document.getElementById('loader').classList.add('hide');animateCounters();},1600));
+Promise.all([new Promise(r=>setTimeout(r,1800)),document.fonts.ready]).then(()=>{document.getElementById('loader').classList.add('hide');animateCounters();});
 
 /* NAV */
 window.addEventListener('scroll',()=>document.getElementById('navbar').classList.toggle('scrolled',scrollY>20));
