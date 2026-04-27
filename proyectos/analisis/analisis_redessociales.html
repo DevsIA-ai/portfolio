@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Consultoría Devsia — Marketing Digital para Negocios Locales</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f5f1ea;
+    --bg-alt: #ede9e0;
+    --bg-dark: #1a1713;
+    --texto: #1a1713;
+    --texto-muted: #6b6458;
+    --acento: #8a6430;
+    --acento-claro: #b88c50;
+    --borde: rgba(138,100,48,0.18);
+    --borde-fuerte: rgba(138,100,48,0.35);
+    --blanco: #faf8f3;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--texto);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 3rem;
+    border-bottom: 1px solid var(--borde);
+    background: var(--bg);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.06em;
+    color: var(--acento);
+  }
+  .logo span {
+    font-style: italic;
+    font-size: 0.72rem;
+    color: var(--texto-muted);
+    display: block;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-top: -2px;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 6rem 3rem 4rem;
+    background: var(--bg);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0; right: 0;
+    width: 420px; height: 420px;
+    background: radial-gradient(circle, rgba(138,100,48,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--acento);
+    margin-bottom: 1.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .hero-label::before {
+    content: '';
+    display: inline-block;
+    width: 2rem; height: 1px;
+    background: var(--acento);
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 6vw, 5.5rem);
+    line-height: 1.1;
+    font-weight: 700;
+    max-width: 14ch;
+    margin-bottom: 1.5rem;
+    color: var(--texto);
+  }
+  .hero h1 em { font-style: italic; color: var(--acento); }
+  .hero-sub {
+    font-size: 1.05rem;
+    color: var(--texto-muted);
+    max-width: 52ch;
+    margin-bottom: 3rem;
+    line-height: 1.85;
+  }
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: var(--acento);
+    color: var(--blanco);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 0.82rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 1rem 2rem;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+    text-decoration: none;
+  }
+  .cta-btn:hover { background: var(--bg-dark); color: var(--blanco); border-color: var(--bg-dark); }
+
+  /* INTRO */
+  .intro-section {
+    padding: 5rem 3rem;
+    background: var(--blanco);
+    border-top: 1px solid var(--borde);
+    border-bottom: 1px solid var(--borde);
+  }
+  .intro-box {
+    border-left: 2px solid var(--acento);
+    padding: 2rem 2.5rem;
+    background: var(--bg);
+    max-width: 780px;
+  }
+  .intro-box p {
+    font-size: 1.05rem;
+    line-height: 1.9;
+    color: var(--texto-muted);
+  }
+  .intro-box p strong { color: var(--texto); font-weight: 500; }
+
+  /* PARTES */
+  .partes-section { padding: 5rem 3rem; background: var(--bg); }
+
+  .section-tag {
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--acento);
+    margin-bottom: 0.75rem;
+  }
+  .section-header { margin-bottom: 3rem; }
+  .section-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    font-weight: 700;
+    color: var(--texto);
+    line-height: 1.2;
+  }
+
+  .partes-overview {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--borde);
+    margin-bottom: 5rem;
+    border: 1px solid var(--borde);
+  }
+  .parte-pill {
+    background: var(--blanco);
+    padding: 1.75rem 1.5rem;
+    text-align: center;
+  }
+  .parte-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: rgba(138,100,48,0.2);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+  .parte-name { font-size: 0.8rem; letter-spacing: 0.04em; font-weight: 500; color: var(--texto); }
+
+  .parte-detalle {
+    margin-bottom: 4rem;
+    padding-bottom: 4rem;
+    border-bottom: 1px solid var(--borde);
+  }
+  .parte-detalle:last-child { border-bottom: none; }
+
+  .parte-header { display: flex; align-items: flex-start; gap: 1.5rem; margin-bottom: 2rem; }
+  .parte-numero {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    line-height: 1;
+    color: rgba(138,100,48,0.15);
+    flex-shrink: 0;
+    margin-top: -0.5rem;
+  }
+  .parte-titulo h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--texto);
+    margin-bottom: 0.25rem;
+  }
+  .parte-titulo p { font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--acento); }
+
+  .desc-parte { font-size: 0.88rem; color: var(--texto-muted); margin-bottom: 1.5rem; max-width: 65ch; line-height: 1.8; }
+
+  .plataformas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1px;
+    background: var(--borde);
+    border: 1px solid var(--borde);
+    margin-bottom: 1.5rem;
+  }
+  .plataforma-card {
+    background: var(--blanco);
+    padding: 1.25rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+  .plataforma-card .emoji { font-size: 1rem; margin-bottom: 0.5rem; display: block; }
+  .plataforma-card strong { font-weight: 500; display: block; margin-bottom: 0.3rem; font-size: 0.8rem; color: var(--texto); }
+  .plataforma-card span { color: var(--texto-muted); font-size: 0.77rem; }
+
+  .cal-label-top { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--acento); margin-bottom: 0.75rem; margin-top: 1.5rem; }
+  .calificaciones { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  .cal-item {
+    padding: 1rem;
+    border: 1px solid var(--borde);
+    background: var(--blanco);
+    display: flex; flex-direction: column; gap: 0.35rem;
+  }
+  .cal-icon { font-size: 0.9rem; }
+  .cal-label { font-weight: 500; font-size: 0.85rem; color: var(--texto); }
+  .cal-desc { font-size: 0.75rem; color: var(--texto-muted); line-height: 1.5; }
+
+  .error-ejemplo { border: 1px solid var(--borde-fuerte); overflow: hidden; margin-top: 1.5rem; }
+  .error-header {
+    background: var(--bg-alt);
+    padding: 0.75rem 1.25rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--acento);
+    border-bottom: 1px solid var(--borde);
+  }
+  .error-row { padding: 1.25rem; border-bottom: 1px solid var(--borde); }
+  .error-row:last-child { border-bottom: none; }
+  .error-row strong {
+    display: block; font-weight: 500; font-size: 0.7rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--acento); margin-bottom: 0.4rem;
+  }
+  .error-row p { color: var(--texto-muted); line-height: 1.6; font-size: 0.82rem; }
+  .accion-clave {
+    background: var(--bg-alt);
+    padding: 1rem 1.25rem;
+    font-size: 0.82rem;
+    font-weight: 500;
+    display: flex; align-items: center; gap: 0.5rem;
+    color: var(--acento);
+    border-top: 1px solid var(--borde);
+  }
+
+  .cantidad-errores {
+    margin-top: 1.5rem;
+    padding: 1.25rem;
+    border: 1px solid var(--borde);
+    background: var(--blanco);
+    font-size: 0.84rem;
+    color: var(--texto-muted);
+    line-height: 1.75;
+  }
+  .cantidad-errores strong { color: var(--texto); font-weight: 500; }
+
+  .puntos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.5rem; }
+  .punto-item {
+    display: flex; gap: 1rem; padding: 1.25rem;
+    border: 1px solid var(--borde); background: var(--blanco);
+    align-items: flex-start;
+  }
+  .punto-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem; color: rgba(138,100,48,0.2);
+    line-height: 1; flex-shrink: 0;
+  }
+  .punto-body strong { display: block; font-weight: 500; font-size: 0.82rem; margin-bottom: 0.35rem; color: var(--texto); }
+  .punto-body p { font-size: 0.77rem; color: var(--texto-muted); line-height: 1.55; }
+  .punto-item.highlight { border-color: var(--borde-fuerte); grid-column: 1 / -1; background: var(--bg-alt); }
+  .punto-item.highlight .punto-body strong { color: var(--acento); }
+
+  .prioridades { display: flex; flex-direction: column; gap: 1px; background: var(--borde); border: 1px solid var(--borde); margin-top: 1.5rem; }
+  .prioridad {
+    background: var(--blanco);
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+  .prioridad-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--acento);
+    font-weight: 500;
+    line-height: 1.6;
+  }
+  .prioridad-content { font-size: 0.85rem; color: var(--texto-muted); line-height: 1.75; }
+
+  .extras-box {
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    border: 1px solid var(--borde-fuerte);
+    background: var(--bg-alt);
+    font-size: 0.83rem;
+    color: var(--texto-muted);
+    line-height: 1.85;
+  }
+  .extras-box p { margin-bottom: 0.5rem; }
+  .extras-box p:last-child { margin-bottom: 0; }
+  .extras-box span { color: var(--acento); margin-right: 0.5rem; }
+
+  /* DIFERENCIADORES */
+  .diferencia-section {
+    padding: 5rem 3rem;
+    background: var(--blanco);
+    border-top: 1px solid var(--borde);
+    border-bottom: 1px solid var(--borde);
+  }
+  .diff-intro {
+    font-size: 0.9rem;
+    color: var(--texto-muted);
+    max-width: 60ch;
+    margin-bottom: 3rem;
+    line-height: 1.85;
+  }
+  .diff-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+  .diff-card {
+    padding: 2rem;
+    border: 1px solid var(--borde);
+    background: var(--bg);
+    position: relative;
+    overflow: hidden;
+  }
+  .diff-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 2px;
+    background: var(--acento);
+  }
+  .diff-check {
+    color: var(--acento);
+    font-size: 0.78rem;
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .diff-check::before { content: '✓'; font-size: 0.9rem; }
+  .diff-card p { font-size: 0.85rem; color: var(--texto-muted); line-height: 1.7; }
+
+  /* FOOTER */
+  footer {
+    padding: 3rem;
+    background: var(--bg-dark);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--acento-claro);
+  }
+  .footer-logo span {
+    font-style: italic;
+    color: rgba(245,241,234,0.4);
+    font-size: 0.72rem;
+    display: block;
+  }
+  .footer-copy { font-size: 0.72rem; color: rgba(245,241,234,0.3); letter-spacing: 0.05em; }
+
+  @media (max-width: 700px) {
+    nav, .hero, .intro-section, .partes-section, .diferencia-section, footer { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .partes-overview { grid-template-columns: repeat(2, 1fr); }
+    .calificaciones, .puntos-grid, .diff-grid { grid-template-columns: 1fr; }
+    .prioridad { grid-template-columns: 1fr; gap: 0.5rem; }
+    .punto-item.highlight { grid-column: auto; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">
+    Consultoría Devsia
+    <span>Marketing Digital para Negocios Locales</span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-label">Diagnóstico Digital</div>
+  <h1>Lo que vas a <em>recibir</em></h1>
+  <p class="hero-sub">Un diagnóstico completo de tu presencia digital con análisis, errores detectados y plan de acción concreto.</p>
+  <div style="display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;">
+    <a href="#diagnostico" class="cta-btn">Ver el diagnóstico →</a>
+    <a href="propuesta_cliente.pdf" download class="cta-btn" style="background:transparent;border:1.5px solid var(--acento);color:var(--acento);">⬇ Descargar muestra</a>
+  </div>
+</section>
+
+<!-- INTRO -->
+<section class="intro-section" id="diagnostico">
+  <div class="intro-box">
+    <p>Antes de hacer cualquier publicación, invertir en publicidad o rediseñar tu página web, necesitas saber exactamente en qué estado está tu negocio digitalmente. Eso es exactamente lo que este diagnóstico te da — no opiniones generales, sino un <strong>análisis específico de tu negocio, tu giro y tu mercado local.</strong></p>
+  </div>
+</section>
+
+<!-- PARTES -->
+<section class="partes-section">
+  <div class="section-header">
+    <div class="section-tag">Estructura</div>
+    <h2>El diagnóstico se entrega en 4 partes</h2>
+  </div>
+
+  <div class="partes-overview">
+    <div class="parte-pill"><div class="parte-num">01</div><div class="parte-name">Auditoría Técnica</div></div>
+    <div class="parte-pill"><div class="parte-num">02</div><div class="parte-name">Errores Detectados</div></div>
+    <div class="parte-pill"><div class="parte-num">03</div><div class="parte-name">Diagnóstico Estratégico</div></div>
+    <div class="parte-pill"><div class="parte-num">04</div><div class="parte-name">Plan de Acción</div></div>
+  </div>
+
+  <!-- PARTE 01 -->
+  <div class="parte-detalle">
+    <div class="parte-header">
+      <div class="parte-numero">01</div>
+      <div class="parte-titulo">
+        <h3>Auditoría Técnica de Presencia Digital</h3>
+        <p>Inventario completo de cada plataforma</p>
+      </div>
+    </div>
+    <p class="desc-parte">Antes de analizar qué está fallando, necesitamos saber exactamente con qué cuenta tu negocio digitalmente. Esta parte hace un inventario completo y honesto de cada plataforma.</p>
+    <div class="plataformas-grid">
+      <div class="plataforma-card"><span class="emoji">📍</span><strong>Google Maps / Google Business</strong><span>Perfil, descripción, fotos, horarios, reseñas y respuestas.</span></div>
+      <div class="plataforma-card"><span class="emoji">📱</span><strong>Facebook e Instagram</strong><span>Perfil, contenido, engagement, CTAs, frecuencia y seguidores.</span></div>
+      <div class="plataforma-card"><span class="emoji">🎵</span><strong>TikTok y otras plataformas</strong><span>Si existen, las analizamos. Si no, evaluamos el impacto de no tenerlas.</span></div>
+      <div class="plataforma-card"><span class="emoji">💬</span><strong>WhatsApp Business</strong><span>Perfil, catálogo, respuestas automáticas y visibilidad.</span></div>
+      <div class="plataforma-card"><span class="emoji">🌐</span><strong>Página Web</strong><span>Claridad del mensaje, versión móvil, velocidad, SEO básico, navegación.</span></div>
+    </div>
+    <p class="cal-label-top">Cada elemento recibe una calificación</p>
+    <div class="calificaciones">
+      <div class="cal-item"><div class="cal-icon">✅</div><div class="cal-label">Bien</div><div class="cal-desc">Está funcionando correctamente. Se mantiene o se potencia.</div></div>
+      <div class="cal-item"><div class="cal-icon">⚠️</div><div class="cal-label">Mejorable</div><div class="cal-desc">Existe pero no está rindiendo. Hay una acción concreta para mejorarlo.</div></div>
+      <div class="cal-item"><div class="cal-icon">❌</div><div class="cal-label">Ausente</div><div class="cal-desc">No existe o está en estado crítico. Se explica el impacto real.</div></div>
+    </div>
+  </div>
+
+  <!-- PARTE 02 -->
+  <div class="parte-detalle">
+    <div class="parte-header">
+      <div class="parte-numero">02</div>
+      <div class="parte-titulo">
+        <h3>Análisis Estratégico — Errores Detectados</h3>
+        <p>La parte más importante del diagnóstico</p>
+      </div>
+    </div>
+    <p class="desc-parte">No es una lista de observaciones — es un análisis profundo de qué está fallando, por qué está fallando y qué hacer al respecto. Cada error se analiza en tres dimensiones:</p>
+    <div class="error-ejemplo">
+      <div class="error-header">Ejemplo de cómo se ve cada error en el documento</div>
+      <div class="error-row"><strong>Qué están haciendo mal</strong><p>Descripción concreta de lo que se detectó, con datos reales de tu negocio.</p></div>
+      <div class="error-row"><strong>Por qué lo están haciendo mal</strong><p>Qué está perdiendo tu negocio específicamente por este error. No teoría — consecuencias reales para tu giro y tu mercado.</p></div>
+      <div class="error-row"><strong>Qué deberían hacer</strong><p>Acciones concretas y ejecutables para corregirlo. Ajustadas a tu tiempo, tu presupuesto y tu capacidad real.</p></div>
+      <div class="accion-clave">► Acción clave — La cosa más importante a hacer esta semana.</div>
+    </div>
+    <div class="cantidad-errores"><strong>¿Cuántos errores se analizan?</strong> Depende de cada negocio — entre 8 y 12 errores según lo que se detecte en el diagnóstico. Todos son específicos de tu giro, tu ciudad y tu momento actual. No hay análisis genéricos que podrían aplicarle a cualquier negocio.</div>
+  </div>
+
+  <!-- PARTE 03 -->
+  <div class="parte-detalle">
+    <div class="parte-header">
+      <div class="parte-numero">03</div>
+      <div class="parte-titulo">
+        <h3>Diagnóstico Estratégico de Contenido</h3>
+        <p>Un nivel más profundo</p>
+      </div>
+    </div>
+    <p class="desc-parte">No solo qué está fallando, sino por qué el contenido no convierte aunque se esté publicando con frecuencia. Se analizan 7 puntos estratégicos:</p>
+    <div class="puntos-grid">
+      <div class="punto-item"><div class="punto-num">01</div><div class="punto-body"><strong>Señal emocional de marca</strong><p>¿Tu negocio tiene identidad propia reconocible o se confunde con la competencia?</p></div></div>
+      <div class="punto-item"><div class="punto-num">02</div><div class="punto-body"><strong>¿El contenido va al cliente o al peer?</strong><p>¿Hablas a quienes podrían comprarte o a personas de tu misma industria?</p></div></div>
+      <div class="punto-item"><div class="punto-num">03</div><div class="punto-body"><strong>Viralidad útil vs. viralidad vacía</strong><p>¿El alcance llega a tu cliente ideal o solo suma vistas irrelevantes?</p></div></div>
+      <div class="punto-item"><div class="punto-num">04</div><div class="punto-body"><strong>¿Generas atención o ventas?</strong><p>¿Hay un puente real entre tu contenido y una acción medible del cliente?</p></div></div>
+      <div class="punto-item"><div class="punto-num">05</div><div class="punto-body"><strong>Síntoma de posicionamiento</strong><p>¿Tu cliente entiende qué haces, por qué elegirte y cuánto vale lo que ofreces?</p></div></div>
+      <div class="punto-item"><div class="punto-num">06</div><div class="punto-body"><strong>Filtro Identidad / Emoción / Acción</strong><p>¿Tu contenido habla a alguien específico, activa una emoción y lleva a una acción?</p></div></div>
+      <div class="punto-item highlight"><div class="punto-num">07</div><div class="punto-body"><strong>Los 3 errores más urgentes</strong><p>De todo lo analizado, cuáles son los tres cambios que mayor impacto tienen si se hacen esta semana.</p></div></div>
+    </div>
+  </div>
+
+  <!-- PARTE 04 -->
+  <div class="parte-detalle">
+    <div class="parte-header">
+      <div class="parte-numero">04</div>
+      <div class="parte-titulo">
+        <h3>Plan de Acción Priorizado</h3>
+        <p>Todo el análisis en acciones concretas</p>
+      </div>
+    </div>
+    <p class="desc-parte">Todo el análisis se traduce en acciones concretas ordenadas por urgencia e impacto. Nada queda en el aire.</p>
+    <div class="prioridades">
+      <div class="prioridad">
+        <div class="prioridad-label">Prioridad 1<br>Esta semana<br>(costo cero o mínimo)</div>
+        <div class="prioridad-content">Acciones que se pueden ejecutar de inmediato, sin presupuesto. Siempre hay al menos 4 o 5 de estas. Cada una incluye el tiempo estimado que toma hacerla.</div>
+      </div>
+      <div class="prioridad">
+        <div class="prioridad-label">Prioridad 2<br>Primera semana<br>a primer mes</div>
+        <div class="prioridad-content">Acciones que requieren algo de tiempo o una inversión pequeña. Se detalla qué se necesita para ejecutar cada una.</div>
+      </div>
+      <div class="prioridad">
+        <div class="prioridad-label">Prioridad 3<br>Primer mes<br>en adelante</div>
+        <div class="prioridad-content">Acciones que construyen el sistema de contenido a largo plazo. Ajustadas al ritmo y los recursos reales de tu negocio.</div>
+      </div>
+    </div>
+    <div class="extras-box">
+      <p><span>►</span>Una tabla resumen con todos los errores detectados, la acción clave de cada uno y su nivel de urgencia.</p>
+      <p><span>►</span>Los siguientes pasos de la consultoría — posicionamiento, estrategia de contenido y monetización.</p>
+    </div>
+  </div>
+</section>
+
+<!-- DIFERENCIADORES -->
+<section class="diferencia-section">
+  <div class="section-header">
+    <div class="section-tag">Lo que nos distingue</div>
+    <h2>Lo que hace diferente este diagnóstico</h2>
+  </div>
+  <p class="diff-intro">No es una lista de recomendaciones genéricas que podrían aplicarle a cualquier negocio. Es un análisis específico de tu giro, tu ciudad, tu cliente ideal y tu momento actual.</p>
+  <div class="diff-grid">
+    <div class="diff-card"><div class="diff-check">Basado en tu negocio real</div><p>Cada observación sale del diagnóstico de tus plataformas y de la entrevista contigo.</p></div>
+    <div class="diff-card"><div class="diff-check">Acciones ejecutables</div><p>Nada queda en teoría. Todo tiene un paso concreto, un tiempo estimado y un nivel de prioridad.</p></div>
+    <div class="diff-card"><div class="diff-check">Proporcional a tu capacidad</div><p>Las recomendaciones se ajustan a tu tiempo, tu equipo y tu presupuesto real.</p></div>
+    <div class="diff-card"><div class="diff-check">Punto de partida claro</div><p>Este diagnóstico es la base de todo lo que sigue: posicionamiento, contenido y monetización.</p></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">
+    Consultoría Devsia
+    <span>Marketing Digital para Negocios Locales</span>
+  </div>
+  <div class="footer-copy">© 2025 Devsia</div>
+</footer>
+
+</body>
+</html>

@@ -1157,6 +1157,29 @@ body::before {
 }
 
 /* ============================================
+   SUB-SECTION DIVIDER (servicios merged)
+   ============================================ */
+.sub-section-title {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-2);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin: 2.5rem 0 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.sub-section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+.sub-section-title:first-child { margin-top: 0; }
+
+/* ============================================
    SOCIAL ICONS
    ============================================ */
 .social-links { display: flex; gap: 0.65rem; align-items: center; margin-top: 1.5rem; }
@@ -1204,7 +1227,6 @@ body::before {
       <div class="nav-item active" data-tab="inicio"><i class="fas fa-home"></i><span class="nav-label">Inicio</span></div>
       <div class="nav-item" data-tab="sobre"><i class="fas fa-user-circle"></i><span class="nav-label">Sobre mí</span></div>
       <div class="nav-item" data-tab="servicios"><i class="fas fa-layer-group"></i><span class="nav-label">Servicios</span></div>
-      <div class="nav-item" data-tab="proyectos"><i class="fas fa-rocket"></i><span class="nav-label">Proyectos</span></div>
      <!-- <div class="nav-item" data-tab="enlaces"><i class="fas fa-link"></i><span class="nav-label">Enlaces</span></div>-->
       <div class="nav-item" data-tab="contacto"><i class="fas fa-paper-plane"></i><span class="nav-label">Contacto</span></div>
     </nav>
@@ -1319,11 +1341,107 @@ body::before {
     </section>
 
     <!-- ===== SERVICIOS ===== -->
+    
     <section class="panel" id="panel-servicios">
       <div class="panel-header">
         <span class="panel-tag">// 02</span>
         <h2 class="panel-title">Servicios</h2>
       </div>
+
+      <div class="sub-section-title">Proyectos</div>
+      <div class="projects-grid">
+        <a href="proyectos/Devsiaweb/devsiaweb.html" class="project-card reveal" style="text-decoration:none;color:inherit;display:block;">
+          <div class="project-preview preview-1">
+            <img src="imagenes/devsiaweb.png" alt="Paginas Web">
+            <div class="project-overlay">
+              <span class="plink" title="Ver proyecto"><i class="fas fa-external-link-alt"></i></span>
+            </div>
+          </div>
+          <div class="project-info">
+            <div class="project-meta">
+              <span class="project-type">Desarrollo Web</span>
+              <span class="project-year">2024</span>
+            </div>
+            <div class="project-title">Paginas Web</div>
+            <p class="project-desc">Plataforma de comercio electrónico multi-vendedor con panel de administración, pasarela de pagos y analytics integrado.</p>
+            <div class="project-tech">
+              <span class="chip chip-purple" style="font-size:.67rem;padding:.2rem .6rem;">Next.js</span>
+              <span class="chip chip-cyan"   style="font-size:.67rem;padding:.2rem .6rem;">Node.js</span>
+              <span class="chip chip-green"  style="font-size:.67rem;padding:.2rem .6rem;">MongoDB</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="proyectos/analisis/analisis_redessociales.html" class="project-card reveal reveal-delay-1" style="text-decoration:none;color:inherit;display:block;">
+          <div class="project-preview preview-2">
+            <img src="img/proyecto-2.jpg" alt="Consultoría Marketing Digital">
+            <div class="project-overlay">
+              <span class="plink" title="Ver proyecto"><i class="fas fa-external-link-alt"></i></span>
+            </div>
+          </div>
+          <div class="project-info">
+            <div class="project-meta">
+              <span class="project-type">Marketing Digital</span>
+              <span class="project-year">2024</span>
+            </div>
+            <div class="project-title">Consultoría Redes Sociales</div>
+            <p class="project-desc">Análisis y estrategia de marketing digital para negocios locales: diagnóstico de presencia online, propuesta de contenido y plan de crecimiento.</p>
+            <div class="project-tech">
+              <span class="chip chip-pink"   style="font-size:.67rem;padding:.2rem .6rem;">Social Media</span>
+              <span class="chip chip-purple" style="font-size:.67rem;padding:.2rem .6rem;">Estrategia</span>
+              <span class="chip chip-cyan"   style="font-size:.67rem;padding:.2rem .6rem;">Analytics</span>
+            </div>
+          </div>
+        </a>
+
+        <div class="project-card reveal reveal-delay-2">
+          <div class="project-preview preview-3">
+            <img src="img/proyecto-3.jpg" alt="ClientHub CRM">
+            <div class="project-overlay">
+              <a href="#" class="plink" title="Ver proyecto"><i class="fas fa-external-link-alt"></i></a>
+              <a href="#" class="plink" title="Ver código"><i class="fab fa-github"></i></a>
+            </div>
+          </div>
+          <div class="project-info">
+            <div class="project-meta">
+              <span class="project-type">Proximamente / Proximamente</span>
+              <span class="project-year">2024</span>
+            </div>
+            <div class="project-title">Proximamente</div>
+            <p class="project-desc">Proximamente</p>
+            <div class="project-tech">
+              <span class="chip chip-purple" style="font-size:.67rem;padding:.2rem .6rem;">Vue.js</span>
+              <span class="chip chip-cyan"   style="font-size:.67rem;padding:.2rem .6rem;">Laravel</span>
+              <span class="chip chip-green"  style="font-size:.67rem;padding:.2rem .6rem;">MySQL</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card reveal reveal-delay-3">
+          <div class="project-preview preview-4">
+            <img src="img/proyecto-4.jpg" alt="Proyecto 4">
+            <div class="project-overlay">
+              <a href="#" class="plink" title="Ver proyecto"><i class="fas fa-external-link-alt"></i></a>
+              <a href="#" class="plink" title="Ver código"><i class="fab fa-github"></i></a>
+            </div>
+          </div>
+          <div class="project-info">
+            <div class="project-meta">
+              <span class="project-type">Proximamente / Proximamente</span>
+              <span class="project-year">2024</span>
+            </div>
+            <div class="project-title">Proximamente</div>
+            <p class="project-desc">Proximamente</p>
+            <div class="project-tech">
+              <span class="chip chip-lime"   style="font-size:.67rem;padding:.2rem .6rem;">TypeScript</span>
+              <span class="chip chip-purple" style="font-size:.67rem;padding:.2rem .6rem;">React</span>
+              <span class="chip chip-cyan"   style="font-size:.67rem;padding:.2rem .6rem;">PostgreSQL</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub-section-title">Mis Servicios</div>
       <div class="about-grid">
 
         <div class="about-card reveal reveal-delay-1">
@@ -1422,107 +1540,6 @@ body::before {
           </div>
         </div>
 
-      </div>
-    </section>
-
-    <!-- ===== PROYECTOS ===== -->
-    <section class="panel" id="panel-proyectos">
-      <div class="panel-header">
-        <span class="panel-tag">// 03</span>
-        <h2 class="panel-title">Proyectos</h2>
-      </div>
-
-      <div class="projects-grid">
-        <a href="proyectos/Devsiaweb/devsiaweb.html" class="project-card reveal" style="text-decoration:none;color:inherit;display:block;">
-          <div class="project-preview preview-1">
-            <img src="imagenes/devsiaweb.png" alt="Paginas Web">
-            <div class="project-overlay">
-              <span class="plink" title="Ver proyecto"><i class="fas fa-external-link-alt"></i></span>
-            </div>
-          </div>
-          <div class="project-info">
-            <div class="project-meta">
-              <span class="project-type">Desarrollo Web</span>
-              <span class="project-year">2024</span>
-            </div>
-            <div class="project-title">Paginas Web</div>
-            <p class="project-desc">Plataforma de comercio electrónico multi-vendedor con panel de administración, pasarela de pagos y analytics integrado.</p>
-            <div class="project-tech">
-              <span class="chip chip-purple" style="font-size:.67rem;padding:.2rem .6rem;">Next.js</span>
-              <span class="chip chip-cyan"   style="font-size:.67rem;padding:.2rem .6rem;">Node.js</span>
-              <span class="chip chip-green"  style="font-size:.67rem;padding:.2rem .6rem;">MongoDB</span>
-            </div>
-          </div>
-        </a>
-
-        <div class="project-card reveal reveal-delay-1">
-          <div class="project-preview preview-2">
-            <img src="img/proyecto-2.jpg" alt="InsightFlow">
-            <div class="project-overlay">
-              <a href="#" class="plink" title="Ver proyecto"><i class="fas fa-external-link-alt"></i></a>
-              <a href="#" class="plink" title="Ver código"><i class="fab fa-github"></i></a>
-            </div>
-          </div>
-          <div class="project-info">
-            <div class="project-meta">
-              <span class="project-type">Proximamente / Proximamente</span>
-              <span class="project-year">2024</span>
-            </div>
-            <div class="project-title">Proximamente</div>
-            <p class="project-desc">Proximamente</p>
-            <div class="project-tech">
-              <span class="chip chip-pink"   style="font-size:.67rem;padding:.2rem .6rem;">A</span>
-              <span class="chip chip-purple" style="font-size:.67rem;padding:.2rem .6rem;">A</span>
-              <span class="chip chip-cyan"   style="font-size:.67rem;padding:.2rem .6rem;">A</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="project-card reveal reveal-delay-2">
-          <div class="project-preview preview-3">
-            <img src="img/proyecto-3.jpg" alt="ClientHub CRM">
-            <div class="project-overlay">
-              <a href="#" class="plink" title="Ver proyecto"><i class="fas fa-external-link-alt"></i></a>
-              <a href="#" class="plink" title="Ver código"><i class="fab fa-github"></i></a>
-            </div>
-          </div>
-          <div class="project-info">
-            <div class="project-meta">
-              <span class="project-type">Proximamente / Proximamente</span>
-              <span class="project-year">2024</span>
-            </div>
-            <div class="project-title">Proximamente</div>
-            <p class="project-desc">Proximamente</p>
-            <div class="project-tech">
-              <span class="chip chip-purple" style="font-size:.67rem;padding:.2rem .6rem;">Vue.js</span>
-              <span class="chip chip-cyan"   style="font-size:.67rem;padding:.2rem .6rem;">Laravel</span>
-              <span class="chip chip-green"  style="font-size:.67rem;padding:.2rem .6rem;">MySQL</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="project-card reveal reveal-delay-3">
-          <div class="project-preview preview-4">
-            <img src="img/proyecto-4.jpg" alt="Proyecto 4">
-            <div class="project-overlay">
-              <a href="#" class="plink" title="Ver proyecto"><i class="fas fa-external-link-alt"></i></a>
-              <a href="#" class="plink" title="Ver código"><i class="fab fa-github"></i></a>
-            </div>
-          </div>
-          <div class="project-info">
-            <div class="project-meta">
-              <span class="project-type">Proximamente / Proximamente</span>
-              <span class="project-year">2024</span>
-            </div>
-            <div class="project-title">Proximamente</div>
-            <p class="project-desc">Proximamente</p>
-            <div class="project-tech">
-              <span class="chip chip-lime"   style="font-size:.67rem;padding:.2rem .6rem;">TypeScript</span>
-              <span class="chip chip-purple" style="font-size:.67rem;padding:.2rem .6rem;">React</span>
-              <span class="chip chip-cyan"   style="font-size:.67rem;padding:.2rem .6rem;">PostgreSQL</span>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -1673,7 +1690,6 @@ body::before {
     <div class="nav-item active" data-tab="inicio"><i class="fas fa-home"></i><span class="nav-label">Inicio</span></div>
     <div class="nav-item" data-tab="sobre"><i class="fas fa-user-circle"></i><span class="nav-label">Sobre</span></div>
     <div class="nav-item" data-tab="servicios"><i class="fas fa-layer-group"></i><span class="nav-label">Servicios</span></div>
-    <div class="nav-item" data-tab="proyectos"><i class="fas fa-rocket"></i><span class="nav-label">Proyectos</span></div>
     <div class="nav-item" data-tab="enlaces"><i class="fas fa-link"></i><span class="nav-label">Links</span></div>
     <div class="nav-item" data-tab="contacto"><i class="fas fa-paper-plane"></i><span class="nav-label">Contacto</span></div>
   </nav>
@@ -1861,7 +1877,7 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
 /* ============================================
    KEYBOARD NAVIGATION
    ============================================ */
-const tabs = ['inicio','sobre','servicios','proyectos','enlaces','contacto'];
+const tabs = ['inicio','sobre','servicios','enlaces','contacto'];
 document.addEventListener('keydown', e => {
   if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') return;
   if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
