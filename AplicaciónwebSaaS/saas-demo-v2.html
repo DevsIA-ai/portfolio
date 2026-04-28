@@ -1,0 +1,1448 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FlowOS · Demo Interactiva</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #f4f2ee;
+  --bg2:       #ede9e2;
+  --surface:   #ffffff;
+  --surface2:  #f9f7f4;
+  --border:    rgba(0,0,0,0.09);
+  --shadow:    0 2px 16px rgba(0,0,0,0.07);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.12);
+  --text:      #1a1814;
+  --muted:     #7a7568;
+  --radius:    18px;
+  --radius-sm: 11px;
+
+  /* Giro accents */
+  --green:     #1a7a4a;
+  --green-lt:  #e8f5ee;
+  --green-mid: #c3e8d4;
+  --blue:      #1a5fa8;
+  --blue-lt:   #e5f0fb;
+  --blue-mid:  #b8d4f5;
+  --pink:      #b5366e;
+  --pink-lt:   #fce8f2;
+  --pink-mid:  #f5bcd9;
+  --purple:    #5c2ea8;
+  --purple-lt: #efe8fb;
+  --purple-mid:#cdb8f0;
+  --indigo:    #2d3baa;
+  --indigo-lt: #e8eafb;
+  --indigo-mid:#b0b8f0;
+
+  --accent:    var(--green);
+  --accent-lt: var(--green-lt);
+  --accent-mid:var(--green-mid);
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ─── NOISE TEXTURE OVERLAY ─── */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ─── HEADER ─── */
+.app-header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 36px;
+  height: 62px;
+  background: rgba(244,242,238,0.88);
+  backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--border);
+}
+.logo {
+  display: flex; align-items: center; gap: 10px;
+  font-family: 'Fraunces', serif;
+  font-size: 21px; letter-spacing: -0.5px; font-weight: 700;
+  color: var(--text);
+}
+.logo-mark {
+  width: 32px; height: 32px; border-radius: 9px;
+  background: var(--accent);
+  display: grid; place-items: center;
+  font-size: 16px; transition: background 0.45s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+}
+.header-right { display: flex; align-items: center; gap: 12px; }
+.back-devsia {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px; font-weight: 500; letter-spacing: 0.04em;
+  color: var(--muted);
+  text-decoration: none;
+  display: flex; align-items: center; gap: 6px;
+  transition: color 0.2s;
+}
+.back-devsia:hover { color: var(--text); }
+.pill-badge {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.6px;
+  padding: 5px 12px; border-radius: 20px;
+  background: var(--accent-lt); color: var(--accent);
+  border: 1px solid var(--accent-mid);
+  text-transform: uppercase; transition: all 0.4s;
+}
+.live-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #16a34a;
+  box-shadow: 0 0 0 3px rgba(22,163,74,0.2);
+  animation: livePulse 2s infinite;
+}
+@keyframes livePulse {
+  0%,100% { box-shadow: 0 0 0 3px rgba(22,163,74,0.2); }
+  50%      { box-shadow: 0 0 0 6px rgba(22,163,74,0.05); }
+}
+
+/* ─── TABS ─── */
+.tab-bar {
+  position: fixed; top: 62px; left: 0; right: 0; z-index: 190;
+  background: rgba(244,242,238,0.92);
+  backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; padding: 0 24px;
+  gap: 2px; overflow-x: auto;
+}
+.tab-bar::-webkit-scrollbar { display: none; }
+.tab {
+  display: flex; align-items: center; gap: 7px;
+  padding: 0 18px; height: 50px;
+  font-size: 13.5px; font-weight: 500; color: var(--muted);
+  cursor: pointer; border: none; background: none;
+  border-bottom: 2.5px solid transparent;
+  transition: all 0.22s; white-space: nowrap; position: relative;
+}
+.tab:hover { color: var(--text); background: rgba(0,0,0,0.03); border-radius: 8px 8px 0 0; }
+.tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+.tab-emoji { font-size: 15px; }
+
+/* ─── MAIN ─── */
+.main {
+  padding: 130px 32px 80px;
+  max-width: 1120px; margin: 0 auto;
+  position: relative; z-index: 1;
+}
+
+/* ─── SECTION ─── */
+.section { display: none; }
+.section.active { display: block; animation: sectionIn 0.38s cubic-bezier(.22,.68,0,1.2); }
+@keyframes sectionIn {
+  from { opacity:0; transform: translateY(14px) scale(0.99); }
+  to   { opacity:1; transform: translateY(0) scale(1); }
+}
+
+/* ─── SECTION HERO ─── */
+.section-hero {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  margin-bottom: 32px; flex-wrap: wrap; gap: 16px;
+}
+.section-hero-left { display: flex; align-items: center; gap: 18px; }
+.hero-icon-ring {
+  width: 60px; height: 60px; border-radius: 18px;
+  background: var(--accent-lt);
+  border: 1.5px solid var(--accent-mid);
+  display: grid; place-items: center; font-size: 26px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  transition: background 0.4s, border-color 0.4s;
+}
+.section-title {
+  font-family: 'Fraunces', serif;
+  font-size: 34px; line-height: 1.05;
+  font-weight: 700; letter-spacing: -1px;
+}
+.section-sub { color: var(--muted); font-size: 14px; margin-top: 5px; }
+
+/* ─── CARD ─── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px;
+  box-shadow: var(--shadow);
+  transition: border-color 0.22s, transform 0.22s, box-shadow 0.22s;
+}
+.card:hover {
+  border-color: var(--accent-mid);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+.card-sm { padding: 16px; border-radius: var(--radius-sm); }
+
+/* ─── GRID ─── */
+.grid { display: grid; gap: 18px; }
+.grid-2 { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+.grid-3 { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+
+/* ─── BUTTONS ─── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  padding: 10px 22px; border-radius: 10px;
+  font-family: 'DM Sans', sans-serif; font-size: 13.5px; font-weight: 600;
+  cursor: pointer; border: none; transition: all 0.18s; letter-spacing: 0.1px;
+}
+.btn-primary {
+  background: var(--accent); color: #fff;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.18);
+}
+.btn-primary:hover { filter: brightness(1.08); transform: translateY(-1px); box-shadow: 0 5px 18px rgba(0,0,0,0.22); }
+.btn-primary:active { transform: scale(0.97); }
+.btn-outline {
+  background: var(--accent-lt); color: var(--accent);
+  border: 1.5px solid var(--accent-mid);
+}
+.btn-outline:hover { background: var(--accent); color: #fff; }
+.btn-ghost {
+  background: var(--surface2); color: var(--text);
+  border: 1px solid var(--border);
+}
+.btn-ghost:hover { border-color: var(--accent-mid); color: var(--accent); }
+.btn-danger {
+  background: #fef2f2; color: #dc2626;
+  border: 1px solid #fecaca;
+}
+.btn-danger:hover { background: #fee2e2; }
+.btn-sm { padding: 7px 14px; font-size: 12.5px; }
+.btn-full { width: 100%; }
+
+/* ─── TAG ─── */
+.tag {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11.5px; font-weight: 600; padding: 4px 10px;
+  border-radius: 20px; text-transform: uppercase; letter-spacing: 0.4px;
+}
+.tag-accent  { background: var(--accent-lt);   color: var(--accent); border: 1px solid var(--accent-mid); }
+.tag-muted   { background: #f1f0ed; color: var(--muted); }
+.tag-success { background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
+.tag-warn    { background: #fffbeb; color: #d97706; border: 1px solid #fde68a; }
+.tag-error   { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+.tag-info    { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
+
+/* ─── DIVIDER ─── */
+.divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+
+/* ─── SELECT / INPUT ─── */
+select, input[type="date"], input[type="text"], input[type="file"] {
+  width: 100%; padding: 10px 14px; border-radius: 10px;
+  background: var(--surface2); border: 1.5px solid var(--border);
+  color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px;
+  outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+}
+select:focus, input[type="date"]:focus, input[type="text"]:focus {
+  border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-lt);
+}
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a7568' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 14px center;
+  padding-right: 38px; cursor: pointer;
+}
+
+/* ─── TIME SLOT ─── */
+.time-slots { display: flex; flex-wrap: wrap; gap: 8px; }
+.time-slot {
+  padding: 8px 14px; border-radius: 9px; font-size: 13px; font-weight: 500;
+  background: var(--surface2); border: 1.5px solid var(--border);
+  cursor: pointer; transition: all 0.18s; color: var(--text);
+}
+.time-slot:hover { border-color: var(--accent-mid); color: var(--accent); }
+.time-slot.selected { background: var(--accent); color: #fff; border-color: var(--accent); }
+.time-slot.taken { opacity: .35; cursor: not-allowed; text-decoration: line-through; }
+
+/* ─── TOAST ─── */
+#toasts {
+  position: fixed; bottom: 28px; right: 28px;
+  display: flex; flex-direction: column; gap: 10px; z-index: 9999;
+}
+.toast {
+  display: flex; align-items: center; gap: 12px;
+  padding: 13px 18px; border-radius: 13px;
+  background: var(--surface); border: 1px solid var(--border);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.14);
+  font-size: 13.5px; font-weight: 500; min-width: 240px; max-width: 320px;
+  animation: toastIn 0.35s cubic-bezier(.34,1.56,.64,1);
+}
+.toast.out { animation: toastOut 0.28s ease forwards; }
+@keyframes toastIn  { from { opacity:0; transform: translateX(32px) scale(.92); } to { opacity:1; transform:none; } }
+@keyframes toastOut { to   { opacity:0; transform: translateX(32px) scale(.92); } }
+
+/* ─── CONFIRM BANNER ─── */
+.confirm-banner {
+  display: none; border-radius: 14px; padding: 24px; text-align: center;
+  background: var(--accent-lt); border: 1.5px solid var(--accent-mid);
+  animation: sectionIn 0.35s ease;
+}
+.confirm-banner.show { display: block; }
+.confirm-banner .icon { font-size: 38px; margin-bottom: 8px; }
+.confirm-banner h3 { font-size: 18px; font-weight: 700; color: var(--accent); font-family: 'Fraunces', serif; }
+.confirm-banner p  { color: var(--muted); font-size: 13.5px; margin-top: 5px; }
+
+/* ─── UTILS ─── */
+.flex  { display: flex; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; }
+.flex-col { display: flex; flex-direction: column; }
+.gap-8  { gap: 8px; }  .gap-12 { gap: 12px; } .gap-16 { gap: 16px; }
+.gap-20 { gap: 20px; }
+.mt-4  { margin-top: 4px; }   .mt-8  { margin-top: 8px; }
+.mt-12 { margin-top: 12px; }  .mt-16 { margin-top: 16px; }
+.mt-20 { margin-top: 20px; }  .mt-24 { margin-top: 24px; }
+.mb-8  { margin-bottom: 8px; } .mb-16 { margin-bottom: 16px; }
+.label { font-size: 11.5px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; }
+.price { font-size: 22px; font-weight: 700; }
+.bold  { font-weight: 700; }
+.muted { color: var(--muted); font-size: 13.5px; }
+.text-accent { color: var(--accent); }
+.fs-13 { font-size: 13px; }
+
+/* ════════ STAT BOX ════════ */
+.stat-chip {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+  padding: 18px; box-shadow: var(--shadow);
+}
+.stat-num   { font-family: 'Fraunces', serif; font-size: 32px; font-weight: 700; color: var(--accent); }
+.stat-label { font-size: 12px; color: var(--muted); margin-top: 3px; font-weight: 500; }
+
+/* ════════════════════════════════════
+   RESTAURANTE
+════════════════════════════════════ */
+.resto-layout { display: grid; grid-template-columns: 1fr 340px; gap: 22px; }
+@media (max-width: 820px) { .resto-layout { grid-template-columns: 1fr; } }
+
+.dish-emoji-box {
+  height: 130px; border-radius: 12px; margin-bottom: 14px;
+  background: var(--accent-lt);
+  display: grid; place-items: center; font-size: 52px;
+  border: 1px solid var(--accent-mid);
+}
+.dish-name { font-weight: 700; font-size: 15px; }
+.dish-desc { color: var(--muted); font-size: 12.5px; margin-top: 4px; line-height: 1.5; }
+.dish-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; }
+
+.cart-panel {
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 22px;
+  position: sticky; top: 130px; height: fit-content;
+  box-shadow: var(--shadow-lg);
+}
+.cart-title { font-weight: 700; font-size: 15px; display: flex; align-items: center; gap: 8px; font-family: 'Fraunces', serif; }
+.cart-count {
+  background: var(--accent); color: #fff;
+  font-size: 11px; font-weight: 700;
+  width: 22px; height: 22px; border-radius: 50%;
+  display: grid; place-items: center; transition: transform 0.2s;
+}
+.cart-empty { color: var(--muted); font-size: 13.5px; text-align: center; padding: 32px 16px; }
+.cart-item  {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 0; border-bottom: 1px solid var(--border);
+}
+.cart-item:last-child { border-bottom: none; }
+.cart-item-name  { font-size: 13.5px; font-weight: 600; }
+.cart-item-price { font-size: 14px; font-weight: 700; color: var(--accent); }
+.cart-total      { display: flex; justify-content: space-between; padding-top: 14px; font-weight: 700; font-size: 16px; }
+.qty-btn {
+  width: 28px; height: 28px; border-radius: 8px;
+  background: var(--surface2); border: 1px solid var(--border);
+  color: var(--text); font-size: 16px; cursor: pointer;
+  display: grid; place-items: center; transition: all 0.15s;
+}
+.qty-btn:hover { border-color: var(--accent-mid); color: var(--accent); }
+.qty-row { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
+
+/* ════════════════════════════════════
+   CLÍNICA
+════════════════════════════════════ */
+.clinic-layout { display: grid; grid-template-columns: 1fr 300px; gap: 22px; }
+@media (max-width: 820px) { .clinic-layout { grid-template-columns: 1fr; } }
+
+.doctor-avatar {
+  width: 48px; height: 48px; border-radius: 50%;
+  background: var(--accent-lt); border: 2px solid var(--accent-mid);
+  display: grid; place-items: center; font-size: 20px; flex-shrink: 0;
+}
+.doctor-row {
+  display: flex; align-items: center; gap: 14px;
+  cursor: pointer; padding: 16px;
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm); transition: all 0.2s;
+  box-shadow: var(--shadow);
+}
+.doctor-row:hover { border-color: var(--accent-mid); transform: translateX(3px); }
+.doctor-row.selected { border-color: var(--accent); background: var(--accent-lt); }
+.appt-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 13.5px; }
+
+/* ════════════════════════════════════
+   SALÓN
+════════════════════════════════════ */
+.service-card { cursor: pointer; text-align: center; }
+.service-card.selected { border-color: var(--accent) !important; background: var(--accent-lt) !important; }
+.svc-emoji { font-size: 34px; margin-bottom: 10px; display: block; }
+.svc-name  { font-weight: 700; font-size: 14px; }
+.svc-dur   { color: var(--muted); font-size: 12px; margin-top: 3px; }
+
+.stylist-btn {
+  display: flex; align-items: center; gap: 9px;
+  padding: 10px 16px; border-radius: 10px;
+  background: var(--surface); border: 1.5px solid var(--border);
+  cursor: pointer; font-size: 13.5px; font-weight: 500;
+  transition: all 0.18s; box-shadow: var(--shadow);
+}
+.stylist-btn:hover  { border-color: var(--accent-mid); }
+.stylist-btn.selected { background: var(--accent-lt); border-color: var(--accent); color: var(--accent); }
+.stylist-av { width: 32px; height: 32px; border-radius: 50%; background: var(--accent-lt); display: grid; place-items: center; font-size: 15px; }
+
+.salon-panel {
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 22px;
+  position: sticky; top: 130px; height: fit-content;
+  box-shadow: var(--shadow-lg);
+}
+
+/* ════════════════════════════════════
+   GIMNASIO
+════════════════════════════════════ */
+.gym-layout { display: grid; grid-template-columns: 1fr 310px; gap: 22px; }
+@media (max-width: 820px) { .gym-layout { grid-template-columns: 1fr; } }
+
+.class-row {
+  display: flex; align-items: center; gap: 16px;
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm); padding: 18px;
+  box-shadow: var(--shadow); transition: all 0.2s;
+}
+.class-row:hover { border-color: var(--accent-mid); }
+.class-icon-box {
+  width: 50px; height: 50px; border-radius: 14px;
+  background: var(--accent-lt); border: 1px solid var(--accent-mid);
+  display: grid; place-items: center; font-size: 22px; flex-shrink: 0;
+}
+.occ-bar-bg   { height: 6px; border-radius: 3px; background: #e8e5df; overflow: hidden; margin-top: 6px; }
+.occ-bar-fill { height: 100%; border-radius: 3px; background: var(--accent); transition: width .6s ease; }
+
+.chart-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow);
+}
+
+/* ════════════════════════════════════
+   AI DOCS (NUEVO MÓDULO)
+════════════════════════════════════ */
+.ai-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+@media (max-width: 820px) { .ai-layout { grid-template-columns: 1fr; } }
+
+.drop-zone {
+  border: 2px dashed var(--accent-mid);
+  border-radius: 18px; padding: 48px 32px;
+  text-align: center; cursor: pointer;
+  background: var(--accent-lt);
+  transition: all 0.25s; position: relative;
+}
+.drop-zone:hover, .drop-zone.dragover {
+  border-color: var(--accent);
+  background: var(--accent-lt);
+  box-shadow: 0 0 0 4px var(--accent-lt);
+}
+.drop-zone input[type="file"] {
+  position: absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%;
+}
+.drop-icon { font-size: 42px; margin-bottom: 14px; display: block; }
+.drop-title { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 600; }
+.drop-sub   { color: var(--muted); font-size: 13px; margin-top: 6px; }
+
+.file-list { display: flex; flex-col flex-direction:column; gap: 10px; margin-top: 16px; }
+.file-item {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 12px 14px;
+  box-shadow: var(--shadow);
+}
+.file-icon  { font-size: 22px; flex-shrink: 0; }
+.file-name  { font-size: 13.5px; font-weight: 600; flex: 1; }
+.file-size  { font-size: 12px; color: var(--muted); }
+.file-del   {
+  width: 26px; height: 26px; border-radius: 7px;
+  background: #fef2f2; color: #dc2626; font-size: 14px;
+  display: grid; place-items: center; cursor: pointer;
+  border: 1px solid #fecaca; transition: all 0.15s;
+}
+.file-del:hover { background: #fee2e2; }
+
+.analysis-type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+.analysis-type-btn {
+  display: flex; flex-direction: column; gap: 4px;
+  padding: 14px 16px; border-radius: 12px;
+  background: var(--surface); border: 1.5px solid var(--border);
+  cursor: pointer; transition: all 0.18s; text-align: left;
+}
+.analysis-type-btn:hover { border-color: var(--accent-mid); }
+.analysis-type-btn.selected { background: var(--accent-lt); border-color: var(--accent); }
+.atype-icon  { font-size: 20px; }
+.atype-label { font-size: 13px; font-weight: 700; }
+.atype-desc  { font-size: 11.5px; color: var(--muted); }
+
+/* Result Panel */
+.result-panel {
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow-lg);
+  min-height: 400px; display: flex; flex-direction: column;
+}
+.result-empty {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  color: var(--muted); text-align: center; gap: 12px;
+}
+.result-empty-icon { font-size: 48px; opacity: 0.5; }
+
+.result-section { margin-bottom: 20px; }
+.result-section h4 {
+  font-family: 'Fraunces', serif; font-size: 15px; font-weight: 600;
+  margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
+}
+.result-item {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 10px 12px; border-radius: 10px;
+  background: var(--surface2); border: 1px solid var(--border);
+  margin-bottom: 8px; font-size: 13px; line-height: 1.55;
+}
+.result-item-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); margin-top: 5px; flex-shrink:0; }
+
+.risk-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 700;
+}
+.risk-high   { background:#fef2f2; color:#dc2626; border:1px solid #fecaca; }
+.risk-medium { background:#fffbeb; color:#d97706; border:1px solid #fde68a; }
+.risk-low    { background:#ecfdf5; color:#059669; border:1px solid #a7f3d0; }
+
+/* Loading anim */
+.loading-dots { display: inline-flex; gap: 5px; align-items: center; }
+.loading-dot  {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
+  animation: dotBounce 1.2s infinite;
+}
+.loading-dot:nth-child(2) { animation-delay: 0.2s; }
+.loading-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes dotBounce {
+  0%,80%,100% { transform: scale(0.7); opacity:0.4; }
+  40%          { transform: scale(1.1); opacity:1; }
+}
+.loading-bar-wrap { height: 4px; border-radius: 2px; background: var(--accent-lt); overflow:hidden; margin-top:12px; }
+.loading-bar      { height: 100%; background: var(--accent); border-radius: 2px; animation: loadBar 2s ease-in-out; }
+@keyframes loadBar { from { width:0%; } to { width:100%; } }
+
+/* ── Panel title ── */
+.panel-title { font-family:'Fraunces',serif; font-weight:700; font-size:16px; margin-bottom:16px; }
+
+/* ── responsive ── */
+@media (max-width:600px) {
+  .app-header { padding: 0 16px; }
+  .main { padding: 128px 14px 60px; }
+  .section-title { font-size: 26px; }
+  .ai-layout { grid-template-columns: 1fr; }
+  .analysis-type-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ HEADER ══ -->
+<header class="app-header">
+  <div class="logo">
+    <div class="logo-mark" id="logoMark">⚡</div>
+    FlowOS
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="back-devsia">← DevsIA</a>
+    <div class="live-dot"></div>
+    <span class="pill-badge" id="headerBadge">Demo en vivo</span>
+  </div>
+</header>
+
+<!-- ══ TABS ══ -->
+<nav class="tab-bar">
+  <button class="tab active" onclick="switchTab('restaurante')" id="tab-restaurante"><span class="tab-emoji">🍽</span> Restaurante</button>
+  <button class="tab" onclick="switchTab('clinica')"    id="tab-clinica"   ><span class="tab-emoji">🏥</span> Clínica</button>
+  <button class="tab" onclick="switchTab('salon')"      id="tab-salon"     ><span class="tab-emoji">💇</span> Salón</button>
+  <button class="tab" onclick="switchTab('gimnasio')"   id="tab-gimnasio"  ><span class="tab-emoji">🏋️</span> Gimnasio</button>
+  <button class="tab" onclick="switchTab('aidocs')"     id="tab-aidocs"    ><span class="tab-emoji">🤖</span> Análisis IA</button>
+</nav>
+
+<!-- ══ MAIN ══ -->
+<main class="main">
+
+<!-- ════════════ RESTAURANTE ════════════ -->
+<section class="section active" id="section-restaurante">
+  <div class="section-hero">
+    <div class="section-hero-left">
+      <div class="hero-icon-ring">🍽</div>
+      <div>
+        <h1 class="section-title">Menú Digital</h1>
+        <p class="section-sub">Mesa #7 · Pedidos en tiempo real</p>
+      </div>
+    </div>
+    <div class="flex gap-8">
+      <span class="tag tag-success">🟢 Cocina abierta</span>
+      <span class="tag tag-muted">Hoy: 48 órdenes</span>
+    </div>
+  </div>
+  <div class="resto-layout">
+    <div class="grid grid-2" id="dishGrid"></div>
+    <div>
+      <div class="cart-panel">
+        <div class="cart-title">🛒 Mi Pedido <span class="cart-count" id="cartCount">0</span></div>
+        <hr class="divider">
+        <div id="cartItems"><div class="cart-empty">🍴<br>Tu carrito está vacío</div></div>
+        <div id="cartFooter" style="display:none">
+          <hr class="divider">
+          <div class="cart-total"><span>Total</span><span class="text-accent" id="cartTotal">$0</span></div>
+          <button class="btn btn-primary btn-full mt-16" id="orderBtn" onclick="placeOrder()">✅ Enviar Pedido</button>
+        </div>
+        <div class="confirm-banner mt-16" id="orderConfirm">
+          <div class="icon">🎉</div>
+          <h3>¡Pedido enviado!</h3>
+          <p>Tu orden está en camino a la cocina.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ CLÍNICA ════════════ -->
+<section class="section" id="section-clinica">
+  <div class="section-hero">
+    <div class="section-hero-left">
+      <div class="hero-icon-ring">🏥</div>
+      <div>
+        <h1 class="section-title">Agenda Médica</h1>
+        <p class="section-sub">Reserva tu cita con nuestros especialistas</p>
+      </div>
+    </div>
+    <span class="tag tag-info">📅 24 citas hoy</span>
+  </div>
+  <div class="clinic-layout">
+    <div>
+      <div class="label mb-16">Selecciona un Doctor</div>
+      <div class="flex-col gap-12" id="doctorList"></div>
+    </div>
+    <div>
+      <div class="card" style="position:sticky;top:130px">
+        <div class="panel-title">📅 Agendar Cita</div>
+        <div class="label mb-8">Doctor</div>
+        <div id="selectedDoctor" class="muted fs-13">— Ninguno seleccionado —</div>
+        <hr class="divider">
+        <div class="label mb-8">Fecha</div>
+        <input type="date" id="clinicDate">
+        <div class="label mt-16 mb-8">Horario</div>
+        <div class="time-slots" id="clinicSlots"></div>
+        <button class="btn btn-primary btn-full mt-16" onclick="bookAppointment()">Reservar Cita</button>
+        <div class="confirm-banner mt-16" id="clinicConfirm">
+          <div class="icon">✅</div>
+          <h3>¡Cita confirmada!</h3>
+          <div id="clinicConfirmDetails" class="mt-8"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ SALÓN ════════════ -->
+<section class="section" id="section-salon">
+  <div class="section-hero">
+    <div class="section-hero-left">
+      <div class="hero-icon-ring">💇</div>
+      <div>
+        <h1 class="section-title">Salón de Belleza</h1>
+        <p class="section-sub">Reserva tu servicio favorito</p>
+      </div>
+    </div>
+    <span class="tag tag-warn">⭐ 4.9 / 5.0 reseñas</span>
+  </div>
+  <div class="resto-layout">
+    <div>
+      <div class="label mb-16">Elige un Servicio</div>
+      <div class="grid grid-3" id="serviceGrid"></div>
+      <div class="label mt-24 mb-12">Elige tu Estilista</div>
+      <div class="flex gap-12 flex-wrap" id="stylistPick"></div>
+      <div class="label mt-24 mb-12">Selecciona Horario</div>
+      <div class="time-slots" id="salonSlots"></div>
+      <button class="btn btn-primary mt-20" style="padding:12px 32px" onclick="bookSalon()">💅 Confirmar Reserva</button>
+      <div class="confirm-banner mt-16" id="salonConfirm">
+        <div class="icon">💖</div>
+        <h3>¡Reserva exitosa!</h3>
+        <p id="salonConfirmDetails"></p>
+      </div>
+    </div>
+    <div>
+      <div class="salon-panel">
+        <div class="panel-title">✨ Tu Reserva</div>
+        <div class="flex-col gap-8">
+          <div class="appt-row"><span class="muted">Servicio</span><span id="s-servicio" class="bold">—</span></div>
+          <div class="appt-row"><span class="muted">Estilista</span><span id="s-estilista" class="bold">—</span></div>
+          <div class="appt-row"><span class="muted">Horario</span><span id="s-horario" class="bold">—</span></div>
+          <div class="appt-row"><span class="muted">Duración</span><span id="s-duracion" class="bold">—</span></div>
+          <hr class="divider">
+          <div class="flex-between">
+            <span class="bold" style="font-size:15px">Total</span>
+            <span class="price text-accent" id="s-total">$—</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ GIMNASIO ════════════ -->
+<section class="section" id="section-gimnasio">
+  <div class="section-hero">
+    <div class="section-hero-left">
+      <div class="hero-icon-ring">🏋️</div>
+      <div>
+        <h1 class="section-title">FlowGym</h1>
+        <p class="section-sub">Clases grupales · Semana actual</p>
+      </div>
+    </div>
+    <span class="tag tag-accent" id="enrolledBadge">0 inscritas</span>
+  </div>
+  <div class="gym-layout">
+    <div class="flex-col gap-12" id="classesList"></div>
+    <div class="flex-col gap-16">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="stat-chip"><div class="stat-num" id="enrolledCount">0</div><div class="stat-label">Inscripciones mías</div></div>
+        <div class="stat-chip"><div class="stat-num">4</div><div class="stat-label">Clases hoy</div></div>
+      </div>
+      <div class="chart-card">
+        <div class="panel-title">📊 Asistencia semanal</div>
+        <canvas id="gymChart" height="210"></canvas>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ AI DOCS ════════════ -->
+<section class="section" id="section-aidocs">
+  <div class="section-hero">
+    <div class="section-hero-left">
+      <div class="hero-icon-ring">🤖</div>
+      <div>
+        <h1 class="section-title">Análisis de Documentos IA</h1>
+        <p class="section-sub">Sube contratos, expedientes o informes — la IA extrae lo importante en segundos</p>
+      </div>
+    </div>
+    <div class="flex gap-8 flex-wrap">
+      <span class="tag tag-accent">✨ Powered by IA</span>
+      <span class="tag tag-success">🔒 Datos seguros</span>
+    </div>
+  </div>
+
+  <!-- Use cases selector -->
+  <div class="flex gap-10 flex-wrap mb-16" id="useCaseTabs">
+    <button class="btn btn-outline btn-sm uc-btn active" data-uc="legal" onclick="setUseCase('legal',this)">⚖️ Abogados</button>
+    <button class="btn btn-ghost btn-sm uc-btn" data-uc="contable" onclick="setUseCase('contable',this)">📊 Contaduría</button>
+    <button class="btn btn-ghost btn-sm uc-btn" data-uc="rh" onclick="setUseCase('rh',this)">👥 Recursos Humanos</button>
+    <button class="btn btn-ghost btn-sm uc-btn" data-uc="medico" onclick="setUseCase('medico',this)">🏥 Expedientes Médicos</button>
+  </div>
+
+  <div class="ai-layout">
+    <!-- LEFT: Upload + config -->
+    <div class="flex-col gap-16">
+      <!-- Drop zone -->
+      <div class="drop-zone" id="dropZone" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
+        <input type="file" id="fileInput" multiple accept=".pdf,.doc,.docx,.txt,.jpg,.png" onchange="handleFiles(this.files)">
+        <span class="drop-icon">📂</span>
+        <div class="drop-title">Arrastra tus archivos aquí</div>
+        <div class="drop-sub mt-8">o haz clic para seleccionar · PDF, DOCX, TXT, JPG</div>
+        <div class="flex gap-8 mt-16" style="justify-content:center;flex-wrap:wrap">
+          <span class="tag tag-muted">PDF</span>
+          <span class="tag tag-muted">DOCX</span>
+          <span class="tag tag-muted">TXT</span>
+          <span class="tag tag-muted">JPG / PNG</span>
+        </div>
+      </div>
+
+      <!-- File list -->
+      <div id="fileList" class="flex-col gap-10" style="display:none!important"></div>
+
+      <!-- Analysis type -->
+      <div class="card card-sm">
+        <div class="label mb-12">Tipo de Análisis</div>
+        <div class="analysis-type-grid" id="analysisTypeGrid"></div>
+      </div>
+
+      <!-- Analyze button -->
+      <button class="btn btn-primary" style="padding:14px 32px;font-size:15px" onclick="runAnalysis()" id="analyzeBtn">
+        🔍 Analizar Documentos
+      </button>
+    </div>
+
+    <!-- RIGHT: Results -->
+    <div class="result-panel" id="resultPanel">
+      <div class="result-empty" id="resultEmpty">
+        <div class="result-empty-icon">📄</div>
+        <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:600">Resultados aparecerán aquí</div>
+        <div class="muted">Sube archivos y elige el tipo de análisis</div>
+      </div>
+      <div id="resultContent" style="display:none"></div>
+    </div>
+  </div>
+
+  <!-- Sample docs -->
+  <div class="card mt-20" style="background:linear-gradient(135deg,var(--accent-lt),var(--surface))">
+    <div class="flex-between flex-wrap gap-12">
+      <div>
+        <div class="bold" style="font-size:15px">¿No tienes archivos a la mano?</div>
+        <div class="muted mt-4">Prueba con nuestros documentos de muestra prediseñados</div>
+      </div>
+      <div class="flex gap-10 flex-wrap">
+        <button class="btn btn-ghost btn-sm" onclick="loadSampleDoc('contrato')">📋 Contrato de ejemplo</button>
+        <button class="btn btn-ghost btn-sm" onclick="loadSampleDoc('estados')">📊 Estado financiero</button>
+        <button class="btn btn-ghost btn-sm" onclick="loadSampleDoc('expediente')">🗂 Expediente laboral</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<div id="toasts"></div>
+
+<script>
+// ══════════════════════════════════════
+// THEME CONFIG
+// ══════════════════════════════════════
+const themes = {
+  restaurante: { accent:'#1a7a4a', lt:'#e8f5ee', mid:'#c3e8d4', icon:'🍽', emoji:'⚡' },
+  clinica:     { accent:'#1a5fa8', lt:'#e5f0fb', mid:'#b8d4f5', icon:'🏥', emoji:'🏥' },
+  salon:       { accent:'#b5366e', lt:'#fce8f2', mid:'#f5bcd9', icon:'💇', emoji:'💇' },
+  gimnasio:    { accent:'#5c2ea8', lt:'#efe8fb', mid:'#cdb8f0', icon:'🏋️', emoji:'🏋️' },
+  aidocs:      { accent:'#2d3baa', lt:'#e8eafb', mid:'#b0b8f0', icon:'🤖', emoji:'🤖' },
+};
+
+function applyTheme(tab) {
+  const t = themes[tab];
+  const root = document.documentElement;
+  root.style.setProperty('--accent',     t.accent);
+  root.style.setProperty('--accent-lt',  t.lt);
+  root.style.setProperty('--accent-mid', t.mid);
+  document.getElementById('logoMark').textContent = t.emoji;
+  document.getElementById('logoMark').style.background = t.accent;
+}
+
+// ══════════════════════════════════════
+// TABS
+// ══════════════════════════════════════
+let currentTab = 'restaurante';
+function switchTab(tab) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('section-' + tab).classList.add('active');
+  document.getElementById('tab-' + tab).classList.add('active');
+  currentTab = tab;
+  applyTheme(tab);
+  if (tab === 'gimnasio') initGymChart();
+}
+
+// ══════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════
+function toast(msg, icon='✅') {
+  const c = document.getElementById('toasts');
+  const el = document.createElement('div');
+  el.className = 'toast';
+  el.innerHTML = `<span style="font-size:18px">${icon}</span><span>${msg}</span>`;
+  c.appendChild(el);
+  setTimeout(() => { el.classList.add('out'); setTimeout(()=>el.remove(),300); }, 3200);
+}
+
+// ══════════════════════════════════════
+// RESTAURANTE
+// ══════════════════════════════════════
+const dishes = [
+  { id:1, name:'Tacos al Pastor',       desc:'3 tacos marinados con piña, cilantro y cebolla', price:89,  emoji:'🌮' },
+  { id:2, name:'Hamburguesa Doble',     desc:'Doble carne Angus, cheddar, lechuga y jitomate', price:149, emoji:'🍔' },
+  { id:3, name:'Pasta Alfredo',         desc:'Penne en salsa cremosa de parmesano',             price:125, emoji:'🍝' },
+  { id:4, name:'Ensalada César',        desc:'Romana, aderezo César, crutones y parmesano',    price:95,  emoji:'🥗' },
+  { id:5, name:'Pizza Margherita',      desc:'Salsa de tomate, mozzarella y albahaca fresca',  price:165, emoji:'🍕' },
+  { id:6, name:'Brownie + Helado',      desc:'Brownie caliente con helado de vainilla',         price:75,  emoji:'🍫' },
+];
+let cart = {};
+
+function renderDishes() {
+  document.getElementById('dishGrid').innerHTML = dishes.map(d => `
+    <div class="card">
+      <div class="dish-emoji-box">${d.emoji}</div>
+      <div class="dish-name">${d.name}</div>
+      <div class="dish-desc">${d.desc}</div>
+      <div class="dish-footer">
+        <span class="price text-accent">$${d.price}</span>
+        <button class="btn btn-outline btn-sm" onclick="addToCart(${d.id})">+ Agregar</button>
+      </div>
+    </div>`).join('');
+}
+function addToCart(id) {
+  const d = dishes.find(x=>x.id===id);
+  if (!cart[id]) cart[id] = {...d, qty:0};
+  cart[id].qty++;
+  renderCart();
+  document.getElementById('orderConfirm').classList.remove('show');
+  document.getElementById('orderBtn').style.display='';
+  const cc = document.getElementById('cartCount');
+  cc.style.transform='scale(1.5)'; setTimeout(()=>cc.style.transform='scale(1)',220);
+  toast(`"${d.name}" añadido`, '🛒');
+}
+function changeQty(id, d) {
+  if (!cart[id]) return;
+  cart[id].qty += d;
+  if (cart[id].qty <= 0) delete cart[id];
+  renderCart();
+}
+function renderCart() {
+  const items = Object.values(cart);
+  const qty   = items.reduce((s,i)=>s+i.qty, 0);
+  const total = items.reduce((s,i)=>s+i.price*i.qty, 0);
+  document.getElementById('cartCount').textContent = qty;
+  if (!items.length) {
+    document.getElementById('cartItems').innerHTML = '<div class="cart-empty">🍴<br>Tu carrito está vacío</div>';
+    document.getElementById('cartFooter').style.display='none';
+  } else {
+    document.getElementById('cartItems').innerHTML = items.map(i=>`
+      <div class="cart-item">
+        <div>
+          <div class="cart-item-name">${i.emoji} ${i.name}</div>
+          <div class="qty-row">
+            <button class="qty-btn" onclick="changeQty(${i.id},-1)">−</button>
+            <span style="font-weight:700;font-size:14px">${i.qty}</span>
+            <button class="qty-btn" onclick="changeQty(${i.id},1)">+</button>
+          </div>
+        </div>
+        <div class="cart-item-price">$${i.price*i.qty}</div>
+      </div>`).join('');
+    document.getElementById('cartFooter').style.display='block';
+    document.getElementById('cartTotal').textContent = '$'+total;
+  }
+}
+function placeOrder() {
+  if (!Object.keys(cart).length) return;
+  cart = {}; renderCart();
+  document.getElementById('orderConfirm').classList.add('show');
+  document.getElementById('orderBtn').style.display='none';
+  toast('¡Pedido enviado a cocina!','🍽');
+}
+
+// ══════════════════════════════════════
+// CLÍNICA
+// ══════════════════════════════════════
+const doctors = [
+  { id:1, name:'Dra. Sofía Ramírez', spec:'Medicina General', emoji:'👩‍⚕️', avail:true  },
+  { id:2, name:'Dr. Carlos Méndez',  spec:'Cardiología',      emoji:'👨‍⚕️', avail:true  },
+  { id:3, name:'Dra. Laura Torres',  spec:'Pediatría',        emoji:'👩‍⚕️', avail:true  },
+  { id:4, name:'Dr. Andrés Vega',    spec:'Dermatología',     emoji:'👨‍⚕️', avail:false },
+];
+const cSlots  = ['09:00','09:30','10:00','10:30','11:00','11:30','16:00','16:30','17:00'];
+const cTaken  = ['09:30','11:00','16:30'];
+let selDoc=null, selCSlot=null;
+
+function renderDoctors() {
+  document.getElementById('doctorList').innerHTML = doctors.map(d=>`
+    <div class="doctor-row ${!d.avail?'':''}${selDoc&&selDoc.id===d.id?' selected':''}" id="drow-${d.id}" onclick="selectDoc(${d.id})">
+      <div class="doctor-avatar">${d.emoji}</div>
+      <div style="flex:1">
+        <div style="font-weight:700;font-size:14.5px">${d.name}</div>
+        <div class="muted mt-4">${d.spec}</div>
+      </div>
+      <span class="tag ${d.avail?'tag-success':'tag-error'}">${d.avail?'🟢 Disponible':'🔴 No disponible'}</span>
+    </div>`).join('');
+}
+function selectDoc(id) {
+  const d = doctors.find(x=>x.id===id);
+  if (!d.avail) { toast('Doctor no disponible hoy','⚠️'); return; }
+  selDoc=d; selCSlot=null;
+  renderDoctors();
+  document.getElementById('selectedDoctor').innerHTML=`<strong>${d.emoji} ${d.name}</strong> · ${d.spec}`;
+  document.getElementById('clinicConfirm').classList.remove('show');
+  renderCSlots();
+  toast(`${d.name} seleccionada`,'👨‍⚕️');
+}
+function renderCSlots() {
+  document.getElementById('clinicSlots').innerHTML = cSlots.map(s=>{
+    const taken=cTaken.includes(s);
+    return `<div class="time-slot${taken?' taken':''}${selCSlot===s?' selected':''}" onclick="${taken?'':'\"selectCSlot(\''+s+'\')\"'}">${s}${taken?' ✗':''}</div>`;
+  }).join('');
+}
+function selectCSlot(s) {
+  selCSlot=s;
+  document.querySelectorAll('#clinicSlots .time-slot').forEach(el=>el.classList.toggle('selected',el.textContent.trim()===s));
+}
+function bookAppointment() {
+  if (!selDoc)   { toast('Selecciona un doctor','⚠️'); return; }
+  if (!selCSlot) { toast('Selecciona un horario','⚠️'); return; }
+  const dt = document.getElementById('clinicDate').value||'Hoy';
+  document.getElementById('clinicConfirmDetails').innerHTML=`
+    <div class="appt-row"><span class="muted">Doctor</span><span>${selDoc.emoji} ${selDoc.name}</span></div>
+    <div class="appt-row"><span class="muted">Fecha</span><span>${dt}</span></div>
+    <div class="appt-row"><span class="muted">Hora</span><span>${selCSlot}</span></div>`;
+  document.getElementById('clinicConfirm').classList.add('show');
+  toast('¡Cita confirmada!','📅');
+}
+
+// ══════════════════════════════════════
+// SALÓN
+// ══════════════════════════════════════
+const services = [
+  { id:1, name:'Corte',              emoji:'✂️',  dur:'45 min', price:250 },
+  { id:2, name:'Manicure',           emoji:'💅',  dur:'60 min', price:180 },
+  { id:3, name:'Pedicure',           emoji:'🦶',  dur:'60 min', price:200 },
+  { id:4, name:'Maquillaje',         emoji:'💄',  dur:'90 min', price:450 },
+  { id:5, name:'Tinte',              emoji:'🎨',  dur:'120 min',price:600 },
+  { id:6, name:'Tratamiento Capilar',emoji:'🌸', dur:'75 min', price:350 },
+];
+const stylists = [
+  { id:1, name:'Ana García',  emoji:'👩' },
+  { id:2, name:'María López', emoji:'👩‍🦰' },
+  { id:3, name:'Vale Ruiz',   emoji:'👩‍🦱' },
+];
+const sTimes = ['10:00','11:00','12:00','14:00','15:00','16:00','17:00','18:00'];
+let selSvc=null, selSty=null, selSSlot=null;
+
+function renderSalon() {
+  document.getElementById('serviceGrid').innerHTML = services.map(s=>`
+    <div class="card service-card" id="svc-${s.id}" onclick="selectSvc(${s.id})">
+      <span class="svc-emoji">${s.emoji}</span>
+      <div class="svc-name">${s.name}</div>
+      <div class="svc-dur">${s.dur}</div>
+      <div class="price text-accent mt-8">$${s.price}</div>
+    </div>`).join('');
+  document.getElementById('stylistPick').innerHTML = stylists.map(s=>`
+    <div class="stylist-btn" id="sty-${s.id}" onclick="selectSty(${s.id})">
+      <div class="stylist-av">${s.emoji}</div>${s.name}
+    </div>`).join('');
+  document.getElementById('salonSlots').innerHTML = sTimes.map(t=>`
+    <div class="time-slot" onclick="selectSSlot('${t}')">${t}</div>`).join('');
+}
+function selectSvc(id) {
+  selSvc=services.find(s=>s.id===id);
+  document.querySelectorAll('.service-card').forEach(c=>c.classList.remove('selected'));
+  document.getElementById('svc-'+id).classList.add('selected');
+  document.getElementById('s-servicio').textContent=selSvc.name;
+  document.getElementById('s-duracion').textContent=selSvc.dur;
+  document.getElementById('s-total').textContent='$'+selSvc.price;
+  document.getElementById('salonConfirm').classList.remove('show');
+}
+function selectSty(id) {
+  selSty=stylists.find(s=>s.id===id);
+  document.querySelectorAll('.stylist-btn').forEach(b=>b.classList.remove('selected'));
+  document.getElementById('sty-'+id).classList.add('selected');
+  document.getElementById('s-estilista').textContent=selSty.name;
+  document.getElementById('salonConfirm').classList.remove('show');
+}
+function selectSSlot(t) {
+  selSSlot=t;
+  document.querySelectorAll('#salonSlots .time-slot').forEach(el=>el.classList.toggle('selected',el.textContent===t));
+  document.getElementById('s-horario').textContent=t;
+  document.getElementById('salonConfirm').classList.remove('show');
+}
+function bookSalon() {
+  if (!selSvc)   { toast('Selecciona un servicio','⚠️'); return; }
+  if (!selSty)   { toast('Selecciona una estilista','⚠️'); return; }
+  if (!selSSlot) { toast('Selecciona un horario','⚠️'); return; }
+  document.getElementById('salonConfirmDetails').textContent=`${selSvc.emoji} ${selSvc.name} con ${selSty.name} a las ${selSSlot}`;
+  document.getElementById('salonConfirm').classList.add('show');
+  toast('¡Reserva confirmada!','💅');
+}
+
+// ══════════════════════════════════════
+// GIMNASIO
+// ══════════════════════════════════════
+const classes = [
+  { id:1, name:'Yoga Matutino', emoji:'🧘', time:'07:00–08:00', trainer:'Lucía M.',  cap:20, enrolled:14 },
+  { id:2, name:'HIIT Intenso',  emoji:'🔥', time:'09:00–10:00', trainer:'Pedro R.',  cap:15, enrolled:15 },
+  { id:3, name:'Spinning',      emoji:'🚴', time:'11:00–12:00', trainer:'Carlos V.', cap:18, enrolled:9  },
+  { id:4, name:'Pilates Core',  emoji:'🤸', time:'17:00–18:00', trainer:'Sofía P.',  cap:12, enrolled:7  },
+];
+let enrolled = new Set();
+
+function renderGym() {
+  document.getElementById('classesList').innerHTML = classes.map(c=>{
+    const full=c.enrolled>=c.cap, pct=Math.round(c.enrolled/c.cap*100), mine=enrolled.has(c.id);
+    const barColor = pct>=100?'#dc2626':pct>70?'#d97706':'var(--accent)';
+    return `<div class="class-row">
+      <div class="class-icon-box">${c.emoji}</div>
+      <div style="flex:1">
+        <div style="font-weight:700;font-size:14.5px">${c.name}</div>
+        <div class="muted mt-4">⏰ ${c.time} · 👤 ${c.trainer}</div>
+        <div class="occ-bar-bg mt-8">
+          <div class="occ-bar-fill" style="width:${pct}%;background:${barColor}"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:4px">
+          <span style="font-size:11.5px;color:var(--muted)">Ocupación</span>
+          <span style="font-size:11.5px;font-weight:600">${c.enrolled}/${c.cap}</span>
+        </div>
+      </div>
+      <div style="margin-left:12px">
+        ${mine
+          ? `<button class="btn btn-danger btn-sm" onclick="unenroll(${c.id})">✕ Salir</button>`
+          : full
+            ? `<button class="btn btn-ghost btn-sm" disabled style="opacity:.4;cursor:not-allowed">Lleno</button>`
+            : `<button class="btn btn-outline btn-sm" onclick="enroll(${c.id})">+ Unirme</button>`}
+      </div>
+    </div>`;
+  }).join('');
+  const n = enrolled.size;
+  document.getElementById('enrolledCount').textContent = n;
+  document.getElementById('enrolledBadge').textContent = n+' inscritas';
+}
+function enroll(id) {
+  const c=classes.find(x=>x.id===id);
+  if (c.enrolled>=c.cap) { toast('Clase llena','❌'); return; }
+  enrolled.add(id); c.enrolled++;
+  renderGym(); toast(`Inscrito en "${c.name}"`,'🏋️');
+}
+function unenroll(id) {
+  const c=classes.find(x=>x.id===id);
+  enrolled.delete(id); c.enrolled--;
+  renderGym(); toast(`Saliste de "${c.name}"`,'ℹ️');
+}
+
+let gymChart=null;
+function initGymChart() {
+  if (gymChart) return;
+  const ctx=document.getElementById('gymChart').getContext('2d');
+  gymChart=new Chart(ctx,{
+    type:'bar',
+    data:{
+      labels:['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'],
+      datasets:[{
+        label:'Asistentes',
+        data:[42,58,35,71,63,88,29],
+        backgroundColor: themes.gimnasio.lt,
+        borderColor:     themes.gimnasio.accent,
+        borderWidth:2, borderRadius:8, borderSkipped:false,
+      }]
+    },
+    options:{
+      responsive:true,
+      plugins:{ legend:{display:false} },
+      scales:{
+        x:{ grid:{color:'rgba(0,0,0,0.05)'}, ticks:{color:'#7a7568',font:{family:'DM Sans'}} },
+        y:{ grid:{color:'rgba(0,0,0,0.05)'}, ticks:{color:'#7a7568',font:{family:'DM Sans'}}, max:100 }
+      }
+    }
+  });
+}
+
+// ══════════════════════════════════════
+// AI DOCS MODULE
+// ══════════════════════════════════════
+let currentUseCase = 'legal';
+let uploadedFiles  = [];
+let selectedAnalysis = 'resumen';
+
+const useCaseConfigs = {
+  legal:     { analyses: ['resumen','riesgos','clausulas','partes'],       label:'Documentos Legales' },
+  contable:  { analyses: ['resumen','montos','categorias','anomalias'],    label:'Documentos Contables' },
+  rh:        { analyses: ['resumen','competencias','salario','alertas'],   label:'RRHH' },
+  medico:    { analyses: ['resumen','diagnosticos','medicamentos','citas'], label:'Expedientes Médicos' },
+};
+
+const analysisLabels = {
+  resumen:       { emoji:'📋', label:'Resumen Ejecutivo', desc:'Síntesis clara del documento' },
+  riesgos:       { emoji:'⚠️', label:'Riesgos Legales',   desc:'Cláusulas peligrosas o ambiguas' },
+  clausulas:     { emoji:'📌', label:'Cláusulas Clave',   desc:'Obligaciones y derechos principales' },
+  partes:        { emoji:'👥', label:'Partes Involucradas',desc:'Firmantes, representantes, fechas' },
+  montos:        { emoji:'💰', label:'Montos y Fechas',   desc:'Totales, vencimientos, pagos' },
+  categorias:    { emoji:'🏷', label:'Categorización',    desc:'Tipo de gasto, cuenta contable' },
+  anomalias:     { emoji:'🚨', label:'Anomalías',         desc:'Posibles errores o inconsistencias' },
+  competencias:  { emoji:'⭐', label:'Competencias',      desc:'Habilidades y experiencia del candidato' },
+  salario:       { emoji:'💵', label:'Datos Salariales',  desc:'Compensación, prestaciones, bonos' },
+  alertas:       { emoji:'🔔', label:'Alertas HR',        desc:'Fechas críticas, vacaciones, vencimientos' },
+  diagnosticos:  { emoji:'🩺', label:'Diagnósticos',      desc:'CIE-10, padecimientos identificados' },
+  medicamentos:  { emoji:'💊', label:'Medicamentos',      desc:'Prescripciones, dosis, alergias' },
+  citas:         { emoji:'📅', label:'Próximas Citas',    desc:'Seguimiento médico programado' },
+};
+
+const sampleResults = {
+  legal: {
+    resumen: {
+      sections:[
+        { title:'📋 Resumen del Contrato', items:[
+          'Contrato de prestación de servicios profesionales entre Tech Solutions S.A. de C.V. y el Proveedor.',
+          'Vigencia: 12 meses a partir del 1 de enero de 2025, con opción de renovación automática.',
+          'Valor total del contrato: $480,000 MXN pagaderos en mensualidades de $40,000.',
+        ]},
+        { title:'📌 Puntos Clave', items:[
+          'El proveedor debe entregar informes mensuales de avance antes del día 5 de cada mes.',
+          'Cláusula de confidencialidad vigente por 5 años posteriores al término del contrato.',
+          'Jurisdicción: Ciudad de México, tribunales competentes.',
+        ]},
+      ],
+      risks:[
+        { level:'high',   text:'Cláusula 8.3: Penalización del 25% sin definir el incumplimiento con precisión.' },
+        { level:'medium', text:'Ausencia de cláusula de caso fortuito / fuerza mayor.' },
+        { level:'low',    text:'Corrección de estilo en fechas (formato inconsistente).' },
+      ]
+    },
+  },
+  contable: {
+    resumen: {
+      sections:[
+        { title:'📊 Estado Financiero Q3', items:[
+          'Ingresos totales: $2,340,000 MXN — incremento del 12% respecto al trimestre anterior.',
+          'Egresos operativos: $1,870,000 MXN — margen operativo del 20.1%.',
+          'EBITDA estimado: $470,000 MXN con tendencia positiva.',
+        ]},
+        { title:'💰 Movimientos Destacados', items:[
+          '3 depósitos inusuales superiores a $120,000 sin referencia de factura.',
+          'Compras de activos fijos no registradas en nómina fiscal.',
+          'Cuentas por cobrar con antigüedad mayor a 90 días: $230,000.',
+        ]},
+      ],
+      risks:[
+        { level:'high',   text:'Depósitos sin comprobante fiscal: posible implicación SAT.' },
+        { level:'medium', text:'Cuentas por cobrar vencidas representan el 9.8% del activo circulante.' },
+        { level:'low',    text:'Discrepancias menores en registro de IVA trasladado.' },
+      ]
+    }
+  },
+  rh: {
+    resumen: {
+      sections:[
+        { title:'👤 Perfil del Candidato', items:[
+          'Lic. Mariana Castro — 8 años de experiencia en desarrollo de software backend.',
+          'Formación: Ingeniería en Sistemas, IPN. Maestría en Ciberseguridad, ITAM.',
+          'Último puesto: Tech Lead en Fintech Scale-up (2021–2024).',
+        ]},
+        { title:'⭐ Competencias Identificadas', items:[
+          'Python, Go, Node.js · AWS Certified Solutions Architect · Scrum Master.',
+          'Liderazgo de equipos de hasta 12 personas. Proyectos de migración cloud exitosos.',
+          'Idiomas: Español nativo · Inglés C1 · Portugués básico.',
+        ]},
+      ],
+      risks:[
+        { level:'medium', text:'Brecha laboral de 6 meses sin justificación en CV.' },
+        { level:'low',    text:'Pretensión salarial 18% por encima del rango del puesto.' },
+        { level:'low',    text:'Solo 2 referencias profesionales proporcionadas (mínimo requerido: 3).' },
+      ]
+    }
+  },
+  medico: {
+    resumen: {
+      sections:[
+        { title:'🩺 Resumen Clínico', items:[
+          'Paciente masculino, 42 años. Diagnóstico principal: Hipertensión arterial grado II (I10).',
+          'Comorbilidades: Dislipidemia (E78.5) y sobrepeso IMC 27.4 (Z68.27).',
+          'Última consulta: 15 de marzo 2025. Próxima cita: 15 de junio 2025.',
+        ]},
+        { title:'💊 Medicamentos Actuales', items:[
+          'Losartán 50mg — 1 tableta cada 24h en ayunas. Renovar en agosto 2025.',
+          'Rosuvastatina 10mg — 1 tableta nocturna. Control lipídico en 3 meses.',
+          'Aspirina 100mg — suspendida por indicación médica (04/2025).',
+        ]},
+      ],
+      risks:[
+        { level:'high',   text:'Alergia documentada a Penicilina — verificar antes de prescripción.' },
+        { level:'medium', text:'Presión arterial en última visita: 148/92 mmHg — fuera de rango meta.' },
+        { level:'low',    text:'No hay registro de vacuna contra influenza en el ciclo actual.' },
+      ]
+    }
+  }
+};
+
+function setUseCase(uc, btn) {
+  currentUseCase = uc;
+  document.querySelectorAll('.uc-btn').forEach(b=>{
+    b.classList.remove('btn-outline','active');
+    b.classList.add('btn-ghost');
+  });
+  btn.classList.remove('btn-ghost');
+  btn.classList.add('btn-outline','active');
+  renderAnalysisTypes();
+  clearResults();
+}
+
+function renderAnalysisTypes() {
+  const cfg = useCaseConfigs[currentUseCase];
+  document.getElementById('analysisTypeGrid').innerHTML = cfg.analyses.map(a=>{
+    const al = analysisLabels[a];
+    return `<div class="analysis-type-btn${selectedAnalysis===a?' selected':''}" onclick="selectAnalysis('${a}',this)">
+      <span class="atype-icon">${al.emoji}</span>
+      <span class="atype-label">${al.label}</span>
+      <span class="atype-desc">${al.desc}</span>
+    </div>`;
+  }).join('');
+  if (!cfg.analyses.includes(selectedAnalysis)) {
+    selectedAnalysis = cfg.analyses[0];
+    renderAnalysisTypes();
+  }
+}
+
+function selectAnalysis(a, btn) {
+  selectedAnalysis = a;
+  document.querySelectorAll('.analysis-type-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  clearResults();
+}
+
+function clearResults() {
+  document.getElementById('resultEmpty').style.display='flex';
+  document.getElementById('resultContent').style.display='none';
+}
+
+// Files
+function handleFiles(files) {
+  Array.from(files).forEach(f => {
+    if (uploadedFiles.find(x=>x.name===f.name)) return;
+    uploadedFiles.push(f);
+  });
+  renderFileList();
+}
+function removeFile(name) {
+  uploadedFiles = uploadedFiles.filter(f=>f.name!==name);
+  renderFileList();
+}
+function renderFileList() {
+  const el = document.getElementById('fileList');
+  if (!uploadedFiles.length) { el.style.display='none'; return; }
+  el.style.display='flex';
+  el.style.flexDirection='column';
+  el.innerHTML = uploadedFiles.map(f=>{
+    const ext = f.name.split('.').pop().toUpperCase();
+    const icons = {PDF:'📄',DOC:'📝',DOCX:'📝',TXT:'📃',JPG:'🖼',PNG:'🖼'};
+    const icon = icons[ext]||'📁';
+    const size = f.size ? (f.size/1024<1000?Math.round(f.size/1024)+'KB':Math.round(f.size/1024/1024*10)/10+'MB') : '—';
+    return `<div class="file-item">
+      <span class="file-icon">${icon}</span>
+      <div style="flex:1;min-width:0">
+        <div class="file-name" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${f.name}</div>
+        <div class="file-size">${ext} · ${size}</div>
+      </div>
+      <div class="file-del" onclick="removeFile('${f.name}')">✕</div>
+    </div>`;
+  }).join('');
+}
+
+function onDragOver(e)  { e.preventDefault(); document.getElementById('dropZone').classList.add('dragover'); }
+function onDragLeave(e) { document.getElementById('dropZone').classList.remove('dragover'); }
+function onDrop(e)      {
+  e.preventDefault();
+  document.getElementById('dropZone').classList.remove('dragover');
+  handleFiles(e.dataTransfer.files);
+}
+
+function loadSampleDoc(type) {
+  const names = {
+    contrato:   'Contrato_Servicios_2025.pdf',
+    estados:    'Estado_Financiero_Q3.xlsx',
+    expediente: 'Expediente_Castro_Mariana.docx',
+  };
+  const fakeFile = { name: names[type], size: Math.floor(Math.random()*800+100)*1024 };
+  if (!uploadedFiles.find(x=>x.name===fakeFile.name)) {
+    uploadedFiles.push(fakeFile);
+    renderFileList();
+  }
+  toast(`Documento "${names[type]}" cargado`,'📂');
+}
+
+function runAnalysis() {
+  if (!uploadedFiles.length) { toast('Sube al menos un archivo primero','⚠️'); return; }
+
+  // Loading state
+  const rp = document.getElementById('resultPanel');
+  document.getElementById('resultEmpty').style.display='none';
+  const rc = document.getElementById('resultContent');
+  rc.style.display='block';
+  rc.innerHTML = `
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;padding:60px 0;gap:20px;text-align:center">
+      <div style="font-size:36px">🔍</div>
+      <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:600">Analizando ${uploadedFiles.length} documento(s)...</div>
+      <div class="loading-dots"><div class="loading-dot"></div><div class="loading-dot"></div><div class="loading-dot"></div></div>
+      <div style="color:var(--muted);font-size:13px;max-width:260px">Extrayendo información relevante con IA</div>
+      <div class="loading-bar-wrap" style="width:240px"><div class="loading-bar"></div></div>
+    </div>`;
+
+  setTimeout(() => showResults(), 2200);
+}
+
+function showResults() {
+  const uc = currentUseCase;
+  const data = (sampleResults[uc] && sampleResults[uc][selectedAnalysis])
+    ? sampleResults[uc][selectedAnalysis]
+    : sampleResults[uc][Object.keys(sampleResults[uc])[0]];
+  
+  const al = analysisLabels[selectedAnalysis] || analysisLabels['resumen'];
+  const ucLabel = useCaseConfigs[uc].label;
+
+  let html = `
+    <div class="flex-between mb-16 flex-wrap gap-8">
+      <div>
+        <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:700">${al.emoji} ${al.label}</div>
+        <div class="muted mt-4">${ucLabel} · ${uploadedFiles.length} archivo(s)</div>
+      </div>
+      <div class="flex gap-8 flex-wrap">
+        <span class="tag tag-success">✅ Completado</span>
+        <span class="tag tag-accent">IA v2.1</span>
+      </div>
+    </div>
+    <hr class="divider">`;
+
+  data.sections.forEach(s=>{
+    html+=`<div class="result-section">
+      <h4>${s.title}</h4>
+      ${s.items.map(i=>`<div class="result-item"><div class="result-item-dot"></div><div>${i}</div></div>`).join('')}
+    </div>`;
+  });
+
+  if (data.risks) {
+    html+=`<div class="result-section">
+      <h4>⚠️ Alertas y Riesgos Detectados</h4>
+      ${data.risks.map(r=>`
+        <div class="result-item" style="align-items:center;gap:12px">
+          <span class="risk-badge risk-${r.level}">${r.level==='high'?'🔴 Alto':r.level==='medium'?'🟡 Medio':'🟢 Bajo'}</span>
+          <div>${r.text}</div>
+        </div>`).join('')}
+    </div>`;
+  }
+
+  html+=`
+    <hr class="divider">
+    <div class="flex gap-10 flex-wrap">
+      <button class="btn btn-primary btn-sm" onclick="toast('Reporte exportado a PDF','📄')">⬇ Exportar PDF</button>
+      <button class="btn btn-ghost btn-sm" onclick="toast('Análisis copiado al portapapeles','📋')">📋 Copiar</button>
+      <button class="btn btn-ghost btn-sm" onclick="toast('Enviado por email','📧')">📧 Enviar</button>
+    </div>`;
+
+  document.getElementById('resultContent').innerHTML = html;
+  toast('¡Análisis completado!','🤖');
+}
+
+// ══════════════════════════════════════
+// INIT
+// ══════════════════════════════════════
+(function init() {
+  const today = new Date().toISOString().split('T')[0];
+  const di = document.getElementById('clinicDate');
+  if (di) { di.min=today; di.value=today; }
+  applyTheme('restaurante');
+  renderDishes(); renderCart();
+  renderDoctors(); renderCSlots();
+  renderSalon(); renderGym();
+  renderAnalysisTypes();
+})();
+</script>
+</body>
+</html>
