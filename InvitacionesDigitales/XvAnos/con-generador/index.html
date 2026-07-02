@@ -771,14 +771,20 @@ body.env-open { overflow:hidden; }
       <p class="env-card-couple">Camila</p>
       <p class="env-card-date">15 · 05 · 2027</p>
       <div class="env-card-hr"></div>
+      <p class="env-family-label">Familia</p>
+      <h3 class="env-family-name" id="envFamily">Estimados Invitados</h3>
       <p class="env-card-text">Con todo mi cariño te invito a celebrar conmigo el día en que cumplo mis quince años.</p>
+      <div class="env-boletos-badge">
+        <span class="env-boletos-num" id="envBoletosNum">1</span>
+        <span class="env-boletos-lbl" id="envBoletosLbl">boleto</span>
+      </div>
       <button class="env-ver-btn" onclick="cerrarSobre()">Ver Invitación &nbsp;✦</button>
     </div>
   </div>
 
 </div>
 
-<a id="top-back-link" href="../../index.html">← Más invitaciones</a>
+<a id="top-back-link" href="../../Web/">← Más invitaciones</a>
 
 <!-- MUSIC -->
 <div id="music-bar">
@@ -1229,13 +1235,19 @@ body.env-open { overflow:hidden; }
   <p class="footer-names">Camila</p>
   <p class="footer-date">15 · 05 · 2027 · Querétaro, Querétaro</p>
   <div class="footer-orn"><span class="footer-gem">✦</span></div>
-  <a href="../../index.html" style="display:inline-block;margin-top:2rem;font-size:.58rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.35);text-decoration:none">← Más invitaciones</a>
+  <a href="../../Web/" style="display:inline-block;margin-top:2rem;font-size:.58rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.35);text-decoration:none">← Más invitaciones</a>
 </footer>
 
 <!-- ======================== JAVASCRIPT ======================== -->
 <script>
 /* ---- ENVELOPE ---- */
 (function(){
+  const p = new URLSearchParams(window.location.search);
+  const fam = p.get('f') || p.get('familia') || 'Estimados Invitados';
+  const n   = parseInt(p.get('b') || p.get('boletos') || '1', 10);
+  document.getElementById('envFamily').textContent = fam;
+  document.getElementById('envBoletosNum').textContent = n;
+  document.getElementById('envBoletosLbl').textContent = n === 1 ? 'boleto' : 'boletos';
   document.body.classList.add('env-open');
 })();
 
