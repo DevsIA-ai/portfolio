@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>DevsIA — Desarrollo Digital para Negocios</title>
+<title>Devsia Digital — Desarrollo Digital para Negocios</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
@@ -1157,6 +1157,52 @@ body::before {
 }
 
 /* ============================================
+   LANGUAGE TOGGLE
+   ============================================ */
+.lang-toggle { margin-top: 0.85rem; }
+.lang-flag-btn {
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+  width: 44px; height: 30px;
+  border-radius: 6px;
+  border: 1.5px solid var(--border-bright);
+  background: var(--surface);
+  cursor: pointer;
+  padding: 3px;
+  transition: border-color 0.2s, transform 0.15s;
+  overflow: hidden;
+}
+.lang-flag-btn:hover { border-color: var(--primary); transform: scale(1.07); }
+.lang-flag-btn .flag-current,
+.lang-flag-btn .flag-next {
+  position: absolute; inset: 3px;
+  width: calc(100% - 6px); height: calc(100% - 6px);
+  object-fit: cover; border-radius: 3px;
+  display: block;
+  transition: opacity 0.25s ease;
+}
+.lang-flag-btn .flag-next { opacity: 0; }
+.lang-flag-btn:hover .flag-current { opacity: 0; }
+.lang-flag-btn:hover .flag-next { opacity: 1; }
+
+/* Floating lang toggle for mobile */
+.lang-float {
+  display: none;
+  position: fixed;
+  top: 12px; right: 12px;
+  z-index: 9998;
+}
+@media (max-width: 900px) { .lang-float { display: flex; } }
+.lang-float .lang-flag-btn {
+  width: 38px; height: 26px;
+  background: rgba(13,13,26,0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-color: var(--border-bright);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+}
+
+/* ============================================
    SUB-SECTION DIVIDER (servicios merged)
    ============================================ */
 .sub-section-title {
@@ -1207,7 +1253,7 @@ body::before {
 
 <!-- ========== LOADER ========== -->
 <div id="loader">
-  <div class="loader-logo">DevsIA</div>
+  <div class="loader-logo">Devsia Digital</div>
   <div class="loader-bar-wrap">
     <div class="loader-bar" id="loaderBar"></div>
   </div>
@@ -1220,23 +1266,37 @@ body::before {
   <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-logo">
-      <span class="logo-short">DA</span>
-      <span class="logo-full">DevsIA</span>
+      <span class="logo-short">DD</span>
+      <span class="logo-full">Devsia Digit</span>
     </div>
     <nav style="width:100%;">
-      <div class="nav-item active" data-tab="inicio"><i class="fas fa-home"></i><span class="nav-label">Inicio</span></div>
-      <div class="nav-item" data-tab="sobre"><i class="fas fa-user-circle"></i><span class="nav-label">Sobre mí</span></div>
-      <div class="nav-item" data-tab="servicios"><i class="fas fa-layer-group"></i><span class="nav-label">Servicios</span></div>
-     <!-- <div class="nav-item" data-tab="enlaces"><i class="fas fa-link"></i><span class="nav-label">Enlaces</span></div>-->
-      <div class="nav-item" data-tab="contacto"><i class="fas fa-paper-plane"></i><span class="nav-label">Contacto</span></div>
+      <div class="nav-item active" data-tab="inicio"><i class="fas fa-home"></i><span class="nav-label" data-i18n="nav.inicio">Inicio</span></div>
+      <div class="nav-item" data-tab="sobre"><i class="fas fa-user-circle"></i><span class="nav-label" data-i18n="nav.sobre">Sobre mí</span></div>
+      <div class="nav-item" data-tab="servicios"><i class="fas fa-layer-group"></i><span class="nav-label" data-i18n="nav.servicios">Servicios</span></div>
+     <!-- <div class="nav-item" data-tab="enlaces"><i class="fas fa-link"></i><span class="nav-label" data-i18n="nav.enlaces">Enlaces</span></div>-->
+      <div class="nav-item" data-tab="contacto"><i class="fas fa-paper-plane"></i><span class="nav-label" data-i18n="nav.contacto">Contacto</span></div>
     </nav>
     <div class="sidebar-bottom">
       <div class="status-dot">
         <div class="dot-pulse"></div>
-        <span class="status-text">Disponible</span>
+        <span class="status-text" data-i18n="status">Disponible</span>
+      </div>
+      <div class="lang-toggle">
+        <button class="lang-flag-btn" id="langToggle" onclick="toggleLang()" title="Cambiar idioma">
+          <img id="langFlagImg" class="flag-current" src="imagenes/español.webp" alt="Idioma actual">
+          <img id="langFlagImgNext" class="flag-next" src="imagenes/ingles.png" alt="Cambiar idioma">
+        </button>
       </div>
     </div>
   </aside>
+
+  <!-- Lang toggle flotante (móvil) -->
+  <div class="lang-float">
+    <button class="lang-flag-btn" id="langToggleM" onclick="toggleLang()" title="Cambiar idioma">
+      <img id="langFlagImgM" class="flag-current" src="imagenes/español.webp" alt="Idioma actual">
+      <img id="langFlagImgMNext" class="flag-next" src="imagenes/ingles.png" alt="Cambiar idioma">
+    </button>
+  </div>
 
   <!-- CONTENT -->
   <main class="content-area">
@@ -1252,20 +1312,20 @@ body::before {
         </div>
 
         <div class="hero-content">
-          <div class="hero-eyebrow">Desarrollo Digital & Estrategia</div>
-          <h1 class="hero-headline">
+          <div class="hero-eyebrow" data-i18n="hero.eyebrow">Desarrollo Digital & Estrategia</div>
+          <h1 class="hero-headline" data-i18n-html="hero.headline">
             Impulso negocios a<br>
             <span class="highlight">crecer en digital</span>
           </h1>
-          <p class="hero-sub">
+          <p class="hero-sub" data-i18n="hero.sub">
             Integro estrategia, desarrollo y automatización para crear sistemas digitales que atraen clientes, optimizan procesos y generan resultados reales.
           </p>
           <div class="hero-actions">
             <button class="btn-primary" onclick="switchTab('servicios')">
-              <i class="fas fa-layer-group"></i> Ver Servicios
+              <i class="fas fa-layer-group"></i> <span data-i18n="hero.btn1">Ver Servicios</span>
             </button>
             <button class="btn-ghost" onclick="switchTab('contacto')">
-              <i class="fas fa-paper-plane"></i> Trabajemos juntos
+              <i class="fas fa-paper-plane"></i> <span data-i18n="hero.btn2">Trabajemos juntos</span>
             </button>
           </div>
           <div class="social-links">
@@ -1278,15 +1338,15 @@ body::before {
         <div class="hero-stats">
           <div class="hero-stat">
             <span class="stat-num"><span data-count="50">0</span>+</span>
-            <span class="stat-label">proyectos</span>
+            <span class="stat-label" data-i18n="hero.stat1">proyectos</span>
           </div>
           <div class="hero-stat">
             <span class="stat-num"><span data-count="5">0</span>+</span>
-            <span class="stat-label">años de exp.</span>
+            <span class="stat-label" data-i18n="hero.stat2">años de exp.</span>
           </div>
           <div class="hero-stat">
             <span class="stat-num"><span data-count="30">0</span>+</span>
-            <span class="stat-label">clientes</span>
+            <span class="stat-label" data-i18n="hero.stat3">clientes</span>
           </div>
         </div>
 
@@ -1298,8 +1358,8 @@ body::before {
 
       <!-- Heading sobre la foto Y el texto -->
       <div class="about-section-top reveal">
-        <div class="about-hero-eyebrow">Sobre mí</div>
-        <h2 class="about-hero-heading">
+        <div class="about-hero-eyebrow" data-i18n="about.eyebrow">Sobre mí</div>
+        <h2 class="about-hero-heading" data-i18n-html="about.heading">
           No hago marketing, construyo <span class="hl">crecimiento digital</span>
         </h2>
       </div>
@@ -1320,20 +1380,20 @@ body::before {
 
         <!-- Right: text -->
         <div class="about-hero-left reveal reveal-delay-1">
-            <p class="about-hero-desc">
+            <p class="about-hero-desc" data-i18n="about.p1">
               Soy Fernando, y me especializo en ayudar a negocios a crecer en digital de forma estructurada. Más allá de crear páginas o manejar redes, analizo a fondo cómo está funcionando su presencia online para detectar qué los está frenando y cómo convertirlo en una ventaja.
             </p>
-            <p class="about-hero-desc-2">
+            <p class="about-hero-desc-2" data-i18n="about.p2">
               Mi enfoque combina estrategia, desarrollo y automatización. Trabajo cada proyecto como un sistema completo, donde cada pieza —desde la web hasta los procesos— está pensada para atraer clientes, optimizar resultados y escalar el negocio de forma real.
             </p>
           <div class="about-skill-tags">
-            <span class="stag-about">Desarrollo Digital</span>
+            <span class="stag-about" data-i18n="about.tag1">Desarrollo Digital</span>
             <span class="stag-about teal">Apps &amp; Software</span>
-            <span class="stag-about pink">Experiencia (UI/UX)</span>
-            <span class="stag-about">Automatización &amp; IA</span>
-            <span class="stag-about lime">Sistemas</span>
+            <span class="stag-about pink" data-i18n="about.tag3">Experiencia (UI/UX)</span>
+            <span class="stag-about" data-i18n="about.tag4">Automatización &amp; IA</span>
+            <span class="stag-about lime" data-i18n="about.tag5">Sistemas</span>
             <span class="stag-about teal">SEO Local</span>
-            <span class="stag-about pink">Estrategia</span>
+            <span class="stag-about pink" data-i18n="about.tag7">Estrategia</span>
           </div>
         </div>
       </div>
@@ -1345,10 +1405,10 @@ body::before {
     <section class="panel" id="panel-servicios">
       <div class="panel-header">
         <span class="panel-tag">// 02</span>
-        <h2 class="panel-title">Servicios</h2>
+        <h2 class="panel-title" data-i18n="nav.servicios">Servicios</h2>
       </div>
 
-      <div class="sub-section-title">Servicios Más Pedidos</div>
+      <div class="sub-section-title" data-i18n="svc.sub1">Servicios Más Pedidos</div>
       <div class="projects-grid">
         <a href="Devsiaweb/" class="project-card reveal" style="text-decoration:none;color:inherit;display:block;">
           <div class="project-preview preview-1">
@@ -1362,8 +1422,8 @@ body::before {
               <span class="project-type">Desarrollo Web</span>
               <span class="project-year">2024</span>
             </div>
-            <div class="project-title">Paginas Web</div>
-            <p class="project-desc">Plataforma de comercio electrónico multi-vendedor con panel de administración, pasarela de pagos y analytics integrado.</p>
+            <div class="project-title" data-i18n="proj1.title">Paginas Web</div>
+            <p class="project-desc" data-i18n="proj1.desc">Plataforma de comercio electrónico multi-vendedor con panel de administración, pasarela de pagos y analytics integrado.</p>
             <div class="project-tech">
               <span class="chip chip-purple" style="font-size:.67rem;padding:.2rem .6rem;">Next.js</span>
               <span class="chip chip-cyan"   style="font-size:.67rem;padding:.2rem .6rem;">Node.js</span>
@@ -1384,8 +1444,8 @@ body::before {
               <span class="project-type">Marketing Digital</span>
               <span class="project-year">2024</span>
             </div>
-            <div class="project-title">Consultoría Redes Sociales</div>
-            <p class="project-desc">Análisis y estrategia de marketing digital para negocios locales: diagnóstico de presencia online, propuesta de contenido y plan de crecimiento.</p>
+            <div class="project-title" data-i18n="proj2.title">Consultoría Redes Sociales</div>
+            <p class="project-desc" data-i18n="proj2.desc">Análisis y estrategia de marketing digital para negocios locales: diagnóstico de presencia online, propuesta de contenido y plan de crecimiento.</p>
             <div class="project-tech">
               <span class="chip chip-pink"   style="font-size:.67rem;padding:.2rem .6rem;">Social Media</span>
               <span class="chip chip-purple" style="font-size:.67rem;padding:.2rem .6rem;">Estrategia</span>
@@ -1406,8 +1466,8 @@ body::before {
               <span class="project-type">Aplicación Web SaaS</span>
               <span class="project-year">2024</span>
             </div>
-            <div class="project-title">FlowOS — Demo Interactiva</div>
-            <p class="project-desc">Demo de sistema de gestión SaaS multi-giro: restaurante, clínica, salón, gimnasio y análisis con IA. Interfaz en vivo completamente funcional.</p>
+            <div class="project-title" data-i18n="proj3.title">FlowOS — Demo Interactiva</div>
+            <p class="project-desc" data-i18n="proj3.desc">Demo de sistema de gestión SaaS multi-giro: restaurante, clínica, salón, gimnasio y análisis con IA. Interfaz en vivo completamente funcional.</p>
             <div class="project-tech">
               <span class="chip chip-purple" style="font-size:.67rem;padding:.2rem .6rem;">SaaS</span>
               <span class="chip chip-cyan"   style="font-size:.67rem;padding:.2rem .6rem;">Dashboard</span>
@@ -1416,37 +1476,36 @@ body::before {
           </div>
         </a>
 
-        <div class="project-card reveal reveal-delay-3">
+        <a href="Invitaciones Digitales/index.html" class="project-card reveal reveal-delay-3" style="text-decoration:none;color:inherit;display:block;">
           <div class="project-preview preview-4">
-            <img src="img/proyecto-4.jpg" alt="Proyecto 4">
+            <i class="fas fa-envelope-open-text project-preview-icon"></i>
             <div class="project-overlay">
-              <a href="#" class="plink" title="Ver proyecto"><i class="fas fa-external-link-alt"></i></a>
-              <a href="#" class="plink" title="Ver código"><i class="fab fa-github"></i></a>
+              <span class="plink" title="Ver proyecto"><i class="fas fa-external-link-alt"></i></span>
             </div>
           </div>
           <div class="project-info">
             <div class="project-meta">
-              <span class="project-type">Proximamente / Proximamente</span>
+              <span class="project-type">Invitaciones Digitales</span>
               <span class="project-year">2024</span>
             </div>
-            <div class="project-title">Proximamente</div>
-            <p class="project-desc">Proximamente</p>
+            <div class="project-title" data-i18n="proj4.title">Invitaciones Digitales</div>
+            <p class="project-desc" data-i18n="proj4.desc">Invitaciones digitales personalizadas para bodas, XV años, bautizos y más: en formato página web, video o imagen.</p>
             <div class="project-tech">
-              <span class="chip chip-lime"   style="font-size:.67rem;padding:.2rem .6rem;">TypeScript</span>
-              <span class="chip chip-purple" style="font-size:.67rem;padding:.2rem .6rem;">React</span>
-              <span class="chip chip-cyan"   style="font-size:.67rem;padding:.2rem .6rem;">PostgreSQL</span>
+              <span class="chip chip-lime"   style="font-size:.67rem;padding:.2rem .6rem;">Web</span>
+              <span class="chip chip-purple" style="font-size:.67rem;padding:.2rem .6rem;">Video</span>
+              <span class="chip chip-cyan"   style="font-size:.67rem;padding:.2rem .6rem;">Imagen</span>
             </div>
           </div>
-        </div>
+        </a>
       </div>
 
-      <div class="sub-section-title">Todos Mis Servicios</div>
+      <div class="sub-section-title" data-i18n="svc.sub2">Todos Mis Servicios</div>
       <div class="about-grid">
 
         <div class="about-card reveal reveal-delay-1">
           <div class="about-icon icon-purple"><i class="fas fa-code"></i></div>
-          <h3>Desarrollo Web</h3>
-          <p>Apps y sitios rápidos, modernos y escalables. Desde landing pages de alto impacto hasta plataformas SaaS completas.</p>
+          <h3 data-i18n="s1.title">Desarrollo Web</h3>
+          <p data-i18n="s1.desc">Apps y sitios rápidos, modernos y escalables. Desde landing pages de alto impacto hasta plataformas SaaS completas.</p>
           <div class="skills-chips">
             <span class="chip chip-purple">React</span>
             <span class="chip chip-purple">Next.js</span>
@@ -1457,8 +1516,8 @@ body::before {
 
         <div class="about-card reveal reveal-delay-2">
           <div class="about-icon icon-cyan"><i class="fas fa-mobile-alt"></i></div>
-          <h3>Apps Web</h3>
-          <p>Progressive Web Apps y aplicaciones cliente-servidor con experiencias fluidas y sincronización en tiempo real.</p>
+          <h3 data-i18n="s2.title">Apps Web</h3>
+          <p data-i18n="s2.desc">Progressive Web Apps y aplicaciones cliente-servidor con experiencias fluidas y sincronización en tiempo real.</p>
           <div class="skills-chips">
             <span class="chip chip-cyan">Node.js</span>
             <span class="chip chip-cyan">Express</span>
@@ -1469,8 +1528,8 @@ body::before {
 
         <div class="about-card reveal reveal-delay-3">
           <div class="about-icon icon-orange"><i class="fas fa-mobile"></i></div>
-          <h3>Aplicaciones Móviles</h3>
-          <p>Desarrollo de apps móviles para Android y iOS con interfaces intuitivas, alto rendimiento y experiencia optimizada.</p>
+          <h3 data-i18n="s3.title">Aplicaciones Móviles</h3>
+          <p data-i18n="s3.desc">Desarrollo de apps móviles para Android y iOS con interfaces intuitivas, alto rendimiento y experiencia optimizada.</p>
           <div class="skills-chips">
             <span class="chip chip-orange">Flutter</span>
             <span class="chip chip-orange">Android</span>
@@ -1481,8 +1540,8 @@ body::before {
 
         <div class="about-card reveal reveal-delay-4">
           <div class="about-icon icon-pink"><i class="fas fa-brain"></i></div>
-          <h3>Automatización con IA</h3>
-          <p>Implementación de soluciones con inteligencia artificial: chatbots, automatización de procesos y optimización de atención al cliente.</p>
+          <h3 data-i18n="s4.title">Automatización con IA</h3>
+          <p data-i18n="s4.desc">Implementación de soluciones con inteligencia artificial: chatbots, automatización de procesos y optimización de atención al cliente.</p>
           <div class="skills-chips">
             <span class="chip chip-pink">Chatbots</span>
             <span class="chip chip-pink">OpenAI</span>
@@ -1493,8 +1552,8 @@ body::before {
 
         <div class="about-card reveal reveal-delay-5">
           <div class="about-icon icon-green"><i class="fas fa-bullhorn"></i></div>
-          <h3>Marketing Digital</h3>
-          <p>Estrategias data-driven: SEO técnico, campañas de conversión y funnels optimizados para maximizar el ROI.</p>
+          <h3 data-i18n="s5.title">Marketing Digital</h3>
+          <p data-i18n="s5.desc">Estrategias data-driven: SEO técnico, campañas de conversión y funnels optimizados para maximizar el ROI.</p>
           <div class="skills-chips">
             <span class="chip chip-green">SEO</span>
             <span class="chip chip-green">Google Ads</span>
@@ -1505,8 +1564,8 @@ body::before {
 
         <div class="about-card reveal reveal-delay-6">
           <div class="about-icon icon-blue"><i class="fas fa-hashtag"></i></div>
-          <h3>Gestión de Redes Sociales</h3>
-          <p>Administración profesional de redes sociales enfocada en crecimiento de marca, interacción y generación de leads.</p>
+          <h3 data-i18n="s6.title">Gestión de Redes Sociales</h3>
+          <p data-i18n="s6.desc">Administración profesional de redes sociales enfocada en crecimiento de marca, interacción y generación de leads.</p>
           <div class="skills-chips">
             <span class="chip chip-blue">Facebook</span>
             <span class="chip chip-blue">Instagram</span>
@@ -1517,8 +1576,8 @@ body::before {
 
         <div class="about-card reveal reveal-delay-7">
           <div class="about-icon icon-indigo"><i class="fas fa-chart-line"></i></div>
-          <h3>Ciencia de Datos</h3>
-          <p>Análisis predictivo, dashboards interactivos y visualizaciones que convierten datos complejos en decisiones claras.</p>
+          <h3 data-i18n="s7.title">Ciencia de Datos</h3>
+          <p data-i18n="s7.desc">Análisis predictivo, dashboards interactivos y visualizaciones que convierten datos complejos en decisiones claras.</p>
           <div class="skills-chips">
             <span class="chip chip-indigo">Python</span>
             <span class="chip chip-indigo">Pandas</span>
@@ -1529,8 +1588,8 @@ body::before {
 
         <div class="about-card reveal reveal-delay-8">
           <div class="about-icon icon-red"><i class="fas fa-video"></i></div>
-          <h3>Edición de Video</h3>
-          <p>Edición profesional para redes sociales, anuncios y contenido de marca, optimizado para captar atención y aumentar conversiones.</p>
+          <h3 data-i18n="s8.title">Edición de Video</h3>
+          <p data-i18n="s8.desc">Edición profesional para redes sociales, anuncios y contenido de marca, optimizado para captar atención y aumentar conversiones.</p>
           <div class="skills-chips">
             <span class="chip chip-red">Premiere Pro</span>
             <span class="chip chip-red">After Effects</span>
@@ -1598,8 +1657,8 @@ body::before {
 
       <div class="contact-layout">
         <div class="contact-info-side reveal">
-          <h3>¿Listo para crecer?</h3>
-          <p>Cuéntame sobre tu proyecto y te respondo en menos de 24 horas con una propuesta personalizada sin compromiso.</p>
+          <h3 data-i18n="contact.heading">¿Listo para crecer?</h3>
+          <p data-i18n="contact.sub">Cuéntame sobre tu proyecto y te respondo en menos de 24 horas con una propuesta personalizada sin compromiso.</p>
           <div class="cinfo-item">
             <div class="cinfo-icon"><i class="fas fa-envelope"></i></div>
             <div>
@@ -1610,15 +1669,15 @@ body::before {
           <div class="cinfo-item">
             <div class="cinfo-icon"><i class="fas fa-map-marker-alt"></i></div>
             <div>
-              <div class="cinfo-label">Ubicación</div>
-              <div class="cinfo-val">México · Remoto Global</div>
+              <div class="cinfo-label" data-i18n="contact.loc">Ubicación</div>
+              <div class="cinfo-val" data-i18n="contact.locval">México · Remoto Global</div>
             </div>
           </div>
           <div class="cinfo-item">
             <div class="cinfo-icon"><i class="fas fa-clock"></i></div>
             <div>
-              <div class="cinfo-label">Respuesta</div>
-              <div class="cinfo-val">&lt; 24 horas hábiles</div>
+              <div class="cinfo-label" data-i18n="contact.resp">Respuesta</div>
+              <div class="cinfo-val" data-i18n="contact.respval">&lt; 24 horas hábiles</div>
             </div>
           </div>
 
@@ -1654,8 +1713,8 @@ body::before {
           <form id="contactForm" novalidate>
             <div class="form-row">
               <div class="form-group">
-                <label class="form-label">Nombre</label>
-                <input type="text" class="form-input" id="fname" placeholder="Tu nombre" autocomplete="off">
+                <label class="form-label" data-i18n="form.name">Nombre</label>
+                <input type="text" class="form-input" id="fname" placeholder="Tu nombre" data-i18n-placeholder="form.namePh" autocomplete="off">
                 <div class="field-msg" id="fname-msg"></div>
               </div>
               <div class="form-group">
@@ -1665,17 +1724,17 @@ body::before {
               </div>
             </div>
             <div class="form-group">
-              <label class="form-label">Servicio de interés</label>
-              <input type="text" class="form-input" id="fservice" placeholder="Web, App, Datos, Marketing...">
+              <label class="form-label" data-i18n="form.service">Servicio de interés</label>
+              <input type="text" class="form-input" id="fservice" placeholder="Web, App, Datos, Marketing..." data-i18n-placeholder="form.servicePh">
               <div class="field-msg" id="fservice-msg"></div>
             </div>
             <div class="form-group">
-              <label class="form-label">Mensaje</label>
-              <textarea class="form-textarea" id="fmessage" placeholder="Cuéntame sobre tu proyecto, metas y presupuesto estimado..."></textarea>
+              <label class="form-label" data-i18n="form.msg">Mensaje</label>
+              <textarea class="form-textarea" id="fmessage" placeholder="Cuéntame sobre tu proyecto, metas y presupuesto estimado..." data-i18n-placeholder="form.msgPh"></textarea>
               <div class="field-msg" id="fmessage-msg"></div>
             </div>
             <button type="submit" class="form-submit" id="submitBtn">
-              <i class="fab fa-whatsapp"></i> Enviar por WhatsApp
+              <i class="fab fa-whatsapp"></i> <span data-i18n="form.submit">Enviar por WhatsApp</span>
             </button>
           </form>
         </div>
@@ -1686,11 +1745,11 @@ body::before {
 
   <!-- MOBILE NAV -->
   <nav class="mobile-nav" id="mobileNav">
-    <div class="nav-item active" data-tab="inicio"><i class="fas fa-home"></i><span class="nav-label">Inicio</span></div>
-    <div class="nav-item" data-tab="sobre"><i class="fas fa-user-circle"></i><span class="nav-label">Sobre</span></div>
-    <div class="nav-item" data-tab="servicios"><i class="fas fa-layer-group"></i><span class="nav-label">Servicios</span></div>
-    <div class="nav-item" data-tab="enlaces"><i class="fas fa-link"></i><span class="nav-label">Links</span></div>
-    <div class="nav-item" data-tab="contacto"><i class="fas fa-paper-plane"></i><span class="nav-label">Contacto</span></div>
+    <div class="nav-item active" data-tab="inicio"><i class="fas fa-home"></i><span class="nav-label" data-i18n="nav.inicio">Inicio</span></div>
+    <div class="nav-item" data-tab="sobre"><i class="fas fa-user-circle"></i><span class="nav-label" data-i18n="nav.sobre">Sobre</span></div>
+    <div class="nav-item" data-tab="servicios"><i class="fas fa-layer-group"></i><span class="nav-label" data-i18n="nav.servicios">Servicios</span></div>
+    <div class="nav-item" data-tab="enlaces"><i class="fas fa-link"></i><span class="nav-label" data-i18n="nav.enlaces">Links</span></div>
+    <div class="nav-item" data-tab="contacto"><i class="fas fa-paper-plane"></i><span class="nav-label" data-i18n="nav.contacto">Contacto</span></div>
   </nav>
 
 </div>
@@ -1702,6 +1761,161 @@ body::before {
 </div>
 
 <script>
+/* ============================================================
+   TRANSLATIONS
+   ============================================================ */
+const TRANSLATIONS = {
+  es: {
+    'nav.inicio':    'Inicio',
+    'nav.sobre':     'Sobre mí',
+    'nav.servicios': 'Servicios',
+    'nav.enlaces':   'Links',
+    'nav.contacto':  'Contacto',
+    'status':        'Disponible',
+    'hero.eyebrow':  'Desarrollo Digital & Estrategia',
+    'hero.headline': 'Impulso negocios a<br><span class="highlight">crecer en digital</span>',
+    'hero.sub':      'Integro estrategia, desarrollo y automatización para crear sistemas digitales que atraen clientes, optimizan procesos y generan resultados reales.',
+    'hero.btn1':     'Ver Servicios',
+    'hero.btn2':     'Trabajemos juntos',
+    'hero.stat1':    'proyectos',
+    'hero.stat2':    'años de exp.',
+    'hero.stat3':    'clientes',
+    'about.eyebrow': 'Sobre mí',
+    'about.heading': 'No hago marketing, construyo <span class="hl">crecimiento digital</span>',
+    'about.p1':      'Soy Fernando, y me especializo en ayudar a negocios a crecer en digital de forma estructurada. Más allá de crear páginas o manejar redes, analizo a fondo cómo está funcionando su presencia online para detectar qué los está frenando y cómo convertirlo en una ventaja.',
+    'about.p2':      'Mi enfoque combina estrategia, desarrollo y automatización. Trabajo cada proyecto como un sistema completo, donde cada pieza —desde la web hasta los procesos— está pensada para atraer clientes, optimizar resultados y escalar el negocio de forma real.',
+    'about.tag1':    'Desarrollo Digital',
+    'about.tag3':    'Experiencia (UI/UX)',
+    'about.tag4':    'Automatización & IA',
+    'about.tag5':    'Sistemas',
+    'about.tag7':    'Estrategia',
+    'svc.sub1':      'Servicios Más Pedidos',
+    'svc.sub2':      'Todos Mis Servicios',
+    'proj1.title':   'Páginas Web',
+    'proj1.desc':    'Plataforma de comercio electrónico multi-vendedor con panel de administración, pasarela de pagos y analytics integrado.',
+    'proj2.title':   'Consultoría Redes Sociales',
+    'proj2.desc':    'Análisis y estrategia de marketing digital para negocios locales: diagnóstico de presencia online, propuesta de contenido y plan de crecimiento.',
+    'proj3.title':   'FlowOS — Demo Interactiva',
+    'proj3.desc':    'Demo de sistema de gestión SaaS multi-giro: restaurante, clínica, salón, gimnasio y análisis con IA. Interfaz en vivo completamente funcional.',
+    'proj4.title':   'Invitaciones Digitales',
+    'proj4.desc':    'Invitaciones digitales personalizadas para bodas, XV años, bautizos y más: en formato página web, video o imagen.',
+    's1.title': 'Desarrollo Web',      's1.desc': 'Apps y sitios rápidos, modernos y escalables. Desde landing pages de alto impacto hasta plataformas SaaS completas.',
+    's2.title': 'Apps Web',            's2.desc': 'Progressive Web Apps y aplicaciones cliente-servidor con experiencias fluidas y sincronización en tiempo real.',
+    's3.title': 'Aplicaciones Móviles','s3.desc': 'Desarrollo de apps móviles para Android y iOS con interfaces intuitivas, alto rendimiento y experiencia optimizada.',
+    's4.title': 'Automatización con IA','s4.desc':'Implementación de soluciones con inteligencia artificial: chatbots, automatización de procesos y optimización de atención al cliente.',
+    's5.title': 'Marketing Digital',   's5.desc': 'Estrategias data-driven: SEO técnico, campañas de conversión y funnels optimizados para maximizar el ROI.',
+    's6.title': 'Gestión de Redes Sociales','s6.desc':'Administración profesional de redes sociales enfocada en crecimiento de marca, interacción y generación de leads.',
+    's7.title': 'Ciencia de Datos',    's7.desc': 'Análisis predictivo, dashboards interactivos y visualizaciones que convierten datos complejos en decisiones claras.',
+    's8.title': 'Edición de Video',    's8.desc': 'Edición profesional para redes sociales, anuncios y contenido de marca, optimizado para captar atención y aumentar conversiones.',
+    'contact.heading': '¿Listo para crecer?',
+    'contact.sub':     'Cuéntame sobre tu proyecto y te respondo en menos de 24 horas con una propuesta personalizada sin compromiso.',
+    'contact.loc':     'Ubicación',
+    'contact.locval':  'México · Remoto Global',
+    'contact.resp':    'Respuesta',
+    'contact.respval': '< 24 horas hábiles',
+    'form.name':       'Nombre',
+    'form.namePh':     'Tu nombre',
+    'form.service':    'Servicio de interés',
+    'form.servicePh':  'Web, App, Datos, Marketing...',
+    'form.msg':        'Mensaje',
+    'form.msgPh':      'Cuéntame sobre tu proyecto, metas y presupuesto estimado...',
+    'form.submit':     'Enviar por WhatsApp',
+  },
+  en: {
+    'nav.inicio':    'Home',
+    'nav.sobre':     'About',
+    'nav.servicios': 'Services',
+    'nav.enlaces':   'Links',
+    'nav.contacto':  'Contact',
+    'status':        'Available',
+    'hero.eyebrow':  'Digital Development & Strategy',
+    'hero.headline': 'I help businesses<br><span class="highlight">grow digitally</span>',
+    'hero.sub':      'I integrate strategy, development and automation to build digital systems that attract clients, optimize processes and generate real results.',
+    'hero.btn1':     'View Services',
+    'hero.btn2':     'Let\'s Work Together',
+    'hero.stat1':    'projects',
+    'hero.stat2':    'yrs exp.',
+    'hero.stat3':    'clients',
+    'about.eyebrow': 'About me',
+    'about.heading': 'I don\'t do marketing, I build <span class="hl">digital growth</span>',
+    'about.p1':      'I\'m Fernando, and I specialize in helping businesses grow digitally in a structured way. Beyond building websites or managing social media, I deeply analyze how their online presence is performing to detect what\'s holding them back and how to turn it into an advantage.',
+    'about.p2':      'My approach combines strategy, development and automation. I treat every project as a complete system, where each piece — from the website to the processes — is designed to attract clients, optimize results and scale the business in a real way.',
+    'about.tag1':    'Digital Development',
+    'about.tag3':    'Experience (UI/UX)',
+    'about.tag4':    'Automation & AI',
+    'about.tag5':    'Systems',
+    'about.tag7':    'Strategy',
+    'svc.sub1':      'Most Requested Services',
+    'svc.sub2':      'All My Services',
+    'proj1.title':   'Web Pages',
+    'proj1.desc':    'Multi-vendor e-commerce platform with admin panel, payment gateway and integrated analytics.',
+    'proj2.title':   'Social Media Consulting',
+    'proj2.desc':    'Digital marketing analysis and strategy for local businesses: online presence diagnosis, content proposal and growth plan.',
+    'proj3.title':   'FlowOS — Interactive Demo',
+    'proj3.desc':    'SaaS management system demo for multiple industries: restaurant, clinic, salon, gym and AI analysis. Fully functional live interface.',
+    'proj4.title':   'Digital Invitations',
+    'proj4.desc':    'Personalized digital invitations for weddings, quinceañeras, baptisms and more: as a web page, video or image.',
+    's1.title': 'Web Development',     's1.desc': 'Fast, modern and scalable apps and sites. From high-impact landing pages to complete SaaS platforms.',
+    's2.title': 'Web Apps',            's2.desc': 'Progressive Web Apps and client-server applications with smooth experiences and real-time synchronization.',
+    's3.title': 'Mobile Applications', 's3.desc': 'Mobile app development for Android and iOS with intuitive interfaces, high performance and optimized experience.',
+    's4.title': 'AI Automation',       's4.desc': 'Implementation of artificial intelligence solutions: chatbots, process automation and customer service optimization.',
+    's5.title': 'Digital Marketing',   's5.desc': 'Data-driven strategies: technical SEO, conversion campaigns and optimized funnels to maximize ROI.',
+    's6.title': 'Social Media Management','s6.desc':'Professional social media management focused on brand growth, engagement and lead generation.',
+    's7.title': 'Data Science',        's7.desc': 'Predictive analysis, interactive dashboards and visualizations that turn complex data into clear decisions.',
+    's8.title': 'Video Editing',       's8.desc': 'Professional editing for social media, ads and brand content, optimized to capture attention and increase conversions.',
+    'contact.heading': 'Ready to grow?',
+    'contact.sub':     'Tell me about your project and I\'ll respond in less than 24 hours with a personalized proposal, no commitment.',
+    'contact.loc':     'Location',
+    'contact.locval':  'Mexico · Global Remote',
+    'contact.resp':    'Response',
+    'contact.respval': '< 24 business hours',
+    'form.name':       'Name',
+    'form.namePh':     'Your name',
+    'form.service':    'Service of interest',
+    'form.servicePh':  'Web, App, Data, Marketing...',
+    'form.msg':        'Message',
+    'form.msgPh':      'Tell me about your project, goals and estimated budget...',
+    'form.submit':     'Send via WhatsApp',
+  }
+};
+
+let currentLang = 'es';
+const FLAGS = { es: 'imagenes/español.webp', en: 'imagenes/ingles.png' };
+
+function applyLang(lang) {
+  currentLang = lang;
+  const T = TRANSLATIONS[lang];
+
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if (T[key] !== undefined) el.textContent = T[key];
+  });
+  document.querySelectorAll('[data-i18n-html]').forEach(el => {
+    const key = el.dataset.i18nHtml;
+    if (T[key] !== undefined) el.innerHTML = T[key];
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.dataset.i18nPlaceholder;
+    if (T[key] !== undefined) el.placeholder = T[key];
+  });
+
+  const nextLang = lang === 'es' ? 'en' : 'es';
+  [['langFlagImg','langFlagImgNext'],['langFlagImgM','langFlagImgMNext']].forEach(([curId, nextId]) => {
+    const cur = document.getElementById(curId);
+    const nxt = document.getElementById(nextId);
+    if (cur) cur.src = FLAGS[lang];
+    if (nxt) nxt.src = FLAGS[nextLang];
+  });
+
+  document.documentElement.lang = lang;
+}
+
+window.setLang = applyLang;
+
+window.toggleLang = function() {
+  applyLang(currentLang === 'es' ? 'en' : 'es');
+};
+
 document.addEventListener('DOMContentLoaded', function () {
 
 /* ============================================

@@ -1,0 +1,1045 @@
+﻿<!DOCTYPE html>
+<html lang="es"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Baby Shower · Baby Torres Vidal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+
+
+
+
+
+<style>
+  :root {
+    --ocean-deep:   #0a2d4d;
+    --ocean-mid:    #1a5278;
+    --ocean-light:  #3a8abf;
+    --foam:         #cce8f5;
+    --foam-pale:    #eaf5fd;
+    --gold:         #f5c842;
+    --gold-light:   #ffe680;
+    --white:        #ffffff;
+    --coral:        #ff7f6b;
+    --seagreen:     #0a3d5c;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: #6ab0d8;
+    background-attachment: fixed;
+    color: var(--ocean-deep);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  #ocean-canvas {
+    position: fixed;
+    inset: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  #envelope-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: #6ab0d8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    transition: opacity 0.9s ease, visibility 0.9s ease;
+    overflow: hidden;
+  }
+  #envelope-screen.hide { opacity:0; visibility:hidden; pointer-events:none; }
+
+  .env-bubble {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.5), rgba(255,255,255,0.05));
+    border: 1px solid rgba(255,255,255,0.4);
+    animation: riseBubble linear infinite;
+    pointer-events: none;
+  }
+  @keyframes riseBubble {
+    0%   { transform: translateY(0) translateX(0) scale(1); opacity:0.7; }
+    50%  { transform: translateY(-40vh) translateX(8px) scale(1.04); opacity:0.5; }
+    100% { transform: translateY(-100vh) translateX(-4px) scale(0.9); opacity:0; }
+  }
+
+  .env-text-top {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(26px, 6vw, 38px);
+    font-style: italic;
+    color: var(--white);
+    opacity: 0.95;
+    letter-spacing: 2px;
+    text-align: center;
+    animation: fadeSlideDown 1s ease 0.3s both;
+    position: relative; z-index:1;
+  }
+  @keyframes fadeSlideDown {
+    from { opacity:0; transform:translateY(-16px); }
+    to   { opacity:0.95; transform:translateY(0); }
+  }
+
+  .envelope-wrap {
+    position: relative;
+    width: clamp(300px, 75vw, 500px);
+    cursor: pointer;
+    animation: fadeSlideUp 1s ease 0.5s both;
+    filter: drop-shadow(0 20px 50px rgba(0,60,120,0.25));
+    z-index: 1;
+  }
+  @keyframes fadeSlideUp {
+    from { opacity:0; transform:translateY(30px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  .envelope-svg { width:100%; height:auto; display:block; }
+
+  .env-letter {
+    position: absolute;
+    left: 12%; right: 12%; bottom: 10%; height: 55%;
+    background: linear-gradient(180deg, #f0f8ff, #d0ecf8);
+    border-radius: 4px 4px 2px 2px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 6px;
+    box-shadow: 0 4px 20px rgba(0,60,120,0.15);
+    transition: transform 0.7s cubic-bezier(.22,1,.36,1), opacity 0.5s ease;
+    transform: translateY(0);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .env-letter.open { transform: translateY(-110%); opacity:1; }
+  .env-letter-icon { font-size: clamp(22px,5vw,32px); }
+  .env-letter-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(13px,3vw,18px);
+    font-style: italic;
+    color: var(--ocean-mid);
+    text-align: center; padding: 0 12px;
+  }
+
+  .env-flap-group {
+    transform-origin: top center;
+    transform-box: fill-box;
+    transition: transform 0.6s cubic-bezier(.22,1,.36,1);
+  }
+  .envelope-wrap.opening .env-flap-group { transform: rotateX(-180deg); }
+
+  .env-click-hint {
+    font-size: 12px; letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--white);
+    opacity: 0;
+    animation: pulseHint 2s ease 1.5s infinite;
+    text-align: center; z-index:1; position:relative;
+  }
+  @keyframes pulseHint {
+    0%,100% { opacity:0.5; transform:translateY(0); }
+    50%      { opacity:1;   transform:translateY(-4px); }
+  }
+
+  .confetti-dot {
+    position: absolute; border-radius: 50%;
+    opacity: 0; pointer-events: none;
+  }
+  .confetti-dot.pop { animation: confettiPop 0.8s ease forwards; }
+  @keyframes confettiPop {
+    0%   { opacity:1; transform:translate(0,0) scale(1); }
+    100% { opacity:0; transform:translate(var(--tx),var(--ty)) scale(0.3); }
+  }
+
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 60px 24px;
+    position: relative;
+    background: transparent;
+    overflow: visible;
+  }
+  .hero::after {
+    content:'';
+    position: absolute; inset:0;
+    background: radial-gradient(ellipse at 50% 40%,
+      rgba(0,40,90,0.12) 0%,
+      rgba(0,25,60,0.28) 100%);
+    z-index:0; pointer-events:none;
+  }
+  .hero-wave {
+    position: absolute; bottom:-2px; left:0; width:100%; z-index:1;
+    line-height:0;
+  }
+  .hero > *:not(.hero-wave) { position:relative; z-index:2; }
+
+  .hero-tag {
+    font-size: 18px; font-weight:500;
+    letter-spacing: 6px; text-transform: uppercase;
+    color: var(--gold-light); margin-bottom: 28px;
+    text-shadow: 0 1px 3px rgba(8,40,70,0.35);
+  }
+  .hero-tag::before, .hero-tag::after {
+    content:'🐚'; margin: 0 10px; font-size:12px;
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(56px,13vw,108px);
+    font-weight: 300; line-height: 0.9;
+    letter-spacing: -2px; color: var(--white);
+    margin-bottom: 16px;
+    text-shadow: 0 4px 30px rgba(0,60,140,0.35);
+  }
+  .hero-title em { font-style:italic; color: var(--foam); }
+
+  .hero-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(26px,5vw,38px);
+    font-weight:300; font-style:italic;
+    color: var(--white); letter-spacing:2px; margin-bottom: 36px;
+  }
+
+  .divider-sea {
+    width: 80px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--seagreen), transparent);
+    margin: 0 auto 28px;
+  }
+
+  .hero-date {
+    font-size:14px; font-weight:400;
+    letter-spacing:4px; text-transform:uppercase;
+    color: var(--white); margin-bottom:10px;
+  }
+  .hero-time {
+    font-family:'Cormorant Garamond',serif;
+    font-size:22px; font-style:italic;
+    color: var(--gold-light); margin-bottom:48px;
+  }
+
+  .scroll-hint {
+    position:absolute; bottom:26px; left:0; right:0;
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+    color:var(--white); font-size:10px;
+    letter-spacing:3px; text-transform:uppercase;
+    opacity:0.6; animation:floatHint 2s ease-in-out infinite;
+    white-space:nowrap; pointer-events:none;
+  }
+  .scroll-hint::after {
+    content:''; width:1px; height:24px;
+    background:linear-gradient(to bottom,var(--white),transparent);
+  }
+  @keyframes floatHint {
+    0%,100% { transform:translateY(0); }
+    50%      { transform:translateY(6px); }
+  }
+
+  .countdown-section {
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(8px);
+    border-top: 1px solid rgba(255,255,255,0.55);
+    border-bottom: 1px solid rgba(255,255,255,0.55);
+    padding: 40px 24px; text-align:center;
+    position:relative; z-index:2;
+  }
+  .countdown-grid {
+    max-width: 540px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+  .countdown-label {
+    font-size:11px; letter-spacing:5px;
+    text-transform:uppercase; color:var(--ocean-mid); margin-bottom:32px;
+  }
+  .countdown-grid {
+    display:flex; justify-content:center;
+    gap: clamp(8px,2vw,24px);
+  }
+  .countdown-unit { display:flex; flex-direction:column; align-items:center; gap:8px; }
+  .countdown-number {
+    font-family:'Cormorant Garamond',serif;
+    font-size:clamp(44px,9vw,76px);
+    font-weight:300; color:var(--ocean-deep); line-height:1; min-width:72px;
+  }
+  .countdown-unit-label {
+    font-size:10px; letter-spacing:4px;
+    text-transform:uppercase; color:var(--ocean-mid); opacity:0.8;
+  }
+  .countdown-sep {
+    font-family:'Cormorant Garamond',serif;
+    font-size:56px; color:var(--seagreen);
+    opacity:0.7; line-height:1; align-self:flex-start; margin-top:4px;
+  }
+
+  section {
+    padding: 52px 24px;
+    max-width: 780px; margin: 0 auto;
+    position: relative; z-index:2;
+  }
+  .section-tag {
+    font-size:20px; letter-spacing:5px;
+    text-transform:uppercase; color:#0a3d5c;
+    margin-bottom:14px; display:block; text-align:center;
+    font-weight:600;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.25);
+  }
+  .section-title {
+    font-family:'Cormorant Garamond',serif;
+    font-size:clamp(64px,11vw,100px) !important;
+    font-weight:300; line-height:1.1;
+    margin-bottom:44px; color:#061d33 !important; text-align:center;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  }
+  .section-title em { font-style:italic; color:var(--gold-light); }
+
+  .section-sep {
+    border:none; height:1px;
+    background:linear-gradient(90deg,transparent,rgba(106,176,216,0.45),transparent);
+    margin:0; position:relative; z-index:2;
+  }
+
+@keyframes sparkle { 0%,100%{opacity:0;transform:scale(0) rotate(0deg)} 50%{opacity:1;transform:scale(1) rotate(180deg)} }
+  @keyframes burst { 0%{opacity:1;transform:translate(0,0) scale(1)} 100%{opacity:0;transform:translate(var(--bx),var(--by)) scale(0)} }
+  .boy-badge .spark { position:absolute; pointer-events:none; animation:sparkle 1.4s ease-in-out infinite; font-size:18px; }
+  .boy-badge .burst-dot { position:absolute; width:8px; height:8px; border-radius:50%; animation:burst 1.2s ease-out infinite; }
+  .boy-badge {
+    background: rgba(255,255,255,0.62);
+    border: 1px solid rgba(255,255,255,0.7);
+    border-radius: 20px;
+    padding: 48px 32px; text-align:center;
+    margin-bottom:56px; position:relative; overflow:hidden;
+    backdrop-filter:blur(6px);
+  }
+  .boy-badge::before {
+    content:'🐳';
+    position:absolute; top:-10px; right:10px;
+    font-size:100px; opacity:0.1; pointer-events:none;
+  }
+  .boy-badge::after {
+    content:'🐠';
+    position:absolute; bottom:-10px; left:10px;
+    font-size:80px; opacity:0.08; pointer-events:none;
+  }
+  .boy-icon { font-size:52px; margin-bottom:14px; display:block; }
+  .boy-badge h2 {
+    font-family:'Cormorant Garamond',serif;
+    font-size:clamp(44px,9vw,72px);
+    font-weight:300; font-style:italic;
+    color:var(--ocean-deep); margin-bottom:8px;
+  }
+  .boy-badge p {
+    font-size:18px; letter-spacing:5px;
+    text-transform:uppercase; color:var(--seagreen);
+  }
+
+  .details-grid {
+    display:grid; grid-template-columns:repeat(2,1fr);
+    gap:2px;
+    background:rgba(255,255,255,0.2);
+    border:1px solid rgba(255,255,255,0.55);
+    border-radius:6px; overflow:hidden;
+    margin-bottom:36px;
+  }
+  .detail-card {
+    background:rgba(255,255,255,0.62);
+    backdrop-filter:blur(6px);
+    padding:28px 22px;
+    display:flex; flex-direction:column; gap:6px; align-items:center; text-align:center;
+    transition: background 0.3s;
+  }
+  .detail-card:hover { background:rgba(255,255,255,0.75); }
+  .detail-card.full { grid-column:1/-1; }
+  .detail-icon { font-size:20px; margin-bottom:4px; }
+  .detail-label {
+    font-size:14px; letter-spacing:4px;
+    text-transform:uppercase; color:var(--seagreen); opacity:0.9;
+  }
+  .detail-value {
+    font-family:'Cormorant Garamond',serif;
+    font-size:28px; font-weight:400;
+    color:var(--ocean-deep); line-height:1.3;
+  }
+  .detail-sub { font-size:15px; color:var(--ocean-mid); opacity:0.9; line-height:1.5; }
+  .map-btn {
+    display:inline-flex; align-items:center; gap:6px;
+    margin-top:8px; font-size:11px;
+    letter-spacing:3px; text-transform:uppercase;
+    color:var(--seagreen); text-decoration:none;
+    border-bottom:1px solid rgba(46,196,182,0.45);
+    padding-bottom:2px; transition:color 0.2s;
+  }
+  .map-btn:hover { color:#1aaa9e; }
+
+  .parents-grid {
+    display:grid; grid-template-columns:1fr 1fr;
+    gap:28px; margin-top:20px;
+  }
+  .parent-card {
+    background:rgba(255,255,255,0.62);
+    border:1px solid rgba(255,255,255,0.65);
+    border-radius:18px; padding:32px 20px;
+    text-align:center; backdrop-filter:blur(6px);
+    transition: transform 0.3s, border-color 0.3s;
+  }
+  .parent-card:hover { transform:translateY(-6px); border-color:rgba(46,196,182,0.5); }
+  .parent-photo-slot {
+    width:160px; height:160px; border-radius:50%;
+    border:2px solid rgba(46,196,182,0.5);
+    margin:0 auto 20px;
+    background:rgba(255,255,255,0.4);
+    display:flex; align-items:center; justify-content:center;
+    position:relative; overflow:hidden;
+  }
+  .parent-photo-slot::after { content:'📷'; font-size:28px; opacity:0.3; }
+  .parent-role {
+    font-size:10px; letter-spacing:5px;
+    text-transform:uppercase; color:var(--seagreen); margin-bottom:8px;
+  }
+  .parent-name {
+    font-family:'Cormorant Garamond',serif;
+    font-size:30px; font-weight:400; font-style:italic;
+    color:var(--ocean-deep); line-height:1.2;
+  }
+
+  .registry-grid {
+    display:grid; grid-template-columns:1fr 1fr;
+    gap:20px; margin-top:28px;
+  }
+  .registry-card {
+    background:rgba(255,255,255,0.62);
+    border:1px solid rgba(255,255,255,0.65);
+    border-radius:14px; padding:32px 24px;
+    text-align:center; backdrop-filter:blur(6px);
+    transition:border-color 0.3s, transform 0.3s;
+  }
+  .registry-card:hover { border-color:rgba(46,196,182,0.55); transform:translateY(-5px); }
+  .registry-icon { font-size:32px; margin-bottom:12px; display:block; }
+  .registry-name {
+    font-family:'Cormorant Garamond',serif;
+    font-size:36px; font-weight:300;
+    color:var(--ocean-deep); margin-bottom:16px;
+  }
+  .registry-link {
+    display:inline-block; font-size:10px;
+    letter-spacing:3px; text-transform:uppercase;
+    color:var(--seagreen); text-decoration:none;
+    border:1px solid rgba(46,196,182,0.45);
+    padding:10px 20px; border-radius:2px;
+    transition:background 0.2s, color 0.2s;
+  }
+  .registry-link:hover { background:rgba(46,196,182,0.15); color:#1aaa9e; }
+
+  .rsvp-section {
+    background:rgba(255,255,255,0.6);
+    backdrop-filter:blur(8px);
+    border-top:1px solid rgba(255,255,255,0.55);
+    padding:60px 24px; text-align:center;
+    position:relative; z-index:2;
+  }
+  .rsvp-inner { max-width:540px; margin:0 auto; }
+  .rsvp-note { font-size:14px; color:var(--ocean-mid); line-height:1.8; margin-bottom:44px; }
+  .rsvp-phone {
+    font-family:'Cormorant Garamond',serif;
+    font-size:40px; font-weight:300;
+    color:var(--ocean-deep); letter-spacing:2px; margin-bottom:12px;
+  }
+  .whatsapp-btn {
+    display:inline-flex; align-items:center; gap:10px;
+    background:#25D366; color:white; text-decoration:none;
+    padding:14px 32px; border-radius:100px;
+    font-size:13px; font-weight:500;
+    letter-spacing:2px; text-transform:uppercase;
+    transition:background 0.2s, transform 0.2s; margin-top:16px;
+  }
+  .whatsapp-btn:hover { background:#1ebe57; transform:scale(1.04); }
+
+  footer {
+    background:rgba(255,255,255,0.45);
+    border-top:1px solid rgba(255,255,255,0.6);
+    padding:48px 24px; text-align:center;
+    position:relative; z-index:2;
+  }
+  .footer-name {
+    font-family:'Cormorant Garamond',serif;
+    font-size:28px; font-weight:300; font-style:italic;
+    color:var(--ocean-mid); margin-bottom:8px;
+  }
+  .footer-date {
+    font-size:11px; letter-spacing:5px;
+    text-transform:uppercase; color:var(--ocean-deep); opacity:0.6;
+  }
+  .footer-fish { font-size:22px; margin-top:20px; opacity:0.5; letter-spacing:10px; }
+
+  .coral-divider {
+    text-align:center; font-size:22px;
+    letter-spacing:12px; opacity:0.5;
+    padding: 8px 0; position:relative; z-index:2;
+  }
+
+  .fade-in { opacity:0; transform:translateY(28px); transition:opacity 0.8s ease,transform 0.8s ease; }
+  .fade-in.visible { opacity:1; transform:translateY(0); }
+
+  /* ── Parent photos ── */
+  .parent-photo-slot img {
+    width:100%; height:100%;
+    object-fit:cover; border-radius:50%; display:block;
+  }
+  .parent-photo-slot::after { display:none; }
+
+  /* ── Baby scan section ── */
+  .scan-grid {
+    display:grid; grid-template-columns:1fr 1fr;
+    gap:20px; margin-top:28px;
+  }
+  .scan-card {
+    background:rgba(255,255,255,0.6);
+    border:1px solid rgba(255,255,255,0.65);
+    border-radius:16px; overflow:hidden;
+    backdrop-filter:blur(6px);
+    box-shadow:0 8px 32px rgba(10,45,77,0.1);
+    transition:transform 0.3s;
+  }
+  .scan-card:hover { transform:translateY(-4px); }
+  .scan-card img { width:100%; display:block; object-fit:cover; aspect-ratio:4/3; }
+
+  /* ── Floating music button ── */
+  .music-btn {
+    position:fixed; bottom:28px; right:28px;
+    width:50px; height:50px; border-radius:50%;
+    background:rgba(255,255,255,0.88);
+    backdrop-filter:blur(8px);
+    border:1px solid rgba(255,255,255,0.9);
+    box-shadow:0 4px 20px rgba(10,45,77,0.2);
+    cursor:pointer; font-size:22px;
+    display:flex; align-items:center; justify-content:center;
+    z-index:1000; transition:transform 0.2s, background 0.2s;
+    color:var(--ocean-deep);
+  }
+  .music-btn:hover { transform:scale(1.12); background:rgba(255,255,255,0.98); }
+
+  /* ── Top back link ── */
+  #top-back-link {
+    position:fixed; top:20px; left:20px; z-index:1000;
+    background:rgba(255,255,255,0.88);
+    backdrop-filter:blur(8px);
+    border:1px solid rgba(255,255,255,0.9);
+    border-radius:50px; padding:10px 18px;
+    font-family:'Jost',sans-serif; font-size:10px; letter-spacing:2px; text-transform:uppercase;
+    color:var(--ocean-deep); text-decoration:none;
+    box-shadow:0 4px 20px rgba(10,45,77,0.2);
+    transition:transform 0.2s, background 0.2s;
+  }
+  #top-back-link:hover { transform:scale(1.05); background:rgba(255,255,255,0.98); }
+
+  @media(max-width:520px){
+    .details-grid,.parents-grid,.registry-grid,.scan-grid { grid-template-columns:1fr; }
+    .countdown-sep { }
+    .music-btn { bottom:16px; right:16px; width:44px; height:44px; font-size:19px; }
+    #top-back-link { top:14px; left:14px; padding:8px 14px; font-size:9px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Ocean canvas -->
+<canvas id="ocean-canvas"></canvas>
+
+<!-- Music -->
+<audio id="bg-music" src="../cancion.mp3" loop="" preload="auto"></audio>
+<button class="music-btn" id="music-btn" onclick="toggleMusic()" title="Música">♪</button>
+<a id="top-back-link" href="../../index.html">← Más invitaciones</a>
+
+<!-- ════ ENVELOPE SCREEN ════ -->
+<div id="envelope-screen">
+  <p class="env-text-top">🌊 Tienes una invitación especial 🐠</p>
+
+  <div class="envelope-wrap" id="envelope" onclick="openEnvelope()">
+    <div class="env-letter" id="env-letter">
+      <span class="env-letter-icon">🐳</span>
+      <span class="env-letter-text">Baby Torres<br>Vidal</span>
+    </div>
+    <svg class="envelope-svg" viewBox="0 0 380 260" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="envBody" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#5aa8d0"></stop>
+          <stop offset="100%" stop-color="#2a6a9a"></stop>
+        </linearGradient>
+        <linearGradient id="envFlap" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#82c8e8"></stop>
+          <stop offset="100%" stop-color="#4a90c0"></stop>
+        </linearGradient>
+      </defs>
+      <ellipse cx="190" cy="257" rx="168" ry="7" fill="rgba(0,0,0,0.2)"></ellipse>
+      <rect x="10" y="80" width="360" height="170" rx="6" fill="url(#envBody)"></rect>
+      <polygon points="10,80 10,250 190,165" fill="rgba(255,255,255,0.06)"></polygon>
+      <polygon points="370,80 370,250 190,165" fill="rgba(0,0,0,0.1)"></polygon>
+      <polygon points="10,250 370,250 190,165" fill="rgba(255,255,255,0.04)"></polygon>
+      <!-- seal -->
+      <circle cx="190" cy="200" r="20" fill="#5ab8e0" opacity="0.2"></circle>
+      <circle cx="190" cy="200" r="15" fill="#2a6a9a"></circle>
+      <text x="190" y="205" text-anchor="middle" font-size="16" fill="#2ec4b6">⚓</text>
+      <!-- flap -->
+      <g class="env-flap-group">
+        <polygon points="10,80 370,80 190,195" fill="url(#envFlap)"></polygon>
+        <polygon points="10,80 370,80 190,165" fill="rgba(0,30,60,0.4)"></polygon>
+        <polyline points="10,80 190,195 370,80" fill="none" stroke="#a8dff0" stroke-width="1" opacity="0.2"></polyline>
+      </g>
+      <rect x="10" y="80" width="360" height="170" rx="6" fill="none" stroke="#a8dff0" stroke-width="1.5" opacity="0.25"></rect>
+      <!-- wax seal on flap -->
+      <circle cx="190" cy="150" r="17" fill="#f5c842" opacity="0.9"></circle>
+      <text x="190" y="156" text-anchor="middle" font-size="14" fill="#2a6a9a">🐬</text>
+    </svg>
+  </div>
+
+  <p class="env-click-hint">Toca para abrir ✦</p>
+</div>
+
+<!-- ════ HERO ════ -->
+<header class="hero">
+  <div class="hero-tag">Baby Shower</div>
+  <h1 class="hero-title">Baby<br><em>Torres</em><br>Vidal</h1>
+  <div class="divider-sea"></div>
+  <p class="hero-subtitle">Con mucho amor te invitamos</p>
+  <p class="hero-date">Sábado · 14 de Agosto de 2027</p>
+  <p class="hero-time">15:00 horas</p>
+  <div class="scroll-hint">Desliza</div>
+  <!-- wave SVG -->
+  <div class="hero-wave">
+    <svg viewBox="0 0 1440 70" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="width:100%;height:70px;display:block;">
+      <path d="M0,40 C240,80 480,0 720,40 C960,80 1200,0 1440,40 L1440,70 L0,70 Z" fill="rgba(255,255,255,0.38)"></path>
+    </svg>
+  </div>
+</header>
+
+<!-- ════ COUNTDOWN ════ -->
+<div class="countdown-section">
+  <p class="countdown-label">🌊 Faltan para el baby shower 🌊</p>
+  <div class="countdown-grid">
+    <div class="countdown-unit">
+      <span class="countdown-number" id="cd-days">--</span>
+      <span class="countdown-unit-label">Días</span>
+    </div>
+    <span class="countdown-sep">:</span>
+    <div class="countdown-unit">
+      <span class="countdown-number" id="cd-hours">--</span>
+      <span class="countdown-unit-label">Horas</span>
+    </div>
+    <span class="countdown-sep">:</span>
+    <div class="countdown-unit">
+      <span class="countdown-number" id="cd-mins">--</span>
+      <span class="countdown-unit-label">Minutos</span>
+    </div>
+    <span class="countdown-sep">:</span>
+    <div class="countdown-unit">
+      <span class="countdown-number" id="cd-secs">--</span>
+      <span class="countdown-unit-label">Segundos</span>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- ════ ¡ES NIÑO! ════ -->
+<section style="text-align:center;" class="fade-in">
+  <span class="section-tag">El gran anuncio</span>
+  <div class="boy-badge">
+    <span class="spark" style="top:8%;left:10%;animation-delay:0s">✨</span>
+    <span class="spark" style="top:12%;right:12%;animation-delay:0.3s">🎉</span>
+    <span class="spark" style="top:5%;left:50%;animation-delay:0.6s">⭐</span>
+    <span class="spark" style="bottom:10%;left:15%;animation-delay:0.9s">🎊</span>
+    <span class="spark" style="bottom:8%;right:10%;animation-delay:1.2s">✨</span>
+    <span class="spark" style="top:20%;right:25%;animation-delay:0.5s">💫</span>
+    <span class="boy-icon">🐋</span>
+    <h2>¡Es niño!</h2>
+    <p>Noviembre 2027</p>
+  </div>
+  <p style="font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;color:#ffffff;line-height:1.8;max-width:480px;margin:0 auto;text-shadow:0 2px 10px rgba(8,40,70,0.45);">
+    Un pequeño marinero está en camino y queremos celebrarlo rodeados de las personas que más amamos.
+  </p>
+  <div style="margin-top:32px;text-align:center;">
+    <img src="../niñomarinero.png" alt="Niño Marinero" style="max-width:200px;width:55%;border-radius:16px;box-shadow:0 8px 32px rgba(10,45,77,0.25);">
+  </div>
+</section>
+
+
+
+<!-- ════ DETALLES ════ -->
+<section class="fade-in">
+  <span class="section-tag">El evento</span>
+  <h2 class="section-title">Fecha, hora <em>y lugar</em></h2>
+  <div class="details-grid">
+    <div class="detail-card">
+      <span class="detail-icon">🗓️</span>
+      <span class="detail-label">Fecha</span>
+      <span class="detail-value">14 de agosto del 2027</span>
+    </div>
+    <div class="detail-card">
+      <span class="detail-icon">⏱️</span>
+      <span class="detail-label">Hora</span>
+      <span class="detail-value">15:00 hrs</span>
+      <span class="detail-sub">en punto</span>
+    </div>
+    <div class="detail-card full">
+      <span class="detail-icon">🏛️</span>
+      <span class="detail-label">Lugar</span>
+      <span class="detail-value">Salón Costa Azul</span>
+      <span class="detail-icon">📍</span>
+      <span class="detail-label">Dirección</span>
+      <span class="detail-value" style="font-size:18px;">Calle del Roble 88</span>
+      <span class="detail-sub">Col. Jardines del Bosque · CP 45190, Zapopan, Jal.</span>
+      <div style="margin-top:16px;border-radius:8px;overflow:hidden;height:220px;">
+        <iframe src="https://maps.google.com/maps?q=Salon+Costa+Azul+Jardines+del+Bosque+Zapopan+Jalisco&amp;output=embed&amp;z=16&amp;hl=es" width="100%" height="220" style="border:0;display:block;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+      <a class="map-btn" href="https://www.google.com/maps/search/?api=1&query=Salon+Costa+Azul+Jardines+del+Bosque+Zapopan+Jalisco" target="_blank" style="margin-top:10px;">↗ Abrir en Google Maps</a>
+    </div>
+  </div>
+</section>
+
+<hr class="section-sep">
+
+<!-- ════ FUTUROS PAPÁS ════ -->
+<section class="fade-in">
+  <span class="section-tag">Los protagonistas</span>
+  <h2 class="section-title">Futuros <em>papás</em></h2>
+  <div class="parents-grid">
+    <div class="parent-card">
+      <div class="parent-photo-slot">
+        <img src="../mama.jfif" alt="Camila Vidal">
+      </div>
+      <p class="parent-role">Mami</p>
+      <p class="parent-name">Camila Vidal</p>
+    </div>
+    <div class="parent-card">
+      <div class="parent-photo-slot">
+        <img src="../papa.jfif" alt="Diego Torres">
+      </div>
+      <p class="parent-role">Papi</p>
+      <p class="parent-name">Diego Torres</p>
+    </div>
+  </div>
+</section>
+
+<hr class="section-sep">
+
+<!-- ════ BEBÉ EN CAMINO ════ -->
+<section class="fade-in" style="text-align:center;">
+  <span class="section-tag">Bebé en camino</span>
+  <h2 class="section-title">Nuestro pequeño <em>marinero</em></h2>
+  <p style="text-align:center;font-family:'Cormorant Garamond',serif;font-size:26px;font-style:italic;color:#0a2d4d;margin:0 0 18px;">📸 Mis primeras fotos</p>
+  <div class="scan-grid">
+    <div class="scan-card">
+      <img src="../resonancia.jfif" alt="Primera resonancia">
+    </div>
+    <div class="scan-card">
+      <img src="../foto2.jpg" alt="Segunda foto" style="object-fit:contain;background:rgba(255,255,255,0.5);">
+      <p style="text-align:center;padding:20px 8px 12px;font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;color:#0a2d4d;">Ya quiero conocer a mis papis 🩵</p>
+    </div>
+  </div>
+</section>
+
+<hr class="section-sep">
+
+<!-- ════ MESA DE REGALOS ════ -->
+<section class="fade-in">
+  <span class="section-tag">Mesa de regalos</span>
+  <h2 class="section-title">Su presencia es <em>el mejor regalo</em></h2>
+  <p style="color:#ffffff;line-height:1.8;margin-bottom:16px;text-shadow:0 2px 10px rgba(8,40,70,0.45);text-align:center;">
+    Cualquier regalo es bienvenido, pero si pudieran considerar las siguientes mesas de regalos lo agradeceríamos. 💙
+  </p>
+  <div class="registry-grid">
+    <div class="registry-card">
+      <span class="registry-icon">🛍️</span>
+      <p class="registry-name">Liverpool</p>
+      <a class="registry-link" href="https://mesaderegalos.liverpool.com.mx/milistaderegalos/camila-diego" target="_blank">Ver lista ↗</a>
+    </div>
+    <div class="registry-card">
+      <span class="registry-icon">📦</span>
+      <p class="registry-name">Amazon</p>
+      <a class="registry-link" href="https://www.amazon.com.mx/baby-reg/camila-diego-torresvidal-agosto-2027" target="_blank">Ver lista ↗</a>
+    </div>
+  </div>
+</section>
+
+<hr class="section-sep">
+
+<!-- ════ RSVP ════ -->
+<div class="rsvp-section">
+  <div class="rsvp-inner">
+    <span class="section-tag" style="color:var(--ocean-mid);text-shadow:none;">Confirmación de asistencia</span>
+    <h2 class="section-title" style="text-align:center;">¿Nos <em>acompañas?</em></h2>
+    <p class="rsvp-note">
+      Apóyanos con la confirmación de asistencia <strong style="color:var(--seagreen);">máximo una semana antes del evento</strong>.<br>
+      Tu confirmación nos ayuda a preparar todo con cariño para recibirte.
+    </p>
+    <p class="rsvp-phone">55 8123 4567</p>
+    <a class="whatsapp-btn" href="https://wa.me/5215581234567?text=¡Hola!%20Confirmo%20mi%20asistencia%20al%20Baby%20Shower%20de%20Baby%20Torres%20Vidal%20el%2014%20de%20agosto%20🌊🐠" target="_blank">
+      <svg width="18" height="18" fill="white" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"></path></svg>
+      Confirmar por WhatsApp
+    </a>
+  </div>
+</div>
+
+<!-- ════ FOOTER ════ -->
+<footer>
+  <div class="footer-fish">🐠 🐟 🐡 🐟 🐠</div>
+  <div style="width:80px;height:1px;background:linear-gradient(90deg,transparent,#2ec4b6,transparent);margin:20px auto 24px;"></div>
+  <p class="footer-name">Baby Torres Vidal</p>
+  <p class="footer-date">14 · 08 · 2027 · Zapopan, Jalisco</p>
+  <p style="margin-top:16px;font-size:20px;opacity:0.3;">⚓</p>
+  <a href="../../index.html" style="display:inline-block;margin-top:18px;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--ocean-mid);text-decoration:none;opacity:0.7">← Más invitaciones</a>
+</footer>
+
+<script>
+// ══ Music ══
+const music    = document.getElementById('bg-music');
+const musicBtn = document.getElementById('music-btn');
+let musicPlaying = false;
+
+function toggleMusic() {
+  if (musicPlaying) {
+    music.pause();
+    musicBtn.textContent = '♪';
+    musicPlaying = false;
+  } else {
+    music.play().catch(() => {});
+    musicBtn.textContent = '♫';
+    musicPlaying = true;
+  }
+}
+
+// ══ Envelope ══
+function openEnvelope() {
+  const wrap   = document.getElementById('envelope');
+  const letter = document.getElementById('env-letter');
+  const screen = document.getElementById('envelope-screen');
+  if (wrap.classList.contains('opening')) return;
+  wrap.classList.add('opening');
+  setTimeout(() => letter.classList.add('open'), 400);
+  setTimeout(() => spawnBubbleConfetti(), 480);
+  setTimeout(() => {
+    screen.classList.add('hide');
+    document.body.style.overflow = '';
+    music.play().then(() => { musicPlaying = true; musicBtn.textContent = '♫'; }).catch(() => {});
+  }, 1500);
+}
+
+function spawnBubbleConfetti() {
+  const screen = document.getElementById('envelope-screen');
+  const colors = ['#a8dff0','#2ec4b6','#ffffff','#1a9fd4','#ffe680','#d6f0fa'];
+  for (let i = 0; i < 30; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'confetti-dot';
+    const size = 7 + Math.random() * 14;
+    dot.style.cssText = `
+      width:${size}px;height:${size}px;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      left:${25+Math.random()*50}%;
+      top:${25+Math.random()*35}%;
+      --tx:${(Math.random()-0.5)*220}px;
+      --ty:${-70-Math.random()*180}px;
+    `;
+    screen.appendChild(dot);
+    setTimeout(() => dot.classList.add('pop'), 20);
+    setTimeout(() => dot.remove(), 900);
+  }
+}
+
+// ══ Ocean Canvas (bubbles + fish images) ══
+const canvas = document.getElementById('ocean-canvas');
+const ctx    = canvas.getContext('2d');
+
+function resize() { canvas.width=innerWidth; canvas.height=innerHeight; }
+resize(); addEventListener('resize', resize);
+
+// Bubbles
+const BUBBLES = Array.from({length:55}, () => mkBubble(true));
+function mkBubble(init) {
+  return {
+    x: Math.random() * innerWidth,
+    y: init ? Math.random() * innerHeight : innerHeight + 20,
+    r: 2 + Math.random() * 9,
+    speed: 0.3 + Math.random() * 0.7,
+    wobble: Math.random() * Math.PI * 2,
+    wobbleSpeed: 0.01 + Math.random() * 0.02,
+    opacity: 0.08 + Math.random() * 0.18,
+  };
+}
+
+// Fish image types — all PNGs face LEFT; flip when dir=1 (moving right)
+// weight: controls how often each type appears (higher = more frequent)
+const FISH_TYPES = [
+  { src: '../imagenes/ballena.png',    minSize: 200, maxSize: 300, weight: 1  },
+  { src: '../imagenes/mantarraya.png', minSize: 160, maxSize: 240, weight: 1  },
+  { src: '../imagenes/delfin.png',     minSize: 130, maxSize: 200, weight: 2  },
+  { src: '../imagenes/tortuga.png',    minSize: 100, maxSize: 160, weight: 1  },
+  { src: '../imagenes/pez 1.png',       minSize: 80,  maxSize: 140, weight: 5  },
+  { src: '../imagenes/pez 2.png',       minSize: 75,  maxSize: 130, weight: 5  },
+  { src: '../imagenes/pez globo.png',   minSize: 70,  maxSize: 120, weight: 4  },
+  { src: '../imagenes/pez 3.png',       minSize: 65,  maxSize: 110, weight: 5  },
+  { src: '../imagenes/pulpo.png',      minSize: 80,  maxSize: 130, weight: 3  },
+  { src: '../imagenes/caballito de mar.png',  minSize: 60,  maxSize: 100, weight: 4  },
+  { src: '../imagenes/cangrejo.png',   minSize: 55,  maxSize: 90,  weight: 4  },
+];
+
+const mobileSizeScale = window.innerWidth < 600 ? 0.4 : 1;
+
+const fishImages = FISH_TYPES.map(ft => {
+  const img = new Image();
+  img.src = ft.src;
+  return { ...ft, img };
+});
+
+const totalWeight = fishImages.reduce((s, t) => s + t.weight, 0);
+function pickFishType() {
+  let r = Math.random() * totalWeight;
+  for (const t of fishImages) { r -= t.weight; if (r <= 0) return t; }
+  return fishImages[fishImages.length - 1];
+}
+
+const FISH_COUNT = 22;
+const FISH = Array.from({length: FISH_COUNT}, (_, i) => mkFish(true, i));
+
+function mkFish(init, idx = 0) {
+  const type = pickFishType();
+  const dir  = Math.random() > 0.5 ? 1 : -1;
+  const size = (type.minSize + Math.random() * (type.maxSize - type.minSize)) * mobileSizeScale;
+
+  // On init: spread fish visibly across the full screen height
+  const y = init
+    ? Math.max(40, Math.min(innerHeight - 40,
+        (idx / FISH_COUNT) * innerHeight * 0.92 + (Math.random() - 0.5) * 60))
+    : 50 + Math.random() * (innerHeight * 0.88);
+
+  // Larger fish undulate slower and wider; small fish wiggle faster
+  const sizeNorm = (size - type.minSize) / Math.max(1, type.maxSize - type.minSize);
+  return {
+    x: init ? Math.random() * innerWidth : (dir === 1 ? -size * 2 : innerWidth + size * 2),
+    y,
+    dir,
+    speed: 0.28 + Math.random() * 0.55,
+    size,
+    img: type.img,
+    wobble: Math.random() * Math.PI * 2,
+    wobbleAmp:   5 + sizeNorm * 9 + Math.random() * 5,    // 5–19 px vertical wave
+    wobbleSpeed: 0.025 - sizeNorm * 0.01 + Math.random() * 0.008, // big=slow, small=fast
+    tiltAmp:     0.02 + Math.random() * 0.025,  // rotation when ascending/descending
+    opacity: 0.6 + Math.random() * 0.3,
+    delay: init ? Math.random() * 60 : 0,
+  };
+}
+
+function drawFish(f) {
+  if (f.delay > 0 || !f.img.complete || !f.img.naturalWidth) return;
+  const aspect = f.img.naturalWidth / f.img.naturalHeight;
+  const w = f.size;
+  const h = w / aspect;
+
+  const sinVal  = Math.sin(f.wobble);
+  const cosVal  = Math.cos(f.wobble);
+  const vertOff = sinVal * f.wobbleAmp;
+  // Nose tilts toward the direction of vertical movement
+  const tilt    = -f.dir * cosVal * f.tiltAmp;
+  // Subtle squash-stretch to simulate body flexing
+  const pulse   = 1 + sinVal * 0.015;
+
+  ctx.save();
+  ctx.globalAlpha = f.opacity;
+  ctx.translate(f.x, f.y + vertOff);
+  ctx.rotate(tilt);
+  ctx.scale(pulse, 1 / pulse);
+  if (f.dir === 1) ctx.scale(-1, 1);
+  ctx.drawImage(f.img, -w / 2, -h / 2, w, h);
+  ctx.restore();
+}
+
+function drawBubble(b) {
+  ctx.save();
+  ctx.globalAlpha = b.opacity;
+  const grad = ctx.createRadialGradient(b.x - b.r*0.3, b.y - b.r*0.3, b.r*0.1, b.x, b.y, b.r);
+  grad.addColorStop(0, 'rgba(255,255,255,0.5)');
+  grad.addColorStop(1, 'rgba(106,176,216,0.04)');
+  ctx.beginPath();
+  ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
+  ctx.fillStyle = grad;
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(255,255,255,0.35)';
+  ctx.lineWidth = 0.6;
+  ctx.stroke();
+  ctx.restore();
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  BUBBLES.forEach(b => {
+    b.wobble += b.wobbleSpeed;
+    b.x += Math.sin(b.wobble) * 0.4;
+    b.y -= b.speed;
+    if (b.y + b.r < 0) { Object.assign(b, mkBubble(false)); }
+    drawBubble(b);
+  });
+
+  FISH.forEach(f => {
+    if (f.delay > 0) { f.delay--; return; }
+    f.wobble += f.wobbleSpeed;
+    f.x += f.speed * f.dir;
+    if (f.dir ===  1 && f.x >  innerWidth  + f.size * 2) { Object.assign(f, mkFish(false)); f.dir =  1; f.x = -f.size * 2; }
+    if (f.dir === -1 && f.x < -f.size * 2)               { Object.assign(f, mkFish(false)); f.dir = -1; f.x =  innerWidth + f.size * 2; }
+    drawFish(f);
+  });
+
+  requestAnimationFrame(animate);
+}
+animate();
+
+// ══ Envelope bubbles ══
+const envScreen = document.getElementById('envelope-screen');
+for (let i = 0; i < 18; i++) {
+  const b = document.createElement('div');
+  b.className = 'env-bubble';
+  const size = 8 + Math.random() * 28;
+  b.style.cssText = `
+    width:${size}px;height:${size}px;
+    left:${Math.random()*90}%;
+    bottom:${Math.random()*30}%;
+    animation-duration:${5+Math.random()*8}s;
+    animation-delay:${Math.random()*6}s;
+  `;
+  envScreen.appendChild(b);
+}
+
+// Lock scroll
+document.body.style.overflow = 'hidden';
+
+// ══ Countdown ══
+const target = new Date('2027-08-14T15:00:00');
+function tick() {
+  const diff = target - new Date();
+  if (diff <= 0) {
+    ['cd-days','cd-hours','cd-mins','cd-secs'].forEach(id => document.getElementById(id).textContent='00');
+    return;
+  }
+  document.getElementById('cd-days').textContent  = String(Math.floor(diff/86400000)).padStart(2,'0');
+  document.getElementById('cd-hours').textContent = String(Math.floor(diff%86400000/3600000)).padStart(2,'0');
+  document.getElementById('cd-mins').textContent  = String(Math.floor(diff%3600000/60000)).padStart(2,'0');
+  document.getElementById('cd-secs').textContent  = String(Math.floor(diff%60000/1000)).padStart(2,'0');
+}
+tick(); setInterval(tick, 1000);
+
+// ══ Scroll fade-in ══
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+
+</body></html>

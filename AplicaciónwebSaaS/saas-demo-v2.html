@@ -94,6 +94,12 @@ body::before {
   transition: color 0.2s;
 }
 .back-devsia:hover { color: var(--text); }
+.lang-flag-btn{position:relative;display:flex;align-items:center;justify-content:center;width:36px;height:24px;border-radius:5px;border:1.5px solid var(--border);background:rgba(0,0,0,0.04);cursor:pointer;padding:2px;transition:border-color .2s,transform .15s;overflow:hidden;}
+.lang-flag-btn:hover{border-color:var(--accent);transform:scale(1.07);}
+.lang-flag-btn .flag-current,.lang-flag-btn .flag-next{position:absolute;inset:2px;width:calc(100% - 4px);height:calc(100% - 4px);object-fit:cover;border-radius:3px;display:block;transition:opacity .25s;}
+.lang-flag-btn .flag-next{opacity:0;}
+.lang-flag-btn:hover .flag-current{opacity:0;}
+.lang-flag-btn:hover .flag-next{opacity:1;}
 .pill-badge {
   font-size: 11px; font-weight: 600; letter-spacing: 0.6px;
   padding: 5px 12px; border-radius: 20px;
@@ -570,6 +576,10 @@ select {
   </div>
   <div class="header-right">
     <a href="../index.html" class="back-devsia">← DevsIA</a>
+    <button class="lang-flag-btn" id="langToggle" onclick="toggleLang()" title="Cambiar idioma">
+      <img id="langFlagImg" class="flag-current" src="/imagenes/español.webp" alt="Idioma actual">
+      <img id="langFlagImgNext" class="flag-next" src="/imagenes/ingles.png" alt="Cambiar idioma">
+    </button>
     <div class="live-dot"></div>
     <span class="pill-badge" id="headerBadge">Demo en vivo</span>
   </div>
@@ -593,31 +603,31 @@ select {
     <div class="section-hero-left">
       <div class="hero-icon-ring">🍽</div>
       <div>
-        <h1 class="section-title">Menú Digital</h1>
-        <p class="section-sub">Mesa #7 · Pedidos en tiempo real</p>
+        <h1 class="section-title" id="saas-r-title">Menú Digital</h1>
+        <p class="section-sub" id="saas-r-sub">Mesa #7 · Pedidos en tiempo real</p>
       </div>
     </div>
     <div class="flex gap-8">
-      <span class="tag tag-success">🟢 Cocina abierta</span>
-      <span class="tag tag-muted">Hoy: 48 órdenes</span>
+      <span class="tag tag-success" id="saas-r-tag1">🟢 Cocina abierta</span>
+      <span class="tag tag-muted" id="saas-r-tag2">Hoy: 48 órdenes</span>
     </div>
   </div>
   <div class="resto-layout">
     <div class="grid grid-2" id="dishGrid"></div>
     <div>
       <div class="cart-panel">
-        <div class="cart-title">🛒 Mi Pedido <span class="cart-count" id="cartCount">0</span></div>
+        <div class="cart-title" id="saas-r-cart-title">🛒 Mi Pedido <span class="cart-count" id="cartCount">0</span></div>
         <hr class="divider">
-        <div id="cartItems"><div class="cart-empty">🍴<br>Tu carrito está vacío</div></div>
+        <div id="cartItems"><div class="cart-empty">🍴<br><span id="saas-r-cart-empty">Tu carrito está vacío</span></div></div>
         <div id="cartFooter" style="display:none">
           <hr class="divider">
-          <div class="cart-total"><span>Total</span><span class="text-accent" id="cartTotal">$0</span></div>
-          <button class="btn btn-primary btn-full mt-16" id="orderBtn" onclick="placeOrder()">✅ Enviar Pedido</button>
+          <div class="cart-total"><span id="saas-r-total-lbl">Total</span><span class="text-accent" id="cartTotal">$0</span></div>
+          <button class="btn btn-primary btn-full mt-16" id="orderBtn" onclick="placeOrder()">✅ <span id="saas-r-order-btn">Enviar Pedido</span></button>
         </div>
         <div class="confirm-banner mt-16" id="orderConfirm">
           <div class="icon">🎉</div>
-          <h3>¡Pedido enviado!</h3>
-          <p>Tu orden está en camino a la cocina.</p>
+          <h3 id="saas-r-confirm-h">¡Pedido enviado!</h3>
+          <p id="saas-r-confirm-p">Tu orden está en camino a la cocina.</p>
         </div>
       </div>
     </div>
@@ -630,31 +640,31 @@ select {
     <div class="section-hero-left">
       <div class="hero-icon-ring">🏥</div>
       <div>
-        <h1 class="section-title">Agenda Médica</h1>
-        <p class="section-sub">Reserva tu cita con nuestros especialistas</p>
+        <h1 class="section-title" id="saas-c-title">Agenda Médica</h1>
+        <p class="section-sub" id="saas-c-sub">Reserva tu cita con nuestros especialistas</p>
       </div>
     </div>
-    <span class="tag tag-info">📅 24 citas hoy</span>
+    <span class="tag tag-info" id="saas-c-tag">📅 24 citas hoy</span>
   </div>
   <div class="clinic-layout">
     <div>
-      <div class="label mb-16">Selecciona un Doctor</div>
+      <div class="label mb-16" id="saas-c-lbl-select">Selecciona un Doctor</div>
       <div class="flex-col gap-12" id="doctorList"></div>
     </div>
     <div>
       <div class="card" style="position:sticky;top:130px">
-        <div class="panel-title">📅 Agendar Cita</div>
-        <div class="label mb-8">Doctor</div>
-        <div id="selectedDoctor" class="muted fs-13">— Ninguno seleccionado —</div>
+        <div class="panel-title" id="saas-c-panel-title">📅 Agendar Cita</div>
+        <div class="label mb-8" id="saas-c-lbl-doctor">Doctor</div>
+        <div id="selectedDoctor" class="muted fs-13" data-es="— Ninguno seleccionado —" data-en="— None selected —">— Ninguno seleccionado —</div>
         <hr class="divider">
-        <div class="label mb-8">Fecha</div>
+        <div class="label mb-8" id="saas-c-lbl-fecha">Fecha</div>
         <input type="date" id="clinicDate">
-        <div class="label mt-16 mb-8">Horario</div>
+        <div class="label mt-16 mb-8" id="saas-c-lbl-horario">Horario</div>
         <div class="time-slots" id="clinicSlots"></div>
-        <button class="btn btn-primary btn-full mt-16" onclick="bookAppointment()">Reservar Cita</button>
+        <button class="btn btn-primary btn-full mt-16" id="saas-c-book-btn" onclick="bookAppointment()">Reservar Cita</button>
         <div class="confirm-banner mt-16" id="clinicConfirm">
           <div class="icon">✅</div>
-          <h3>¡Cita confirmada!</h3>
+          <h3 id="saas-c-confirm-h">¡Cita confirmada!</h3>
           <div id="clinicConfirmDetails" class="mt-8"></div>
         </div>
       </div>
@@ -668,38 +678,38 @@ select {
     <div class="section-hero-left">
       <div class="hero-icon-ring">💇</div>
       <div>
-        <h1 class="section-title">Salón de Belleza</h1>
-        <p class="section-sub">Reserva tu servicio favorito</p>
+        <h1 class="section-title" id="saas-s-title">Salón de Belleza</h1>
+        <p class="section-sub" id="saas-s-sub">Reserva tu servicio favorito</p>
       </div>
     </div>
-    <span class="tag tag-warn">⭐ 4.9 / 5.0 reseñas</span>
+    <span class="tag tag-warn" id="saas-s-tag">⭐ 4.9 / 5.0 reviews</span>
   </div>
   <div class="resto-layout">
     <div>
-      <div class="label mb-16">Elige un Servicio</div>
+      <div class="label mb-16" id="saas-s-lbl1">Elige un Servicio</div>
       <div class="grid grid-3" id="serviceGrid"></div>
-      <div class="label mt-24 mb-12">Elige tu Estilista</div>
+      <div class="label mt-24 mb-12" id="saas-s-lbl2">Elige tu Estilista</div>
       <div class="flex gap-12 flex-wrap" id="stylistPick"></div>
-      <div class="label mt-24 mb-12">Selecciona Horario</div>
+      <div class="label mt-24 mb-12" id="saas-s-lbl3">Selecciona Horario</div>
       <div class="time-slots" id="salonSlots"></div>
-      <button class="btn btn-primary mt-20" style="padding:12px 32px" onclick="bookSalon()">💅 Confirmar Reserva</button>
+      <button class="btn btn-primary mt-20" id="saas-s-book-btn" style="padding:12px 32px" onclick="bookSalon()">💅 Confirmar Reserva</button>
       <div class="confirm-banner mt-16" id="salonConfirm">
         <div class="icon">💖</div>
-        <h3>¡Reserva exitosa!</h3>
+        <h3 id="saas-s-confirm-h">¡Reserva exitosa!</h3>
         <p id="salonConfirmDetails"></p>
       </div>
     </div>
     <div>
       <div class="salon-panel">
-        <div class="panel-title">✨ Tu Reserva</div>
+        <div class="panel-title" id="saas-s-panel-title">✨ Tu Reserva</div>
         <div class="flex-col gap-8">
-          <div class="appt-row"><span class="muted">Servicio</span><span id="s-servicio" class="bold">—</span></div>
-          <div class="appt-row"><span class="muted">Estilista</span><span id="s-estilista" class="bold">—</span></div>
-          <div class="appt-row"><span class="muted">Horario</span><span id="s-horario" class="bold">—</span></div>
-          <div class="appt-row"><span class="muted">Duración</span><span id="s-duracion" class="bold">—</span></div>
+          <div class="appt-row"><span class="muted" id="saas-s-lbl-srv">Servicio</span><span id="s-servicio" class="bold">—</span></div>
+          <div class="appt-row"><span class="muted" id="saas-s-lbl-sty">Estilista</span><span id="s-estilista" class="bold">—</span></div>
+          <div class="appt-row"><span class="muted" id="saas-s-lbl-time">Horario</span><span id="s-horario" class="bold">—</span></div>
+          <div class="appt-row"><span class="muted" id="saas-s-lbl-dur">Duración</span><span id="s-duracion" class="bold">—</span></div>
           <hr class="divider">
           <div class="flex-between">
-            <span class="bold" style="font-size:15px">Total</span>
+            <span class="bold" id="saas-s-lbl-total" style="font-size:15px">Total</span>
             <span class="price text-accent" id="s-total">$—</span>
           </div>
         </div>
@@ -715,7 +725,7 @@ select {
       <div class="hero-icon-ring">🏋️</div>
       <div>
         <h1 class="section-title">FlowGym</h1>
-        <p class="section-sub">Clases grupales · Semana actual</p>
+        <p class="section-sub" id="saas-g-sub">Clases grupales · Semana actual</p>
       </div>
     </div>
     <span class="tag tag-accent" id="enrolledBadge">0 inscritas</span>
@@ -724,11 +734,11 @@ select {
     <div class="flex-col gap-12" id="classesList"></div>
     <div class="flex-col gap-16">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-        <div class="stat-chip"><div class="stat-num" id="enrolledCount">0</div><div class="stat-label">Inscripciones mías</div></div>
-        <div class="stat-chip"><div class="stat-num">4</div><div class="stat-label">Clases hoy</div></div>
+        <div class="stat-chip"><div class="stat-num" id="enrolledCount">0</div><div class="stat-label" id="saas-g-stat1">Inscripciones mías</div></div>
+        <div class="stat-chip"><div class="stat-num">4</div><div class="stat-label" id="saas-g-stat2">Clases hoy</div></div>
       </div>
       <div class="chart-card">
-        <div class="panel-title">📊 Asistencia semanal</div>
+        <div class="panel-title" id="saas-g-chart-title">📊 Asistencia semanal</div>
         <canvas id="gymChart" height="210"></canvas>
       </div>
     </div>
@@ -741,22 +751,22 @@ select {
     <div class="section-hero-left">
       <div class="hero-icon-ring">🤖</div>
       <div>
-        <h1 class="section-title">Análisis de Documentos IA</h1>
-        <p class="section-sub">Sube contratos, expedientes o informes — la IA extrae lo importante en segundos</p>
+        <h1 class="section-title" id="saas-ai-title">Análisis de Documentos IA</h1>
+        <p class="section-sub" id="saas-ai-sub">Sube contratos, expedientes o informes — la IA extrae lo importante en segundos</p>
       </div>
     </div>
     <div class="flex gap-8 flex-wrap">
-      <span class="tag tag-accent">✨ Powered by IA</span>
-      <span class="tag tag-success">🔒 Datos seguros</span>
+      <span class="tag tag-accent" id="saas-ai-tag1">✨ Powered by AI</span>
+      <span class="tag tag-success" id="saas-ai-tag2">🔒 Datos seguros</span>
     </div>
   </div>
 
   <!-- Use cases selector -->
   <div class="flex gap-10 flex-wrap mb-16" id="useCaseTabs">
-    <button class="btn btn-outline btn-sm uc-btn active" data-uc="legal" onclick="setUseCase('legal',this)">⚖️ Abogados</button>
-    <button class="btn btn-ghost btn-sm uc-btn" data-uc="contable" onclick="setUseCase('contable',this)">📊 Contaduría</button>
-    <button class="btn btn-ghost btn-sm uc-btn" data-uc="rh" onclick="setUseCase('rh',this)">👥 Recursos Humanos</button>
-    <button class="btn btn-ghost btn-sm uc-btn" data-uc="medico" onclick="setUseCase('medico',this)">🏥 Expedientes Médicos</button>
+    <button class="btn btn-outline btn-sm uc-btn active" data-uc="legal" onclick="setUseCase('legal',this)" id="uc-legal">⚖️ Abogados</button>
+    <button class="btn btn-ghost btn-sm uc-btn" data-uc="contable" onclick="setUseCase('contable',this)" id="uc-contable">📊 Contaduría</button>
+    <button class="btn btn-ghost btn-sm uc-btn" data-uc="rh" onclick="setUseCase('rh',this)" id="uc-rh">👥 Recursos Humanos</button>
+    <button class="btn btn-ghost btn-sm uc-btn" data-uc="medico" onclick="setUseCase('medico',this)" id="uc-medico">🏥 Expedientes Médicos</button>
   </div>
 
   <div class="ai-layout">
@@ -766,8 +776,8 @@ select {
       <div class="drop-zone" id="dropZone" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
         <input type="file" id="fileInput" multiple accept=".pdf,.doc,.docx,.txt,.jpg,.png" onchange="handleFiles(this.files)">
         <span class="drop-icon">📂</span>
-        <div class="drop-title">Arrastra tus archivos aquí</div>
-        <div class="drop-sub mt-8">o haz clic para seleccionar · PDF, DOCX, TXT, JPG</div>
+        <div class="drop-title" id="saas-ai-drop-title">Arrastra tus archivos aquí</div>
+        <div class="drop-sub mt-8" id="saas-ai-drop-sub">o haz clic para seleccionar · PDF, DOCX, TXT, JPG</div>
         <div class="flex gap-8 mt-16" style="justify-content:center;flex-wrap:wrap">
           <span class="tag tag-muted">PDF</span>
           <span class="tag tag-muted">DOCX</span>
@@ -781,13 +791,13 @@ select {
 
       <!-- Analysis type -->
       <div class="card card-sm">
-        <div class="label mb-12">Tipo de Análisis</div>
+        <div class="label mb-12" id="saas-ai-type-lbl">Tipo de Análisis</div>
         <div class="analysis-type-grid" id="analysisTypeGrid"></div>
       </div>
 
       <!-- Analyze button -->
       <button class="btn btn-primary" style="padding:14px 32px;font-size:15px" onclick="runAnalysis()" id="analyzeBtn">
-        🔍 Analizar Documentos
+        🔍 <span id="saas-ai-analyze-btn">Analizar Documentos</span>
       </button>
     </div>
 
@@ -795,8 +805,8 @@ select {
     <div class="result-panel" id="resultPanel">
       <div class="result-empty" id="resultEmpty">
         <div class="result-empty-icon">📄</div>
-        <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:600">Resultados aparecerán aquí</div>
-        <div class="muted">Sube archivos y elige el tipo de análisis</div>
+        <div id="saas-ai-result-title" style="font-family:'Fraunces',serif;font-size:17px;font-weight:600">Resultados aparecerán aquí</div>
+        <div class="muted" id="saas-ai-result-sub">Sube archivos y elige el tipo de análisis</div>
       </div>
       <div id="resultContent" style="display:none"></div>
     </div>
@@ -873,7 +883,7 @@ function toast(msg, icon='✅') {
 // ══════════════════════════════════════
 // RESTAURANTE
 // ══════════════════════════════════════
-const dishes = [
+let dishes = [
   { id:1, name:'Tacos al Pastor',       desc:'3 tacos marinados con piña, cilantro y cebolla', price:89,  emoji:'🌮' },
   { id:2, name:'Hamburguesa Doble',     desc:'Doble carne Angus, cheddar, lechuga y jitomate', price:149, emoji:'🍔' },
   { id:3, name:'Pasta Alfredo',         desc:'Penne en salsa cremosa de parmesano',             price:125, emoji:'🍝' },
@@ -884,6 +894,7 @@ const dishes = [
 let cart = {};
 
 function renderDishes() {
+  const addLbl = (SAAS_UI[saasLang]||SAAS_UI.es).rAddBtn;
   document.getElementById('dishGrid').innerHTML = dishes.map(d => `
     <div class="card">
       <div class="dish-emoji-box">${d.emoji}</div>
@@ -891,7 +902,7 @@ function renderDishes() {
       <div class="dish-desc">${d.desc}</div>
       <div class="dish-footer">
         <span class="price text-accent">$${d.price}</span>
-        <button class="btn btn-outline btn-sm" onclick="addToCart(${d.id})">+ Agregar</button>
+        <button class="btn btn-outline btn-sm" onclick="addToCart(${d.id})">${addLbl}</button>
       </div>
     </div>`).join('');
 }
@@ -904,7 +915,7 @@ function addToCart(id) {
   document.getElementById('orderBtn').style.display='';
   const cc = document.getElementById('cartCount');
   cc.style.transform='scale(1.5)'; setTimeout(()=>cc.style.transform='scale(1)',220);
-  toast(`"${d.name}" añadido`, '🛒');
+  toast(`"${d.name}" ${(SAAS_UI[saasLang]||SAAS_UI.es).rToastAdded}`, '🛒');
 }
 function changeQty(id, d) {
   if (!cart[id]) return;
@@ -917,8 +928,9 @@ function renderCart() {
   const qty   = items.reduce((s,i)=>s+i.qty, 0);
   const total = items.reduce((s,i)=>s+i.price*i.qty, 0);
   document.getElementById('cartCount').textContent = qty;
+  const TL = (SAAS_UI[saasLang]||SAAS_UI.es);
   if (!items.length) {
-    document.getElementById('cartItems').innerHTML = '<div class="cart-empty">🍴<br>Tu carrito está vacío</div>';
+    document.getElementById('cartItems').innerHTML = '<div class="cart-empty">🍴<br><span id="saas-r-cart-empty">'+TL.rCartEmpty+'</span></div>';
     document.getElementById('cartFooter').style.display='none';
   } else {
     document.getElementById('cartItems').innerHTML = items.map(i=>`
@@ -942,13 +954,13 @@ function placeOrder() {
   cart = {}; renderCart();
   document.getElementById('orderConfirm').classList.add('show');
   document.getElementById('orderBtn').style.display='none';
-  toast('¡Pedido enviado a cocina!','🍽');
+  toast((SAAS_UI[saasLang]||SAAS_UI.es).rToastOrder,'🍽');
 }
 
 // ══════════════════════════════════════
 // CLÍNICA
 // ══════════════════════════════════════
-const doctors = [
+let doctors = [
   { id:1, name:'Dra. Sofía Ramírez', spec:'Medicina General', emoji:'👩‍⚕️', avail:true  },
   { id:2, name:'Dr. Carlos Méndez',  spec:'Cardiología',      emoji:'👨‍⚕️', avail:true  },
   { id:3, name:'Dra. Laura Torres',  spec:'Pediatría',        emoji:'👩‍⚕️', avail:true  },
@@ -966,18 +978,18 @@ function renderDoctors() {
         <div style="font-weight:700;font-size:14.5px">${d.name}</div>
         <div class="muted mt-4">${d.spec}</div>
       </div>
-      <span class="tag ${d.avail?'tag-success':'tag-error'}">${d.avail?'🟢 Disponible':'🔴 No disponible'}</span>
+      <span class="tag ${d.avail?'tag-success':'tag-error'}">${d.avail?(SAAS_UI[saasLang]||SAAS_UI.es).cAvail:(SAAS_UI[saasLang]||SAAS_UI.es).cNotAvail}</span>
     </div>`).join('');
 }
 function selectDoc(id) {
   const d = doctors.find(x=>x.id===id);
-  if (!d.avail) { toast('Doctor no disponible hoy','⚠️'); return; }
+  if (!d.avail) { toast((SAAS_UI[saasLang]||SAAS_UI.es).cToastNotAvail,'⚠️'); return; }
   selDoc=d; selCSlot=null;
   renderDoctors();
   document.getElementById('selectedDoctor').innerHTML=`<strong>${d.emoji} ${d.name}</strong> · ${d.spec}`;
   document.getElementById('clinicConfirm').classList.remove('show');
   renderCSlots();
-  toast(`${d.name} seleccionada`,'👨‍⚕️');
+  toast(d.name,'👨‍⚕️');
 }
 function renderCSlots() {
   document.getElementById('clinicSlots').innerHTML = cSlots.map(s=>{
@@ -990,21 +1002,23 @@ function selectCSlot(s) {
   document.querySelectorAll('#clinicSlots .time-slot').forEach(el=>el.classList.toggle('selected',el.textContent.trim()===s));
 }
 function bookAppointment() {
-  if (!selDoc)   { toast('Selecciona un doctor','⚠️'); return; }
-  if (!selCSlot) { toast('Selecciona un horario','⚠️'); return; }
+  const TLb = (SAAS_UI[saasLang]||SAAS_UI.es);
+  if (!selDoc)   { toast(TLb.cToastNoDoc,'⚠️'); return; }
+  if (!selCSlot) { toast(TLb.cToastNoSlot,'⚠️'); return; }
+  const _TL = (SAAS_UI[saasLang]||SAAS_UI.es);
   const dt = document.getElementById('clinicDate').value||'Hoy';
   document.getElementById('clinicConfirmDetails').innerHTML=`
-    <div class="appt-row"><span class="muted">Doctor</span><span>${selDoc.emoji} ${selDoc.name}</span></div>
-    <div class="appt-row"><span class="muted">Fecha</span><span>${dt}</span></div>
-    <div class="appt-row"><span class="muted">Hora</span><span>${selCSlot}</span></div>`;
+    <div class="appt-row"><span class="muted">${_TL.cLblDocR}</span><span>${selDoc.emoji} ${selDoc.name}</span></div>
+    <div class="appt-row"><span class="muted">${_TL.cLblFechaR}</span><span>${dt}</span></div>
+    <div class="appt-row"><span class="muted">${_TL.cLblHoraR}</span><span>${selCSlot}</span></div>`;
   document.getElementById('clinicConfirm').classList.add('show');
-  toast('¡Cita confirmada!','📅');
+  toast(_TL.cToastBooked,'📅');
 }
 
 // ══════════════════════════════════════
 // SALÓN
 // ══════════════════════════════════════
-const services = [
+let services = [
   { id:1, name:'Corte',              emoji:'✂️',  dur:'45 min', price:250 },
   { id:2, name:'Manicure',           emoji:'💅',  dur:'60 min', price:180 },
   { id:3, name:'Pedicure',           emoji:'🦶',  dur:'60 min', price:200 },
@@ -1058,18 +1072,19 @@ function selectSSlot(t) {
   document.getElementById('salonConfirm').classList.remove('show');
 }
 function bookSalon() {
-  if (!selSvc)   { toast('Selecciona un servicio','⚠️'); return; }
-  if (!selSty)   { toast('Selecciona una estilista','⚠️'); return; }
-  if (!selSSlot) { toast('Selecciona un horario','⚠️'); return; }
-  document.getElementById('salonConfirmDetails').textContent=`${selSvc.emoji} ${selSvc.name} con ${selSty.name} a las ${selSSlot}`;
+  const TLs = (SAAS_UI[saasLang]||SAAS_UI.es);
+  if (!selSvc)   { toast(TLs.sToastNoSvc,'⚠️'); return; }
+  if (!selSty)   { toast(TLs.sToastNoSty,'⚠️'); return; }
+  if (!selSSlot) { toast(TLs.sToastNoSlot,'⚠️'); return; }
+  document.getElementById('salonConfirmDetails').textContent=`${selSvc.emoji} ${selSvc.name} — ${selSty.name} ${selSSlot}`;
   document.getElementById('salonConfirm').classList.add('show');
-  toast('¡Reserva confirmada!','💅');
+  toast(TLs.sToastBooked,'💅');
 }
 
 // ══════════════════════════════════════
 // GIMNASIO
 // ══════════════════════════════════════
-const classes = [
+let classes = [
   { id:1, name:'Yoga Matutino', emoji:'🧘', time:'07:00–08:00', trainer:'Lucía M.',  cap:20, enrolled:14 },
   { id:2, name:'HIIT Intenso',  emoji:'🔥', time:'09:00–10:00', trainer:'Pedro R.',  cap:15, enrolled:15 },
   { id:3, name:'Spinning',      emoji:'🚴', time:'11:00–12:00', trainer:'Carlos V.', cap:18, enrolled:9  },
@@ -1090,33 +1105,34 @@ function renderGym() {
           <div class="occ-bar-fill" style="width:${pct}%;background:${barColor}"></div>
         </div>
         <div style="display:flex;justify-content:space-between;margin-top:4px">
-          <span style="font-size:11.5px;color:var(--muted)">Ocupación</span>
+          <span style="font-size:11.5px;color:var(--muted)">${(SAAS_UI[saasLang]||SAAS_UI.es).gOccLabel}</span>
           <span style="font-size:11.5px;font-weight:600">${c.enrolled}/${c.cap}</span>
         </div>
       </div>
       <div style="margin-left:12px">
         ${mine
-          ? `<button class="btn btn-danger btn-sm" onclick="unenroll(${c.id})">✕ Salir</button>`
+          ? `<button class="btn btn-danger btn-sm" onclick="unenroll(${c.id})">${(SAAS_UI[saasLang]||SAAS_UI.es).gLeave}</button>`
           : full
-            ? `<button class="btn btn-ghost btn-sm" disabled style="opacity:.4;cursor:not-allowed">Lleno</button>`
-            : `<button class="btn btn-outline btn-sm" onclick="enroll(${c.id})">+ Unirme</button>`}
+            ? `<button class="btn btn-ghost btn-sm" disabled style="opacity:.4;cursor:not-allowed">${(SAAS_UI[saasLang]||SAAS_UI.es).gFull}</button>`
+            : `<button class="btn btn-outline btn-sm" onclick="enroll(${c.id})">${(SAAS_UI[saasLang]||SAAS_UI.es).gJoin}</button>`}
       </div>
     </div>`;
   }).join('');
   const n = enrolled.size;
   document.getElementById('enrolledCount').textContent = n;
-  document.getElementById('enrolledBadge').textContent = n+' inscritas';
+  document.getElementById('enrolledBadge').textContent = n+(SAAS_UI[saasLang]||SAAS_UI.es).gEnrolledBadge;
 }
 function enroll(id) {
   const c=classes.find(x=>x.id===id);
-  if (c.enrolled>=c.cap) { toast('Clase llena','❌'); return; }
+  const TLg = (SAAS_UI[saasLang]||SAAS_UI.es);
+  if (c.enrolled>=c.cap) { toast(TLg.gToastFull,'❌'); return; }
   enrolled.add(id); c.enrolled++;
-  renderGym(); toast(`Inscrito en "${c.name}"`,'🏋️');
+  renderGym(); toast(`${TLg.sToastEnroll} "${c.name}"`,'🏋️');
 }
 function unenroll(id) {
   const c=classes.find(x=>x.id===id);
   enrolled.delete(id); c.enrolled--;
-  renderGym(); toast(`Saliste de "${c.name}"`,'ℹ️');
+  renderGym(); toast(`${(SAAS_UI[saasLang]||SAAS_UI.es).sToastUnenroll} "${c.name}"`,'ℹ️');
 }
 
 let gymChart=null;
@@ -1276,9 +1292,10 @@ function setUseCase(uc, btn) {
 }
 
 function renderAnalysisTypes() {
-  const cfg = useCaseConfigs[currentUseCase];
+  const cfg = saasLang==='en' ? (useCaseConfigs_en[currentUseCase]||useCaseConfigs[currentUseCase]) : useCaseConfigs[currentUseCase];
+  const aLabels = saasLang==='en' ? analysisLabels_en : analysisLabels;
   document.getElementById('analysisTypeGrid').innerHTML = cfg.analyses.map(a=>{
-    const al = analysisLabels[a];
+    const al = aLabels[a] || analysisLabels[a];
     return `<div class="analysis-type-btn${selectedAnalysis===a?' selected':''}" onclick="selectAnalysis('${a}',this)">
       <span class="atype-icon">${al.emoji}</span>
       <span class="atype-label">${al.label}</span>
@@ -1355,11 +1372,12 @@ function loadSampleDoc(type) {
     uploadedFiles.push(fakeFile);
     renderFileList();
   }
-  toast(`Documento "${names[type]}" cargado`,'📂');
+  toast(`"${names[type]}" ${(SAAS_UI[saasLang]||SAAS_UI.es).aiToastLoaded}`,'📂');
 }
 
 function runAnalysis() {
-  if (!uploadedFiles.length) { toast('Sube al menos un archivo primero','⚠️'); return; }
+  const TLai = (SAAS_UI[saasLang]||SAAS_UI.es);
+  if (!uploadedFiles.length) { toast(TLai.aiToastNoFile,'⚠️'); return; }
 
   // Loading state
   const rp = document.getElementById('resultPanel');
@@ -1369,9 +1387,9 @@ function runAnalysis() {
   rc.innerHTML = `
     <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;padding:60px 0;gap:20px;text-align:center">
       <div style="font-size:36px">🔍</div>
-      <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:600">Analizando ${uploadedFiles.length} documento(s)...</div>
+      <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:600">${TLai.aiAnalyzing} ${uploadedFiles.length} ${TLai.aiDocs}...</div>
       <div class="loading-dots"><div class="loading-dot"></div><div class="loading-dot"></div><div class="loading-dot"></div></div>
-      <div style="color:var(--muted);font-size:13px;max-width:260px">Extrayendo información relevante con IA</div>
+      <div style="color:var(--muted);font-size:13px;max-width:260px">${TLai.aiExtract}</div>
       <div class="loading-bar-wrap" style="width:240px"><div class="loading-bar"></div></div>
     </div>`;
 
@@ -1379,23 +1397,27 @@ function runAnalysis() {
 }
 
 function showResults() {
+  const TLr = (SAAS_UI[saasLang]||SAAS_UI.es);
   const uc = currentUseCase;
-  const data = (sampleResults[uc] && sampleResults[uc][selectedAnalysis])
-    ? sampleResults[uc][selectedAnalysis]
-    : sampleResults[uc][Object.keys(sampleResults[uc])[0]];
-  
-  const al = analysisLabels[selectedAnalysis] || analysisLabels['resumen'];
-  const ucLabel = useCaseConfigs[uc].label;
+  const sResults = saasLang==='en' ? sampleResults_en : sampleResults;
+  const data = (sResults[uc] && sResults[uc][selectedAnalysis])
+    ? sResults[uc][selectedAnalysis]
+    : sResults[uc][Object.keys(sResults[uc])[0]];
+
+  const aLabels = saasLang==='en' ? analysisLabels_en : analysisLabels;
+  const al = aLabels[selectedAnalysis] || aLabels['resumen'];
+  const ucCfgs = saasLang==='en' ? useCaseConfigs_en : useCaseConfigs;
+  const ucLabel = ucCfgs[uc].label;
 
   let html = `
     <div class="flex-between mb-16 flex-wrap gap-8">
       <div>
         <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:700">${al.emoji} ${al.label}</div>
-        <div class="muted mt-4">${ucLabel} · ${uploadedFiles.length} archivo(s)</div>
+        <div class="muted mt-4">${ucLabel} · ${uploadedFiles.length} ${TLr.aiDocs}</div>
       </div>
       <div class="flex gap-8 flex-wrap">
-        <span class="tag tag-success">✅ Completado</span>
-        <span class="tag tag-accent">IA v2.1</span>
+        <span class="tag tag-success">${TLr.aiCompleted}</span>
+        <span class="tag tag-accent">AI v2.1</span>
       </div>
     </div>
     <hr class="divider">`;
@@ -1409,10 +1431,10 @@ function showResults() {
 
   if (data.risks) {
     html+=`<div class="result-section">
-      <h4>⚠️ Alertas y Riesgos Detectados</h4>
+      <h4>${TLr.aiAlerts}</h4>
       ${data.risks.map(r=>`
         <div class="result-item" style="align-items:center;gap:12px">
-          <span class="risk-badge risk-${r.level}">${r.level==='high'?'🔴 Alto':r.level==='medium'?'🟡 Medio':'🟢 Bajo'}</span>
+          <span class="risk-badge risk-${r.level}">${r.level==='high'?TLr.aiHigh:r.level==='medium'?TLr.aiMedium:TLr.aiLow}</span>
           <div>${r.text}</div>
         </div>`).join('')}
     </div>`;
@@ -1421,13 +1443,14 @@ function showResults() {
   html+=`
     <hr class="divider">
     <div class="flex gap-10 flex-wrap">
-      <button class="btn btn-primary btn-sm" onclick="toast('Reporte exportado a PDF','📄')">⬇ Exportar PDF</button>
-      <button class="btn btn-ghost btn-sm" onclick="toast('Análisis copiado al portapapeles','📋')">📋 Copiar</button>
-      <button class="btn btn-ghost btn-sm" onclick="toast('Enviado por email','📧')">📧 Enviar</button>
+      <button class="btn btn-primary btn-sm" onclick="toast((SAAS_UI[saasLang]||SAAS_UI.es).aiToastExport,'📄')">${TLr.aiExport}</button>
+      <button class="btn btn-ghost btn-sm" onclick="toast((SAAS_UI[saasLang]||SAAS_UI.es).aiToastCopy,'📋')">${TLr.aiCopy}</button>
+      <button class="btn btn-ghost btn-sm" onclick="toast((SAAS_UI[saasLang]||SAAS_UI.es).aiToastSend,'📧')">${TLr.aiSend}</button>
     </div>`;
 
   document.getElementById('resultContent').innerHTML = html;
-  toast('¡Análisis completado!','🤖');
+  toast(TLr.aiToastDone,'🤖');
+
 }
 
 // ══════════════════════════════════════
@@ -1443,6 +1466,346 @@ function showResults() {
   renderSalon(); renderGym();
   renderAnalysisTypes();
 })();
+
+// ── LANG TOGGLE ──
+const SAAS_FLAGS = { es: '/imagenes/español.webp', en: '/imagenes/ingles.png' };
+let saasLang = 'es';
+
+const SAAS_UI = {
+  es: {
+    badge: 'Demo en vivo',
+    tabs: { restaurante:'Restaurante', clinica:'Clínica', salon:'Salón', gimnasio:'Gimnasio', aidocs:'Análisis IA' },
+    // Restaurante
+    rTitle:'Menú Digital', rSub:'Mesa #7 · Pedidos en tiempo real',
+    rTag1:'🟢 Cocina abierta', rTag2:'Hoy: 48 órdenes',
+    rCartTitle:'🛒 Mi Pedido', rCartEmpty:'Tu carrito está vacío',
+    rTotalLbl:'Total', rOrderBtn:'Enviar Pedido',
+    rConfirmH:'¡Pedido enviado!', rConfirmP:'Tu orden está en camino a la cocina.',
+    rAddBtn:'+ Agregar', rToastAdded:'añadido', rToastOrder:'¡Pedido enviado a cocina!',
+    // Clínica
+    cTitle:'Agenda Médica', cSub:'Reserva tu cita con nuestros especialistas',
+    cTag:'📅 24 citas hoy', cLblSelect:'Selecciona un Doctor',
+    cPanelTitle:'📅 Agendar Cita', cLblDoctor:'Doctor', cLblFecha:'Fecha', cLblHorario:'Horario',
+    cNone:'— Ninguno seleccionado —', cBookBtn:'Reservar Cita',
+    cConfirmH:'¡Cita confirmada!', cAvail:'🟢 Disponible', cNotAvail:'🔴 No disponible',
+    cToastNoDoc:'Selecciona un doctor', cToastNoSlot:'Selecciona un horario',
+    cToastBooked:'¡Cita confirmada!', cToastNotAvail:'Doctor no disponible hoy',
+    cLblDocR:'Doctor', cLblFechaR:'Fecha', cLblHoraR:'Hora',
+    // Salón
+    sTitle:'Salón de Belleza', sSub:'Reserva tu servicio favorito',
+    sTag:'⭐ 4.9 / 5.0 reseñas', sLbl1:'Elige un Servicio',
+    sLbl2:'Elige tu Estilista', sLbl3:'Selecciona Horario',
+    sBookBtn:'💅 Confirmar Reserva', sPanelTitle:'✨ Tu Reserva',
+    sLblSrv:'Servicio', sLblSty:'Estilista', sLblTime:'Horario', sLblDur:'Duración', sLblTotal:'Total',
+    sConfirmH:'¡Reserva exitosa!', sToastNoSvc:'Selecciona un servicio',
+    sToastNoSty:'Selecciona una estilista', sToastNoSlot:'Selecciona un horario',
+    sToastBooked:'¡Reserva confirmada!', sToastEnroll:'Inscrito en', sToastUnenroll:'Saliste de',
+    // Gym
+    gSub:'Clases grupales · Semana actual', gStat1:'Inscripciones mías', gStat2:'Clases hoy',
+    gChartTitle:'📊 Asistencia semanal', gEnrolledBadge:' inscritas',
+    gOccLabel:'Ocupación', gFull:'Lleno', gJoin:'+ Unirme', gLeave:'✕ Salir',
+    gToastFull:'Clase llena',
+    // AI
+    aiTitle:'Análisis de Documentos IA',
+    aiSub:'Sube contratos, expedientes o informes — la IA extrae lo importante en segundos',
+    aiTag2:'🔒 Datos seguros',
+    ucLegal:'⚖️ Abogados', ucContable:'📊 Contaduría', ucRh:'👥 Recursos Humanos', ucMedico:'🏥 Expedientes Médicos',
+    aiDropTitle:'Arrastra tus archivos aquí', aiDropSub:'o haz clic para seleccionar · PDF, DOCX, TXT, JPG',
+    aiTypeLabel:'Tipo de Análisis', aiAnalyzeBtn:'Analizar Documentos',
+    aiResultTitle:'Resultados aparecerán aquí', aiResultSub:'Sube archivos y elige el tipo de análisis',
+    aiCompleted:'✅ Completado', aiAnalyzing:'Analizando', aiDocs:'documento(s)',
+    aiExtract:'Extrayendo información relevante con IA',
+    aiAlerts:'⚠️ Alertas y Riesgos Detectados',
+    aiHigh:'🔴 Alto', aiMedium:'🟡 Medio', aiLow:'🟢 Bajo',
+    aiExport:'⬇ Exportar PDF', aiCopy:'📋 Copiar', aiSend:'📧 Enviar',
+    aiToastExport:'Reporte exportado a PDF', aiToastCopy:'Análisis copiado al portapapeles', aiToastSend:'Enviado por email',
+    aiToastNoFile:'Sube al menos un archivo primero', aiToastDone:'¡Análisis completado!',
+    aiToastLoaded:'cargado',
+  },
+  en: {
+    badge: 'Live Demo',
+    tabs: { restaurante:'Restaurant', clinica:'Clinic', salon:'Salon', gimnasio:'Gym', aidocs:'AI Analysis' },
+    // Restaurante
+    rTitle:'Digital Menu', rSub:'Table #7 · Real-time orders',
+    rTag1:'🟢 Kitchen open', rTag2:'Today: 48 orders',
+    rCartTitle:'🛒 My Order', rCartEmpty:'Your cart is empty',
+    rTotalLbl:'Total', rOrderBtn:'Place Order',
+    rConfirmH:'Order placed!', rConfirmP:'Your order is on its way to the kitchen.',
+    rAddBtn:'+ Add', rToastAdded:'added', rToastOrder:'Order sent to kitchen!',
+    // Clínica
+    cTitle:'Medical Scheduler', cSub:'Book your appointment with our specialists',
+    cTag:'📅 24 appointments today', cLblSelect:'Select a Doctor',
+    cPanelTitle:'📅 Book Appointment', cLblDoctor:'Doctor', cLblFecha:'Date', cLblHorario:'Time slot',
+    cNone:'— None selected —', cBookBtn:'Book Appointment',
+    cConfirmH:'Appointment confirmed!', cAvail:'🟢 Available', cNotAvail:'🔴 Not available',
+    cToastNoDoc:'Select a doctor', cToastNoSlot:'Select a time slot',
+    cToastBooked:'Appointment confirmed!', cToastNotAvail:'Doctor not available today',
+    cLblDocR:'Doctor', cLblFechaR:'Date', cLblHoraR:'Time',
+    // Salón
+    sTitle:'Beauty Salon', sSub:'Book your favorite service',
+    sTag:'⭐ 4.9 / 5.0 reviews', sLbl1:'Choose a Service',
+    sLbl2:'Choose your Stylist', sLbl3:'Select Time',
+    sBookBtn:'💅 Confirm Booking', sPanelTitle:'✨ Your Booking',
+    sLblSrv:'Service', sLblSty:'Stylist', sLblTime:'Time', sLblDur:'Duration', sLblTotal:'Total',
+    sConfirmH:'Booking confirmed!', sToastNoSvc:'Select a service',
+    sToastNoSty:'Select a stylist', sToastNoSlot:'Select a time slot',
+    sToastBooked:'Booking confirmed!', sToastEnroll:'Enrolled in', sToastUnenroll:'Left',
+    // Gym
+    gSub:'Group classes · Current week', gStat1:'My enrollments', gStat2:'Classes today',
+    gChartTitle:'📊 Weekly attendance', gEnrolledBadge:' enrolled',
+    gOccLabel:'Occupancy', gFull:'Full', gJoin:'+ Join', gLeave:'✕ Leave',
+    gToastFull:'Class is full',
+    // AI
+    aiTitle:'AI Document Analysis',
+    aiSub:'Upload contracts, records or reports — AI extracts what matters in seconds',
+    aiTag2:'🔒 Secure data',
+    ucLegal:'⚖️ Lawyers', ucContable:'📊 Accounting', ucRh:'👥 Human Resources', ucMedico:'🏥 Medical Records',
+    aiDropTitle:'Drag your files here', aiDropSub:'or click to select · PDF, DOCX, TXT, JPG',
+    aiTypeLabel:'Analysis Type', aiAnalyzeBtn:'Analyze Documents',
+    aiResultTitle:'Results will appear here', aiResultSub:'Upload files and choose the analysis type',
+    aiCompleted:'✅ Completed', aiAnalyzing:'Analyzing', aiDocs:'document(s)',
+    aiExtract:'Extracting relevant information with AI',
+    aiAlerts:'⚠️ Alerts and Detected Risks',
+    aiHigh:'🔴 High', aiMedium:'🟡 Medium', aiLow:'🟢 Low',
+    aiExport:'⬇ Export PDF', aiCopy:'📋 Copy', aiSend:'📧 Send',
+    aiToastExport:'Report exported to PDF', aiToastCopy:'Analysis copied to clipboard', aiToastSend:'Sent by email',
+    aiToastNoFile:'Upload at least one file first', aiToastDone:'Analysis complete!',
+    aiToastLoaded:'loaded',
+  }
+};
+
+// Bilingual data
+const dishes_es = [
+  { id:1, name:'Tacos al Pastor',       desc:'3 tacos marinados con piña, cilantro y cebolla', price:89,  emoji:'🌮' },
+  { id:2, name:'Hamburguesa Doble',     desc:'Doble carne Angus, cheddar, lechuga y jitomate', price:149, emoji:'🍔' },
+  { id:3, name:'Pasta Alfredo',         desc:'Penne en salsa cremosa de parmesano',             price:125, emoji:'🍝' },
+  { id:4, name:'Ensalada César',        desc:'Romana, aderezo César, crutones y parmesano',    price:95,  emoji:'🥗' },
+  { id:5, name:'Pizza Margherita',      desc:'Salsa de tomate, mozzarella y albahaca fresca',  price:165, emoji:'🍕' },
+  { id:6, name:'Brownie + Helado',      desc:'Brownie caliente con helado de vainilla',         price:75,  emoji:'🍫' },
+];
+const dishes_en = [
+  { id:1, name:'Al Pastor Tacos',       desc:'3 marinated tacos with pineapple, cilantro and onion', price:89,  emoji:'🌮' },
+  { id:2, name:'Double Burger',         desc:'Double Angus beef, cheddar, lettuce and tomato',        price:149, emoji:'🍔' },
+  { id:3, name:'Alfredo Pasta',         desc:'Penne in creamy parmesan sauce',                        price:125, emoji:'🍝' },
+  { id:4, name:'Caesar Salad',          desc:'Romaine, Caesar dressing, croutons and parmesan',       price:95,  emoji:'🥗' },
+  { id:5, name:'Margherita Pizza',      desc:'Tomato sauce, mozzarella and fresh basil',              price:165, emoji:'🍕' },
+  { id:6, name:'Brownie + Ice Cream',   desc:'Warm brownie with vanilla ice cream',                   price:75,  emoji:'🍫' },
+];
+
+const doctors_es = [
+  { id:1, name:'Dra. Sofía Ramírez', spec:'Medicina General', emoji:'👩‍⚕️', avail:true  },
+  { id:2, name:'Dr. Carlos Méndez',  spec:'Cardiología',      emoji:'👨‍⚕️', avail:true  },
+  { id:3, name:'Dra. Laura Torres',  spec:'Pediatría',        emoji:'👩‍⚕️', avail:true  },
+  { id:4, name:'Dr. Andrés Vega',    spec:'Dermatología',     emoji:'👨‍⚕️', avail:false },
+];
+const doctors_en = [
+  { id:1, name:'Dr. Sofía Ramírez',  spec:'General Medicine', emoji:'👩‍⚕️', avail:true  },
+  { id:2, name:'Dr. Carlos Méndez',  spec:'Cardiology',       emoji:'👨‍⚕️', avail:true  },
+  { id:3, name:'Dr. Laura Torres',   spec:'Pediatrics',       emoji:'👩‍⚕️', avail:true  },
+  { id:4, name:'Dr. Andrés Vega',    spec:'Dermatology',      emoji:'👨‍⚕️', avail:false },
+];
+
+const services_es = [
+  { id:1, name:'Corte',              emoji:'✂️',  dur:'45 min', price:250 },
+  { id:2, name:'Manicure',           emoji:'💅',  dur:'60 min', price:180 },
+  { id:3, name:'Pedicure',           emoji:'🦶',  dur:'60 min', price:200 },
+  { id:4, name:'Maquillaje',         emoji:'💄',  dur:'90 min', price:450 },
+  { id:5, name:'Tinte',              emoji:'🎨',  dur:'120 min',price:600 },
+  { id:6, name:'Tratamiento Capilar',emoji:'🌸',  dur:'75 min', price:350 },
+];
+const services_en = [
+  { id:1, name:'Haircut',            emoji:'✂️',  dur:'45 min', price:250 },
+  { id:2, name:'Manicure',           emoji:'💅',  dur:'60 min', price:180 },
+  { id:3, name:'Pedicure',           emoji:'🦶',  dur:'60 min', price:200 },
+  { id:4, name:'Makeup',             emoji:'💄',  dur:'90 min', price:450 },
+  { id:5, name:'Hair Color',         emoji:'🎨',  dur:'120 min',price:600 },
+  { id:6, name:'Hair Treatment',     emoji:'🌸',  dur:'75 min', price:350 },
+];
+
+const classes_es = [
+  { id:1, name:'Yoga Matutino', emoji:'🧘', time:'07:00–08:00', trainer:'Lucía M.',  cap:20, enrolled:14 },
+  { id:2, name:'HIIT Intenso',  emoji:'🔥', time:'09:00–10:00', trainer:'Pedro R.',  cap:15, enrolled:15 },
+  { id:3, name:'Spinning',      emoji:'🚴', time:'11:00–12:00', trainer:'Carlos V.', cap:18, enrolled:9  },
+  { id:4, name:'Pilates Core',  emoji:'🤸', time:'17:00–18:00', trainer:'Sofía P.',  cap:12, enrolled:7  },
+];
+const classes_en = [
+  { id:1, name:'Morning Yoga',  emoji:'🧘', time:'07:00–08:00', trainer:'Lucía M.',  cap:20, enrolled:14 },
+  { id:2, name:'Intense HIIT',  emoji:'🔥', time:'09:00–10:00', trainer:'Pedro R.',  cap:15, enrolled:15 },
+  { id:3, name:'Spinning',      emoji:'🚴', time:'11:00–12:00', trainer:'Carlos V.', cap:18, enrolled:9  },
+  { id:4, name:'Core Pilates',  emoji:'🤸', time:'17:00–18:00', trainer:'Sofía P.',  cap:12, enrolled:7  },
+];
+
+const analysisLabels_en = {
+  resumen:      { emoji:'📋', label:'Executive Summary',    desc:'Clear document synopsis' },
+  riesgos:      { emoji:'⚠️', label:'Legal Risks',          desc:'Dangerous or ambiguous clauses' },
+  clausulas:    { emoji:'📌', label:'Key Clauses',          desc:'Main obligations and rights' },
+  partes:       { emoji:'👥', label:'Parties Involved',     desc:'Signatories, representatives, dates' },
+  montos:       { emoji:'💰', label:'Amounts & Dates',      desc:'Totals, due dates, payments' },
+  categorias:   { emoji:'🏷', label:'Categorization',       desc:'Expense type, account' },
+  anomalias:    { emoji:'🚨', label:'Anomalies',            desc:'Possible errors or inconsistencies' },
+  competencias: { emoji:'⭐', label:'Competencies',         desc:'Candidate skills and experience' },
+  salario:      { emoji:'💵', label:'Salary Data',          desc:'Compensation, benefits, bonuses' },
+  alertas:      { emoji:'🔔', label:'HR Alerts',            desc:'Critical dates, vacations, expirations' },
+  diagnosticos: { emoji:'🩺', label:'Diagnoses',            desc:'ICD-10, identified conditions' },
+  medicamentos: { emoji:'💊', label:'Medications',          desc:'Prescriptions, dosage, allergies' },
+  citas:        { emoji:'📅', label:'Upcoming Appointments',desc:'Scheduled medical follow-up' },
+};
+
+const useCaseConfigs_en = {
+  legal:    { analyses: ['resumen','riesgos','clausulas','partes'],        label:'Legal Documents' },
+  contable: { analyses: ['resumen','montos','categorias','anomalias'],     label:'Financial Documents' },
+  rh:       { analyses: ['resumen','competencias','salario','alertas'],    label:'HR Documents' },
+  medico:   { analyses: ['resumen','diagnosticos','medicamentos','citas'],  label:'Medical Records' },
+};
+
+const sampleResults_en = {
+  legal: { resumen: {
+    sections:[
+      { title:'📋 Contract Summary', items:[
+        'Professional services agreement between Tech Solutions S.A. de C.V. and the Provider.',
+        'Term: 12 months from January 1, 2025, with automatic renewal option.',
+        'Total contract value: $480,000 MXN payable in monthly installments of $40,000.',
+      ]},
+      { title:'📌 Key Points', items:[
+        'The provider must deliver monthly progress reports before the 5th of each month.',
+        'Confidentiality clause valid for 5 years after contract termination.',
+        'Jurisdiction: Mexico City, competent courts.',
+      ]},
+    ],
+    risks:[
+      { level:'high',   text:'Clause 8.3: 25% penalty without precisely defining the breach.' },
+      { level:'medium', text:'No force majeure clause present.' },
+      { level:'low',    text:'Style correction in dates (inconsistent format).' },
+    ]
+  }},
+  contable: { resumen: {
+    sections:[
+      { title:'📊 Q3 Financial Statement', items:[
+        'Total revenue: $2,340,000 MXN — 12% increase vs previous quarter.',
+        'Operating expenses: $1,870,000 MXN — operating margin of 20.1%.',
+        'Estimated EBITDA: $470,000 MXN with positive trend.',
+      ]},
+      { title:'💰 Notable Transactions', items:[
+        '3 unusual deposits over $120,000 with no invoice reference.',
+        'Fixed asset purchases not registered in tax payroll.',
+        'Accounts receivable older than 90 days: $230,000.',
+      ]},
+    ],
+    risks:[
+      { level:'high',   text:'Deposits without fiscal receipt: possible tax authority implication.' },
+      { level:'medium', text:'Past-due receivables represent 9.8% of current assets.' },
+      { level:'low',    text:'Minor discrepancies in transferred VAT recording.' },
+    ]
+  }},
+  rh: { resumen: {
+    sections:[
+      { title:'👤 Candidate Profile', items:[
+        'Mariana Castro — 8 years of experience in backend software development.',
+        'Education: Systems Engineering, IPN. Master\'s in Cybersecurity, ITAM.',
+        'Last position: Tech Lead at Fintech Scale-up (2021–2024).',
+      ]},
+      { title:'⭐ Identified Competencies', items:[
+        'Python, Go, Node.js · AWS Certified Solutions Architect · Scrum Master.',
+        'Led teams of up to 12 people. Successful cloud migration projects.',
+        'Languages: Native Spanish · English C1 · Basic Portuguese.',
+      ]},
+    ],
+    risks:[
+      { level:'medium', text:'6-month employment gap with no explanation in CV.' },
+      { level:'low',    text:'Salary expectation 18% above the position range.' },
+      { level:'low',    text:'Only 2 professional references provided (minimum required: 3).' },
+    ]
+  }},
+  medico: { resumen: {
+    sections:[
+      { title:'🩺 Clinical Summary', items:[
+        'Male patient, 42 years old. Primary diagnosis: Grade II arterial hypertension (I10).',
+        'Comorbidities: Dyslipidemia (E78.5) and overweight BMI 27.4 (Z68.27).',
+        'Last visit: March 15, 2025. Next appointment: June 15, 2025.',
+      ]},
+      { title:'💊 Current Medications', items:[
+        'Losartan 50mg — 1 tablet every 24h on empty stomach. Renew August 2025.',
+        'Rosuvastatin 10mg — 1 tablet at night. Lipid check in 3 months.',
+        'Aspirin 100mg — discontinued by medical order (04/2025).',
+      ]},
+    ],
+    risks:[
+      { level:'high',   text:'Documented Penicillin allergy — verify before prescription.' },
+      { level:'medium', text:'Blood pressure at last visit: 148/92 mmHg — outside target range.' },
+      { level:'low',    text:'No influenza vaccine record for current cycle.' },
+    ]
+  }}
+};
+
+function applySaasLang(lang) {
+  saasLang = lang;
+  const T = SAAS_UI[lang];
+  const set = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
+  const setHTML = (id, val) => { const el = document.getElementById(id); if(el) el.innerHTML = val; };
+
+  // Header badge + tabs
+  set('headerBadge', T.badge);
+  Object.entries(T.tabs).forEach(([id, label]) => {
+    const btn = document.getElementById('tab-' + id);
+    if(btn) { const em = btn.querySelector('.tab-emoji'); btn.innerHTML = (em ? em.outerHTML : '') + ' ' + label; }
+  });
+
+  // Restaurante
+  set('saas-r-title', T.rTitle); set('saas-r-sub', T.rSub);
+  set('saas-r-tag1', T.rTag1); set('saas-r-tag2', T.rTag2);
+  setHTML('saas-r-cart-title', T.rCartTitle + ' <span class="cart-count" id="cartCount">' + document.getElementById('cartCount').textContent + '</span>');
+  set('saas-r-cart-empty', T.rCartEmpty);
+  set('saas-r-total-lbl', T.rTotalLbl); set('saas-r-order-btn', T.rOrderBtn);
+  set('saas-r-confirm-h', T.rConfirmH); set('saas-r-confirm-p', T.rConfirmP);
+
+  // Clínica
+  set('saas-c-title', T.cTitle); set('saas-c-sub', T.cSub); set('saas-c-tag', T.cTag);
+  set('saas-c-lbl-select', T.cLblSelect); set('saas-c-panel-title', T.cPanelTitle);
+  set('saas-c-lbl-doctor', T.cLblDoctor); set('saas-c-lbl-fecha', T.cLblFecha); set('saas-c-lbl-horario', T.cLblHorario);
+  const selDoc = document.getElementById('selectedDoctor');
+  if(selDoc && (selDoc.textContent.includes('Ninguno') || selDoc.textContent.includes('None'))) set('selectedDoctor', T.cNone);
+  set('saas-c-book-btn', T.cBookBtn); set('saas-c-confirm-h', T.cConfirmH);
+
+  // Salón
+  set('saas-s-title', T.sTitle); set('saas-s-sub', T.sSub); set('saas-s-tag', T.sTag);
+  set('saas-s-lbl1', T.sLbl1); set('saas-s-lbl2', T.sLbl2); set('saas-s-lbl3', T.sLbl3);
+  set('saas-s-book-btn', T.sBookBtn); set('saas-s-panel-title', T.sPanelTitle);
+  set('saas-s-lbl-srv', T.sLblSrv); set('saas-s-lbl-sty', T.sLblSty);
+  set('saas-s-lbl-time', T.sLblTime); set('saas-s-lbl-dur', T.sLblDur); set('saas-s-lbl-total', T.sLblTotal);
+  set('saas-s-confirm-h', T.sConfirmH);
+
+  // Gimnasio
+  set('saas-g-sub', T.gSub); set('saas-g-stat1', T.gStat1); set('saas-g-stat2', T.gStat2);
+  set('saas-g-chart-title', T.gChartTitle);
+  const eb = document.getElementById('enrolledBadge');
+  if(eb) eb.textContent = document.getElementById('enrolledCount').textContent + T.gEnrolledBadge;
+
+  // AI Docs
+  set('saas-ai-title', T.aiTitle); set('saas-ai-sub', T.aiSub);
+  set('saas-ai-tag2', T.aiTag2);
+  set('uc-legal', T.ucLegal); set('uc-contable', T.ucContable); set('uc-rh', T.ucRh); set('uc-medico', T.ucMedico);
+  set('saas-ai-drop-title', T.aiDropTitle); set('saas-ai-drop-sub', T.aiDropSub);
+  set('saas-ai-type-lbl', T.aiTypeLabel); set('saas-ai-analyze-btn', T.aiAnalyzeBtn);
+  set('saas-ai-result-title', T.aiResultTitle); set('saas-ai-result-sub', T.aiResultSub);
+
+  // Re-render dynamic content with new language
+  dishes = lang === 'en' ? dishes_en : dishes_es;
+  renderDishes(); renderCart();
+  doctors = lang === 'en' ? doctors_en : doctors_es;
+  renderDoctors();
+  services = lang === 'en' ? services_en : services_es;
+  renderSalon();
+  classes = lang === 'en' ? classes_en : classes_es;
+  renderGym();
+  renderAnalysisTypes();
+
+  // Flags
+  const nextLang = lang === 'es' ? 'en' : 'es';
+  const cur = document.getElementById('langFlagImg'); const nxt = document.getElementById('langFlagImgNext');
+  if(cur) cur.src = SAAS_FLAGS[lang]; if(nxt) nxt.src = SAAS_FLAGS[nextLang];
+  document.documentElement.lang = lang;
+}
+window.toggleLang = function() { applySaasLang(saasLang === 'es' ? 'en' : 'es'); };
 </script>
 </body>
 </html>

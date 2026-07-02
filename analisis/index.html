@@ -48,7 +48,7 @@
     letter-spacing: 0.06em;
     color: var(--acento);
   }
-  .logo span {
+  #anal-logo-sub {
     font-style: italic;
     font-size: 0.72rem;
     color: var(--texto-muted);
@@ -400,7 +400,7 @@
     font-size: 1rem;
     color: var(--acento-claro);
   }
-  .footer-logo span {
+  #anal-footer-sub {
     font-style: italic;
     color: rgba(245,241,234,0.4);
     font-size: 0.72rem;
@@ -415,33 +415,57 @@
     .prioridad { grid-template-columns: 1fr; gap: 0.5rem; }
     .punto-item.highlight { grid-column: auto; }
   }
+
+  /* LANG TOGGLE */
+  .lang-flag-btn {
+    position: relative; display: flex; align-items: center; justify-content: center;
+    width: 38px; height: 26px; border-radius: 5px;
+    border: 1.5px solid var(--borde-fuerte);
+    background: transparent; cursor: pointer;
+    padding: 2px; transition: border-color .2s, transform .15s; overflow: hidden;
+  }
+  .lang-flag-btn:hover { border-color: var(--acento); transform: scale(1.07); }
+  .lang-flag-btn .flag-current, .lang-flag-btn .flag-next {
+    position: absolute; inset: 2px;
+    width: calc(100% - 4px); height: calc(100% - 4px);
+    object-fit: cover; border-radius: 3px; display: block; transition: opacity .25s;
+  }
+  .lang-flag-btn .flag-next { opacity: 0; }
+  .lang-flag-btn:hover .flag-current { opacity: 0; }
+  .lang-flag-btn:hover .flag-next { opacity: 1; }
 </style>
 </head>
 <body>
 
 <nav>
-  <div class="logo">
-    Consultoría Devsia
-    <span>Marketing Digital para Negocios Locales</span>
+  <div class="logo" id="anal-logo">
+    <span id="anal-logo-name">Consultoría Devsia</span>
+    <span id="anal-logo-sub">Marketing Digital para Negocios Locales</span>
   </div>
-  <a href="/" class="back-btn">← Volver a DevsIA</a>
+  <div style="display:flex;align-items:center;gap:0.75rem;">
+    <button class="lang-flag-btn" id="analLangToggle" onclick="toggleAnalLang()" title="Cambiar idioma">
+      <img id="analFlagCur" class="flag-current" src="/imagenes/español.webp" alt="Idioma actual">
+      <img id="analFlagNext" class="flag-next" src="/imagenes/ingles.png" alt="Cambiar idioma">
+    </button>
+    <a href="/" class="back-btn" id="anal-back">← Volver a DevsIA</a>
+  </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-label">Diagnóstico Digital</div>
-  <h1>Lo que vas a <em>recibir</em></h1>
-  <p class="hero-sub">Un diagnóstico completo de tu presencia digital con análisis, errores detectados y plan de acción concreto.</p>
+  <div class="hero-label" id="anal-hero-label">Diagnóstico Digital</div>
+  <h1 id="anal-hero-h1">Lo que vas a <em>recibir</em></h1>
+  <p class="hero-sub" id="anal-hero-sub">Un diagnóstico completo de tu presencia digital con análisis, errores detectados y plan de acción concreto.</p>
   <div style="display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;">
-    <a href="#diagnostico" class="cta-btn">Ver el diagnóstico →</a>
-    <a href="/proyectos/analisis/propuesta_cliente.pdf" download class="cta-btn" style="background:transparent;border:1.5px solid var(--acento);color:var(--acento);">⬇ Descargar muestra</a>
+    <a href="#diagnostico" class="cta-btn" id="anal-cta1">Ver el diagnóstico →</a>
+    <a href="/proyectos/analisis/propuesta_cliente.pdf" download class="cta-btn" id="anal-cta2" style="background:transparent;border:1.5px solid var(--acento);color:var(--acento);">⬇ Descargar muestra</a>
   </div>
 </section>
 
 <!-- INTRO -->
 <section class="intro-section" id="diagnostico">
   <div class="intro-box">
-    <p>Antes de hacer cualquier publicación, invertir en publicidad o rediseñar tu página web, necesitas saber exactamente en qué estado está tu negocio digitalmente. Eso es exactamente lo que este diagnóstico te da — no opiniones generales, sino un <strong>análisis específico de tu negocio, tu giro y tu mercado local.</strong></p>
+    <p id="anal-intro-p">Antes de hacer cualquier publicación, invertir en publicidad o rediseñar tu página web, necesitas saber exactamente en qué estado está tu negocio digitalmente. Eso es exactamente lo que este diagnóstico te da — no opiniones generales, sino un <strong>análisis específico de tu negocio, tu giro y tu mercado local.</strong></p>
   </div>
 </section>
 
@@ -562,23 +586,119 @@
     <div class="section-tag">Lo que nos distingue</div>
     <h2>Lo que hace diferente este diagnóstico</h2>
   </div>
-  <p class="diff-intro">No es una lista de recomendaciones genéricas que podrían aplicarle a cualquier negocio. Es un análisis específico de tu giro, tu ciudad, tu cliente ideal y tu momento actual.</p>
+  <p class="diff-intro" id="anal-diff-intro">No es una lista de recomendaciones genéricas que podrían aplicarle a cualquier negocio. Es un análisis específico de tu giro, tu ciudad, tu cliente ideal y tu momento actual.</p>
   <div class="diff-grid">
-    <div class="diff-card"><div class="diff-check">Basado en tu negocio real</div><p>Cada observación sale del diagnóstico de tus plataformas y de la entrevista contigo.</p></div>
-    <div class="diff-card"><div class="diff-check">Acciones ejecutables</div><p>Nada queda en teoría. Todo tiene un paso concreto, un tiempo estimado y un nivel de prioridad.</p></div>
-    <div class="diff-card"><div class="diff-check">Proporcional a tu capacidad</div><p>Las recomendaciones se ajustan a tu tiempo, tu equipo y tu presupuesto real.</p></div>
-    <div class="diff-card"><div class="diff-check">Punto de partida claro</div><p>Este diagnóstico es la base de todo lo que sigue: posicionamiento, contenido y monetización.</p></div>
+    <div class="diff-card"><div class="diff-check" id="anal-dc1-h">Basado en tu negocio real</div><p id="anal-dc1-p">Cada observación sale del diagnóstico de tus plataformas y de la entrevista contigo.</p></div>
+    <div class="diff-card"><div class="diff-check" id="anal-dc2-h">Acciones ejecutables</div><p id="anal-dc2-p">Nada queda en teoría. Todo tiene un paso concreto, un tiempo estimado y un nivel de prioridad.</p></div>
+    <div class="diff-card"><div class="diff-check" id="anal-dc3-h">Proporcional a tu capacidad</div><p id="anal-dc3-p">Las recomendaciones se ajustan a tu tiempo, tu equipo y tu presupuesto real.</p></div>
+    <div class="diff-card"><div class="diff-check" id="anal-dc4-h">Punto de partida claro</div><p id="anal-dc4-p">Este diagnóstico es la base de todo lo que sigue: posicionamiento, contenido y monetización.</p></div>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
   <div class="footer-logo">
-    Consultoría Devsia
-    <span>Marketing Digital para Negocios Locales</span>
+    <span id="anal-footer-name">Consultoría Devsia</span>
+    <span id="anal-footer-sub">Marketing Digital para Negocios Locales</span>
   </div>
-  <a href="/" class="back-btn" style="color:rgba(245,241,234,0.4);">← Volver a DevsIA</a>
+  <a href="/" class="back-btn" id="anal-footer-back" style="color:rgba(245,241,234,0.4);">← Volver a DevsIA</a>
 </footer>
 
+<script>
+const ANAL_T = {
+  es: {
+    logoName: 'Consultoría Devsia', logoSub: 'Marketing Digital para Negocios Locales',
+    back: '← Volver a DevsIA',
+    heroLabel: 'Diagnóstico Digital', heroH1: 'Lo que vas a <em>recibir</em>',
+    heroSub: 'Un diagnóstico completo de tu presencia digital con análisis, errores detectados y plan de acción concreto.',
+    cta1: 'Ver el diagnóstico →', cta2: '⬇ Descargar muestra',
+    introP: 'Antes de hacer cualquier publicación, invertir en publicidad o rediseñar tu página web, necesitas saber exactamente en qué estado está tu negocio digitalmente. Eso es exactamente lo que este diagnóstico te da — no opiniones generales, sino un <strong>análisis específico de tu negocio, tu giro y tu mercado local.</strong>',
+    structureTag: 'Estructura', structureH2: 'El diagnóstico se entrega en 4 partes',
+    p1name: 'Auditoría Técnica', p2name: 'Errores Detectados', p3name: 'Diagnóstico Estratégico', p4name: 'Plan de Acción',
+    p1h3: 'Auditoría Técnica de Presencia Digital',
+    p2h3: 'Análisis Estratégico — Errores Detectados',
+    p3h3: 'Diagnóstico Estratégico de Contenido',
+    p4h3: 'Plan de Acción Priorizado',
+    diffTag: 'Lo que nos distingue', diffH2: 'Lo que hace diferente este diagnóstico',
+    diffIntro: 'No es una lista de recomendaciones genéricas que podrían aplicarle a cualquier negocio. Es un análisis específico de tu giro, tu ciudad, tu cliente ideal y tu momento actual.',
+    dc1h: 'Basado en tu negocio real', dc1p: 'Cada observación sale del diagnóstico de tus plataformas y de la entrevista contigo.',
+    dc2h: 'Acciones ejecutables', dc2p: 'Nada queda en teoría. Todo tiene un paso concreto, un tiempo estimado y un nivel de prioridad.',
+    dc3h: 'Proporcional a tu capacidad', dc3p: 'Las recomendaciones se ajustan a tu tiempo, tu equipo y tu presupuesto real.',
+    dc4h: 'Punto de partida claro', dc4p: 'Este diagnóstico es la base de todo lo que sigue: posicionamiento, contenido y monetización.',
+    footerLogo: 'Consultoría Devsia', footerSub: 'Marketing Digital para Negocios Locales', footerBack: '← Volver a DevsIA',
+  },
+  en: {
+    logoName: 'Devsia Consulting', logoSub: 'Digital Marketing for Local Businesses',
+    back: '← Back to DevsIA',
+    heroLabel: 'Digital Diagnosis', heroH1: 'What you\'ll <em>receive</em>',
+    heroSub: 'A complete diagnosis of your digital presence with analysis, detected errors, and a concrete action plan.',
+    cta1: 'See the diagnosis →', cta2: '⬇ Download sample',
+    introP: 'Before posting anything, investing in ads, or redesigning your website, you need to know exactly where your business stands digitally. That is exactly what this diagnosis gives you — not general opinions, but a <strong>specific analysis of your business, your industry and your local market.</strong>',
+    structureTag: 'Structure', structureH2: 'The diagnosis is delivered in 4 parts',
+    p1name: 'Technical Audit', p2name: 'Detected Errors', p3name: 'Strategic Diagnosis', p4name: 'Action Plan',
+    p1h3: 'Technical Digital Presence Audit',
+    p2h3: 'Strategic Analysis — Detected Errors',
+    p3h3: 'Strategic Content Diagnosis',
+    p4h3: 'Prioritized Action Plan',
+    diffTag: 'What sets us apart', diffH2: 'What makes this diagnosis different',
+    diffIntro: 'It is not a list of generic recommendations that could apply to any business. It is a specific analysis of your industry, your city, your ideal customer, and where you stand right now.',
+    dc1h: 'Based on your real business', dc1p: 'Every observation comes from diagnosing your platforms and from the interview with you.',
+    dc2h: 'Actionable steps', dc2p: 'Nothing stays in theory. Everything has a concrete step, an estimated time, and a priority level.',
+    dc3h: 'Proportional to your capacity', dc3p: 'Recommendations are adjusted to your time, your team, and your real budget.',
+    dc4h: 'A clear starting point', dc4p: 'This diagnosis is the foundation for everything that follows: positioning, content, and monetization.',
+    footerLogo: 'Devsia Consulting', footerSub: 'Digital Marketing for Local Businesses', footerBack: '← Back to DevsIA',
+  }
+};
+const ANAL_FLAGS = { es: '/imagenes/español.webp', en: '/imagenes/ingles.png' };
+let analLang = 'es';
+
+function applyAnalLang(lang) {
+  analLang = lang;
+  const T = ANAL_T[lang];
+  const set = (id, val, html) => { const el = document.getElementById(id); if(el){ if(html) el.innerHTML=val; else el.textContent=val; } };
+  set('anal-logo-name', T.logoName);
+  set('anal-logo-sub', T.logoSub);
+  set('anal-back', T.back);
+  set('anal-hero-label', T.heroLabel);
+  set('anal-hero-h1', T.heroH1, true);
+  set('anal-hero-sub', T.heroSub);
+  set('anal-cta1', T.cta1);
+  set('anal-cta2', T.cta2);
+
+  const parteTags = document.querySelectorAll('.partes-section .section-tag');
+  const parteH2s = document.querySelectorAll('.partes-section .section-header h2');
+  if(parteTags[0]) parteTags[0].textContent = T.structureTag;
+  if(parteH2s[0]) parteH2s[0].textContent = T.structureH2;
+
+  const parteNames = document.querySelectorAll('.parte-name');
+  [T.p1name, T.p2name, T.p3name, T.p4name].forEach((n,i) => { if(parteNames[i]) parteNames[i].textContent = n; });
+
+  const parteH3s = document.querySelectorAll('.parte-titulo h3');
+  [T.p1h3, T.p2h3, T.p3h3, T.p4h3].forEach((h,i) => { if(parteH3s[i]) parteH3s[i].textContent = h; });
+
+  const diffTags = document.querySelectorAll('.diferencia-section .section-tag');
+  const diffH2s = document.querySelectorAll('.diferencia-section .section-header h2');
+  if(diffTags[0]) diffTags[0].textContent = T.diffTag;
+  if(diffH2s[0]) diffH2s[0].textContent = T.diffH2;
+
+  set('anal-intro-p', T.introP, true);
+  set('anal-diff-intro', T.diffIntro);
+  set('anal-dc1-h', T.dc1h); set('anal-dc1-p', T.dc1p);
+  set('anal-dc2-h', T.dc2h); set('anal-dc2-p', T.dc2p);
+  set('anal-dc3-h', T.dc3h); set('anal-dc3-p', T.dc3p);
+  set('anal-dc4-h', T.dc4h); set('anal-dc4-p', T.dc4p);
+  set('anal-footer-name', T.footerLogo);
+  set('anal-footer-sub', T.footerSub);
+  set('anal-footer-back', T.footerBack);
+
+  const nextLang = lang === 'es' ? 'en' : 'es';
+  const cur = document.getElementById('analFlagCur');
+  const nxt = document.getElementById('analFlagNext');
+  if(cur) cur.src = ANAL_FLAGS[lang];
+  if(nxt) nxt.src = ANAL_FLAGS[nextLang];
+  document.documentElement.lang = lang;
+}
+window.toggleAnalLang = function() { applyAnalLang(analLang === 'es' ? 'en' : 'es'); };
+</script>
 </body>
 </html>

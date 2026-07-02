@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invitaciones Digitales · Catálogo de Muestras</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Great+Vibes&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --gold:#c9a96e; --gold-light:#e8d5b0; --gold-dark:#9a7a4a;
+    --cream:#faf7f2; --dark:#1e1410; --text-muted:#7a6e68;
+    --serif:'Cormorant Garamond',Georgia,serif;
+    --script:'Great Vibes',cursive;
+    --sans:'Montserrat',sans-serif;
+  }
+  body{
+    font-family:var(--sans); background:var(--cream); color:#2a2220;
+    min-height:100vh; padding:5rem 1.5rem;
+  }
+  .wrap{ max-width:1000px; margin:0 auto; text-align:center; }
+  .eyebrow{ font-size:.62rem; letter-spacing:.5em; text-transform:uppercase; color:var(--gold); display:block; margin-bottom:1rem; }
+  h1{ font-family:var(--serif); font-weight:300; font-size:clamp(2.2rem,5vw,3.4rem); }
+  h1 em{ font-style:italic; color:var(--gold-dark); }
+  .sub{ font-family:var(--serif); font-style:italic; color:var(--text-muted); font-size:1.1rem; margin-top:1rem; max-width:520px; margin-left:auto; margin-right:auto; }
+  .grid{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:1.75rem; margin-top:3.5rem;
+  }
+  .card{
+    position:relative; border-radius:12px; overflow:hidden; min-height:260px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.6rem;
+    text-decoration:none; color:#fff; padding:2rem 1.5rem;
+    box-shadow:0 18px 40px rgba(0,0,0,.14);
+    transition:transform .35s, box-shadow .35s;
+  }
+  .card:hover{ transform:translateY(-6px); box-shadow:0 26px 55px rgba(0,0,0,.22); }
+  .card.disabled{ cursor:default; }
+  .card-boda{ background:linear-gradient(160deg,#3a2a20,#5a4a42); }
+  .card-xv{ background:linear-gradient(160deg,#2a1420,#4a1f33); }
+  .card-bautizo{ background:linear-gradient(160deg,#12242e,#1f4050); }
+  .card-cumple{ background:linear-gradient(160deg,#2a2010,#4a3a1a); }
+  .card-tag{ font-size:.56rem; letter-spacing:.35em; text-transform:uppercase; opacity:.75; }
+  .card-title{ font-family:var(--script); font-size:2.4rem; }
+  .card-status{ font-size:.6rem; letter-spacing:.2em; text-transform:uppercase; opacity:.6; margin-top:.4rem; }
+  footer{ margin-top:4rem; font-size:.7rem; color:var(--text-muted); }
+  .btn-back{
+    display:inline-flex; align-items:center; gap:.5rem; margin-top:2.2rem;
+    padding:.65rem 1.4rem; border-radius:999px; border:1px solid var(--gold);
+    color:var(--gold-dark); text-decoration:none; font-size:.72rem;
+    letter-spacing:.1em; text-transform:uppercase; transition:background .25s, color .25s;
+  }
+  .btn-back:hover{ background:var(--gold); color:#fff; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <span class="eyebrow">Catálogo de Muestras</span>
+    <h1>Invitaciones <em>Digitales</em></h1>
+    <p class="sub">Elige un tipo de evento para ver la invitación de muestra.</p>
+
+    <div class="grid">
+      <a class="card card-boda" href="boda-elegante/index.html">
+        <span class="card-tag">Muestra disponible</span>
+        <span class="card-title">Boda</span>
+      </a>
+      <a class="card card-xv" href="xv-anos/index.html">
+        <span class="card-tag">Muestra disponible</span>
+        <span class="card-title">XV Años</span>
+      </a>
+      <a class="card card-bautizo" href="bautizo/index.html">
+        <span class="card-tag">Muestra disponible</span>
+        <span class="card-title">Bautizo, Baby Shower y demás</span>
+      </a>
+      <a class="card card-cumple" href="cumpleanos/index.html">
+        <span class="card-tag">Próximamente</span>
+        <span class="card-title">Cumpleaños</span>
+      </a>
+    </div>
+
+    <a class="btn-back" href="../index.html">&larr; Ver todo tipo de invitaciones</a>
+
+    <footer>Cada carpeta contiene su propia invitación y, cuando aplica, un generador de enlaces personalizados.</footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generar Invitación · Baby Torres Vidal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Jost:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ocean:#1a5278; --ocean-dark:#0a2d4d; --ocean-light:#3a8abf;
+    --cream:#eaf5fd; --dark:#0a2d4d; --text:#0a2d4d;
+    --text-muted:#5a7a90; --serif:'Cormorant Garamond',serif;
+    --sans:'Jost',sans-serif;
+  }
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+
+  body {
+    font-family:var(--sans);
+    background:linear-gradient(155deg,#0a2d4d 0%,#1a5278 55%,#0a1f33 100%);
+    min-height:100vh;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:2rem 1rem;
+  }
+
+  .card {
+    background:#fff;
+    border-radius:12px;
+    padding:2.8rem 2.4rem 2.4rem;
+    width:100%; max-width:460px;
+    box-shadow:0 32px 80px rgba(0,0,0,.4);
+    text-align:center;
+  }
+
+  .card-eyebrow {
+    font-size:.52rem; letter-spacing:.44em; text-transform:uppercase;
+    color:var(--ocean-light); margin-bottom:.6rem;
+  }
+  .card-hr {
+    width:40px; height:1px; margin:.6rem auto;
+    background:linear-gradient(90deg,transparent,var(--ocean-light),transparent);
+  }
+  .card-title {
+    font-family:var(--serif); font-style:italic;
+    font-size:clamp(1.8rem,6vw,2.4rem);
+    color:var(--text); line-height:1.1;
+    margin-bottom:.2rem;
+  }
+  .card-sub {
+    font-size:.52rem; letter-spacing:.38em; text-transform:uppercase;
+    color:var(--text-muted); margin-bottom:2rem;
+  }
+
+  /* FORM */
+  .form-group { text-align:left; margin-bottom:1.2rem; }
+  .form-group label {
+    display:block;
+    font-size:.55rem; letter-spacing:.3em; text-transform:uppercase;
+    color:var(--ocean); margin-bottom:.45rem;
+  }
+  .form-group input, .form-group select {
+    width:100%;
+    padding:.72rem 1rem;
+    border:1px solid rgba(26,82,120,.3);
+    border-radius:8px;
+    font-family:var(--serif); font-size:1rem;
+    color:var(--text);
+    background:var(--cream);
+    outline:none;
+    transition:border-color .25s;
+  }
+  .form-group input:focus, .form-group select:focus {
+    border-color:var(--ocean-light);
+  }
+  .form-group input::placeholder { color:#93b3c8; }
+
+  .btn-generar {
+    width:100%; padding:.85rem;
+    background:var(--ocean);
+    border:none; border-radius:50px;
+    color:#fff; font-family:var(--sans);
+    font-size:.6rem; letter-spacing:.3em; text-transform:uppercase;
+    cursor:pointer; margin-top:.4rem;
+    transition:background .3s, transform .15s;
+  }
+  .btn-generar:hover { background:var(--ocean-dark); }
+  .btn-generar:active { transform:scale(.98); }
+
+  /* RESULTADO */
+  #resultado {
+    display:none;
+    margin-top:1.8rem;
+    border-top:1px solid rgba(26,82,120,.2);
+    padding-top:1.6rem;
+  }
+  #resultado.visible { display:block; }
+
+  .res-label {
+    font-size:.52rem; letter-spacing:.35em; text-transform:uppercase;
+    color:var(--ocean-light); margin-bottom:.75rem;
+  }
+  .res-family {
+    font-family:var(--serif); font-style:italic;
+    font-size:clamp(1.3rem,5vw,1.7rem);
+    color:var(--text); margin-bottom:.2rem;
+  }
+  .res-boletos {
+    font-size:.58rem; letter-spacing:.22em; text-transform:uppercase;
+    color:var(--text-muted); margin-bottom:1.1rem;
+  }
+
+  .url-box {
+    background:var(--cream);
+    border:1px solid rgba(26,82,120,.25);
+    border-radius:8px;
+    padding:.75rem 1rem;
+    font-family:var(--serif); font-size:.82rem;
+    color:var(--text-muted);
+    word-break:break-all; text-align:left;
+    margin-bottom:1rem;
+    user-select:all;
+  }
+
+  .btn-row {
+    display:flex; gap:.75rem;
+  }
+  .btn-copy, .btn-open {
+    flex:1; padding:.7rem;
+    border:none; border-radius:50px;
+    font-family:var(--sans);
+    font-size:.58rem; letter-spacing:.26em; text-transform:uppercase;
+    cursor:pointer;
+    transition:background .3s, transform .15s;
+  }
+  .btn-copy {
+    background:transparent;
+    border:1px solid var(--ocean-light);
+    color:var(--ocean);
+  }
+  .btn-copy:hover { background:rgba(26,82,120,.08); }
+  .btn-copy.copied { background:rgba(26,82,120,.12); color:var(--ocean-dark); }
+  .btn-open {
+    background:var(--ocean); color:#fff;
+  }
+  .btn-open:hover { background:var(--ocean-dark); }
+  .btn-copy:active, .btn-open:active { transform:scale(.97); }
+
+  @media(max-width:480px){
+    .card { padding:2rem 1.4rem 1.8rem; }
+    .btn-row { flex-direction:column; }
+  }
+</style>
+</head>
+<body>
+
+<a href="../../index.html" style="display:block;margin-bottom:1.5rem;text-align:center;font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.55);text-decoration:none">← Ver más invitaciones</a>
+
+<div class="card">
+  <p class="card-eyebrow">✦ &nbsp;Generador de Invitaciones &nbsp;✦</p>
+  <div class="card-hr"></div>
+  <h1 class="card-title">Baby Torres Vidal</h1>
+  <p class="card-sub">14 · 08 · 2027</p>
+
+  <div class="form-group">
+    <label>Nombre de la familia</label>
+    <input type="text" id="inputFamilia" placeholder="Ej: Familia García López" autocomplete="off">
+  </div>
+
+  <div class="form-group">
+    <label>Número de boletos</label>
+    <select id="inputBoletos">
+      <option value="1">1 boleto</option>
+      <option value="2">2 boletos</option>
+      <option value="3" selected>3 boletos</option>
+      <option value="4">4 boletos</option>
+      <option value="5">5 boletos</option>
+      <option value="6">6 boletos</option>
+      <option value="7">7 boletos</option>
+      <option value="8">8 boletos</option>
+      <option value="9">9 boletos</option>
+      <option value="10">10 boletos</option>
+    </select>
+  </div>
+
+  <button class="btn-generar" onclick="generar()">Generar Invitación &nbsp;✦</button>
+
+  <!-- Resultado -->
+  <div id="resultado">
+    <p class="res-label">Enlace generado para:</p>
+    <p class="res-family" id="resFamilyName"></p>
+    <p class="res-boletos" id="resBoletosText"></p>
+    <div class="url-box" id="resUrl"></div>
+    <div class="btn-row">
+      <button class="btn-copy" id="btnCopy" onclick="copiarUrl()">Copiar enlace</button>
+      <button class="btn-open" onclick="abrirInvitacion()">Abrir ✦</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  var urlGenerada = '';
+
+  function generar(){
+    var familia = document.getElementById('inputFamilia').value.trim();
+    var boletos = document.getElementById('inputBoletos').value;
+
+    if(!familia){
+      document.getElementById('inputFamilia').focus();
+      document.getElementById('inputFamilia').style.borderColor = '#c9726e';
+      setTimeout(function(){ document.getElementById('inputFamilia').style.borderColor = ''; }, 1500);
+      return;
+    }
+
+    var base;
+    if(window.location.href.indexOf('generar.html') !== -1){
+      base = window.location.href.replace('generar.html','index.html');
+    } else {
+      base = window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '/index.html');
+    }
+    urlGenerada = base + '?f=' + encodeURIComponent(familia) + '&b=' + boletos;
+
+    document.getElementById('resFamilyName').textContent = familia;
+    var n = parseInt(boletos, 10);
+    document.getElementById('resBoletosText').textContent = n + (n === 1 ? ' boleto' : ' boletos');
+    document.getElementById('resUrl').textContent = urlGenerada;
+
+    var res = document.getElementById('resultado');
+    res.classList.add('visible');
+    res.scrollIntoView({ behavior:'smooth', block:'nearest' });
+
+    var btn = document.getElementById('btnCopy');
+    btn.textContent = 'Copiar enlace';
+    btn.classList.remove('copied');
+  }
+
+  function copiarUrl(){
+    if(!urlGenerada) return;
+    navigator.clipboard.writeText(urlGenerada).then(function(){
+      var btn = document.getElementById('btnCopy');
+      btn.textContent = '¡Copiado! ✓';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'Copiar enlace'; btn.classList.remove('copied'); }, 2500);
+    });
+  }
+
+  function abrirInvitacion(){
+    if(urlGenerada) window.open(urlGenerada, '_blank');
+  }
+
+  // Permitir Enter en el campo de familia
+  document.getElementById('inputFamilia').addEventListener('keydown', function(e){
+    if(e.key === 'Enter') generar();
+  });
+</script>
+</body>
+</html>

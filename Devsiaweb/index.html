@@ -311,6 +311,12 @@ footer{text-align:center;padding:28px;color:var(--muted);font-size:.82rem;border
   .carousel-3d{height:55vh;min-height:360px;max-height:500px;}
   .carousel-slide img{height:53vh;min-height:340px;max-height:480px;}
 }
+.lang-flag-btn{position:relative;display:flex;align-items:center;justify-content:center;width:38px;height:26px;border-radius:5px;border:1.5px solid var(--border2);background:rgba(99,102,241,.06);cursor:pointer;padding:2px;transition:border-color .2s,transform .15s;overflow:hidden;}
+.lang-flag-btn:hover{border-color:var(--accent);transform:scale(1.07);}
+.lang-flag-btn .flag-current,.lang-flag-btn .flag-next{position:absolute;inset:2px;width:calc(100% - 4px);height:calc(100% - 4px);object-fit:cover;border-radius:3px;display:block;transition:opacity .25s;}
+.lang-flag-btn .flag-next{opacity:0;}
+.lang-flag-btn:hover .flag-current{opacity:0;}
+.lang-flag-btn:hover .flag-next{opacity:1;}
 </style>
 </head>
 <body>
@@ -328,8 +334,14 @@ footer{text-align:center;padding:28px;color:var(--muted);font-size:.82rem;border
     <button class="nav-tab" onclick="showSection('services',this)">Servicios</button>
     <button class="nav-tab" onclick="showSection('contact',this)">Contacto</button>
   </div>
-  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
-    <span></span><span></span><span></span>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <button class="lang-flag-btn" id="dw-langToggle" onclick="toggleDwLang()" title="Cambiar idioma">
+      <img id="dwFlagCur" class="flag-current" src="/imagenes/español.webp" alt="Idioma actual">
+      <img id="dwFlagNext" class="flag-next" src="/imagenes/ingles.png" alt="Cambiar idioma">
+    </button>
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
   </div>
 </nav>
 
@@ -347,15 +359,15 @@ footer{text-align:center;padding:28px;color:var(--muted);font-size:.82rem;border
   <!-- PANEL 1: Texto + Carrusel grande -->
   <div class="hero-panel hero-panel-1">
     <div class="hero-left">
-      <div class="hero-badge">✨ Disponible para proyectos</div>
-      <h1 class="hero-title">Diseño páginas web modernas que hacen <span class="gradient">crecer tu negocio</span></h1>
-      <p class="hero-sub">Páginas rápidas, profesionales y optimizadas para conseguir más clientes desde internet.</p>
+      <div class="hero-badge" id="dw-hero-badge">✨ Disponible para proyectos</div>
+      <h1 class="hero-title" id="dw-hero-h1">Diseño páginas web modernas que hacen <span class="gradient">crecer tu negocio</span></h1>
+      <p class="hero-sub" id="dw-hero-sub">Páginas rápidas, profesionales y optimizadas para conseguir más clientes desde internet.</p>
       <div class="hero-cta">
-        <button class="btn-primary" onclick="showSection('portfolio',document.querySelectorAll('.nav-tab')[1])">🚀 Ver portafolio</button>
+        <button class="btn-primary" id="dw-cta1" onclick="showSection('portfolio',document.querySelectorAll('.nav-tab')[1])">🚀 Ver portafolio</button>
         <a class="btn-secondary" href="https://wa.me/5215620949215?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20una%20p%C3%A1gina%20web" target="_blank">💬 Contactar por WhatsApp</a>
       </div>
       <div class="hero-scroll-hint" onclick="scrollToAbout()">
-        <span>Sobre mí</span>
+        <span id="dw-scroll-hint">Sobre mí</span>
         <div class="scroll-arrow">↓</div>
       </div>
     </div>
@@ -402,7 +414,7 @@ footer{text-align:center;padding:28px;color:var(--muted);font-size:.82rem;border
           <div class="carousel-dots" id="carouselDots"></div>
           <button class="carousel-btn" id="carouselNext">›</button>
         </div>
-        <p class="carousel-hint">👆 Toca para ver el portafolio completo</p>
+        <p class="carousel-hint" id="dw-carousel-hint">👆 Toca para ver el portafolio completo</p>
       </div>
     </div>
   </div>
@@ -414,21 +426,21 @@ footer{text-align:center;padding:28px;color:var(--muted);font-size:.82rem;border
         <div class="avatar-ring">
           <img src="fer.png" style="width:100%;height:100%;border-radius:50%;object-fit:cover;object-position:center top;">
         </div>
-        <div class="fbadge fbadge-1">⚡ Web Dev</div>
-        <div class="fbadge fbadge-2">🚀 +50 proyectos</div>
+        <div class="fbadge fbadge-1" id="dw-fbadge1">⚡ Web Dev</div>
+        <div class="fbadge fbadge-2" id="dw-fbadge2">🚀 +50 proyectos</div>
       </div>
       <div class="reveal-right">
-        <span class="tag">Sobre mí</span>
-        <h2 class="about-title">Creo páginas que trabajan <span class="grad">para ti</span></h2>
-        <p class="about-desc">Me especializo en crear páginas web modernas, rápidas y atractivas que ayudan a los negocios a conseguir más clientes en internet. Cada proyecto es diseñado con atención al detalle y enfocado en resultados reales.</p>
-        <p class="about-desc">Trabajo contigo desde el primer concepto hasta el lanzamiento, asegurando que tu presencia digital refleje la calidad de tu negocio.</p>
+        <span class="tag" id="dw-about-tag">Sobre mí</span>
+        <h2 class="about-title" id="dw-about-h2">Creo páginas que trabajan <span class="grad">para ti</span></h2>
+        <p class="about-desc" id="dw-about-p1">Me especializo en crear páginas web modernas, rápidas y atractivas que ayudan a los negocios a conseguir más clientes en internet. Cada proyecto es diseñado con atención al detalle y enfocado en resultados reales.</p>
+        <p class="about-desc" id="dw-about-p2">Trabajo contigo desde el primer concepto hasta el lanzamiento, asegurando que tu presencia digital refleje la calidad de tu negocio.</p>
         <div class="skills-list">
           <span class="skill-pill">HTML · CSS · JS</span><span class="skill-pill">Diseño UI/UX</span><span class="skill-pill">WordPress</span><span class="skill-pill">React</span><span class="skill-pill">SEO</span><span class="skill-pill">WhatsApp API</span><span class="skill-pill">E-commerce</span>
         </div>
         <div class="stats-row">
-          <div class="stat-box"><div class="stat-num-big" data-target="50">0</div><div class="stat-label-sm">Proyectos</div></div>
-          <div class="stat-box"><div class="stat-num-big" data-target="98">0</div><div class="stat-label-sm">% Satisfacción</div></div>
-          <div class="stat-box"><div class="stat-num-big" data-target="3">0</div><div class="stat-label-sm">Años exp.</div></div>
+          <div class="stat-box"><div class="stat-num-big" data-target="50">0</div><div class="stat-label-sm" id="dw-stat1">Proyectos</div></div>
+          <div class="stat-box"><div class="stat-num-big" data-target="98">0</div><div class="stat-label-sm" id="dw-stat2">% Satisfacción</div></div>
+          <div class="stat-box"><div class="stat-num-big" data-target="3">0</div><div class="stat-label-sm" id="dw-stat3">Años exp.</div></div>
         </div>
       </div>
     </div>
@@ -439,9 +451,9 @@ footer{text-align:center;padding:28px;color:var(--muted);font-size:.82rem;border
 <!-- PORTFOLIO -->
 <section id="portfolio" class="section-hidden">
   <div class="section-header reveal">
-    <div class="tag">Trabajos</div>
-    <h2 class="section-title">Portafolio de demos</h2>
-    <p class="section-sub">Haz clic en cualquier card para ver la página demo completa.</p>
+    <div class="tag" id="dw-port-tag">Trabajos</div>
+    <h2 class="section-title" id="dw-port-h2">Portafolio de demos</h2>
+    <p class="section-sub" id="dw-port-sub">Haz clic en cualquier card para ver la página demo completa.</p>
   </div>
   <div class="portfolio-grid">
     <div class="project-card reveal" onclick="openDemo('salon')">
@@ -590,19 +602,19 @@ footer{text-align:center;padding:28px;color:var(--muted);font-size:.82rem;border
 <!-- SERVICES -->
 <section id="services" class="section-hidden">
   <div class="section-header reveal">
-    <div class="tag">Lo que hago</div>
-    <h2 class="section-title">Servicios disponibles</h2>
-    <p class="section-sub">Haz clic en cualquier servicio para ver más detalles.</p>
+    <div class="tag" id="dw-svc-tag">Lo que hago</div>
+    <h2 class="section-title" id="dw-svc-h2">Servicios disponibles</h2>
+    <p class="section-sub" id="dw-svc-sub">Haz clic en cualquier servicio para ver más detalles.</p>
   </div>
   <div class="services-grid">
-    <div class="service-card reveal" onclick="openService('web')"><span class="service-icon">🖥️</span><div class="service-name">Diseño de páginas web</div><div class="service-desc">Páginas modernas y atractivas adaptadas a tu marca y negocio.</div><span class="service-tag">Ver más →</span></div>
-    <div class="service-card reveal" style="transition-delay:.07s" onclick="openService('landing')"><span class="service-icon">⚡</span><div class="service-name">Landing pages</div><div class="service-desc">Páginas de aterrizaje para convertir visitantes en clientes.</div><span class="service-tag">Ver más →</span></div>
-    <div class="service-card reveal" style="transition-delay:.14s" onclick="openService('tienda')"><span class="service-icon">🛒</span><div class="service-name">Tiendas online</div><div class="service-desc">E-commerce con carrito, pagos seguros y gestión de inventario.</div><span class="service-tag">Ver más →</span></div>
-    <div class="service-card reveal" style="transition-delay:.21s" onclick="openService('movil')"><span class="service-icon">📱</span><div class="service-name">Optimización móvil</div><div class="service-desc">Tu página perfecta en celular, tablet y computadora.</div><span class="service-tag">Ver más →</span></div>
-    <div class="service-card reveal" style="transition-delay:.28s" onclick="openService('whatsapp')"><span class="service-icon">💬</span><div class="service-name">Integración WhatsApp</div><div class="service-desc">Botones flotantes y formularios que envían a WhatsApp.</div><span class="service-tag">Ver más →</span></div>
-    <div class="service-card reveal" style="transition-delay:.35s" onclick="openService('formularios')"><span class="service-icon">📋</span><div class="service-name">Formularios de contacto</div><div class="service-desc">Formularios que envían cotizaciones directo a tu correo.</div><span class="service-tag">Ver más →</span></div>
-    <div class="service-card reveal" style="transition-delay:.42s" onclick="openService('hosting')"><span class="service-icon">🌐</span><div class="service-name">Hosting y dominio</div><div class="service-desc">Configuración completa de dominio y hospedaje seguro.</div><span class="service-tag">Ver más →</span></div>
-    <div class="service-card reveal" style="transition-delay:.49s" onclick="openService('seo')"><span class="service-icon">🔍</span><div class="service-name">SEO básico</div><div class="service-desc">Optimización para que Google encuentre tu negocio primero.</div><span class="service-tag">Ver más →</span></div>
+    <div class="service-card reveal" onclick="openService('web')"><span class="service-icon">🖥️</span><div class="service-name" id="dw-s1-name">Diseño de páginas web</div><div class="service-desc" id="dw-s1-desc">Páginas modernas y atractivas adaptadas a tu marca y negocio.</div><span class="service-tag" id="dw-s1-tag">Ver más →</span></div>
+    <div class="service-card reveal" style="transition-delay:.07s" onclick="openService('landing')"><span class="service-icon">⚡</span><div class="service-name" id="dw-s2-name">Landing pages</div><div class="service-desc" id="dw-s2-desc">Páginas de aterrizaje para convertir visitantes en clientes.</div><span class="service-tag" id="dw-s2-tag">Ver más →</span></div>
+    <div class="service-card reveal" style="transition-delay:.14s" onclick="openService('tienda')"><span class="service-icon">🛒</span><div class="service-name" id="dw-s3-name">Tiendas online</div><div class="service-desc" id="dw-s3-desc">E-commerce con carrito, pagos seguros y gestión de inventario.</div><span class="service-tag" id="dw-s3-tag">Ver más →</span></div>
+    <div class="service-card reveal" style="transition-delay:.21s" onclick="openService('movil')"><span class="service-icon">📱</span><div class="service-name" id="dw-s4-name">Optimización móvil</div><div class="service-desc" id="dw-s4-desc">Tu página perfecta en celular, tablet y computadora.</div><span class="service-tag" id="dw-s4-tag">Ver más →</span></div>
+    <div class="service-card reveal" style="transition-delay:.28s" onclick="openService('whatsapp')"><span class="service-icon">💬</span><div class="service-name" id="dw-s5-name">Integración WhatsApp</div><div class="service-desc" id="dw-s5-desc">Botones flotantes y formularios que envían a WhatsApp.</div><span class="service-tag" id="dw-s5-tag">Ver más →</span></div>
+    <div class="service-card reveal" style="transition-delay:.35s" onclick="openService('formularios')"><span class="service-icon">📋</span><div class="service-name" id="dw-s6-name">Formularios de contacto</div><div class="service-desc" id="dw-s6-desc">Formularios que envían cotizaciones directo a tu correo.</div><span class="service-tag" id="dw-s6-tag">Ver más →</span></div>
+    <div class="service-card reveal" style="transition-delay:.42s" onclick="openService('hosting')"><span class="service-icon">🌐</span><div class="service-name" id="dw-s7-name">Hosting y dominio</div><div class="service-desc" id="dw-s7-desc">Configuración completa de dominio y hospedaje seguro.</div><span class="service-tag" id="dw-s7-tag">Ver más →</span></div>
+    <div class="service-card reveal" style="transition-delay:.49s" onclick="openService('seo')"><span class="service-icon">🔍</span><div class="service-name" id="dw-s8-name">SEO básico</div><div class="service-desc" id="dw-s8-desc">Optimización para que Google encuentre tu negocio primero.</div><span class="service-tag" id="dw-s8-tag">Ver más →</span></div>
   </div>
 </section>
 
@@ -618,37 +630,37 @@ footer{text-align:center;padding:28px;color:var(--muted);font-size:.82rem;border
 <!-- CONTACT -->
 <section id="contact" class="section-hidden">
   <div class="section-header reveal">
-    <div class="tag">Hablemos</div>
-    <h2 class="section-title">¿Listo para empezar?</h2>
-    <p class="section-sub">Cuéntame sobre tu proyecto y te respondo en menos de 24 horas.</p>
+    <div class="tag" id="dw-ct-tag">Hablemos</div>
+    <h2 class="section-title" id="dw-ct-h2">¿Listo para empezar?</h2>
+    <p class="section-sub" id="dw-ct-sub">Cuéntame sobre tu proyecto y te respondo en menos de 24 horas.</p>
   </div>
   <div class="contact-inner">
     <div class="contact-info reveal-left">
-      <span class="tag">Contacto directo</span>
-      <h3>Hablemos sobre tu proyecto</h3>
-      <p>Respondo rápido por WhatsApp. Sin compromisos — solo soluciones concretas para tu negocio.</p>
+      <span class="tag" id="dw-ci-tag">Contacto directo</span>
+      <h3 id="dw-ci-h3">Hablemos sobre tu proyecto</h3>
+      <p id="dw-ci-p">Respondo rápido por WhatsApp. Sin compromisos — solo soluciones concretas para tu negocio.</p>
       <div class="contact-perks">
-        <div class="perk"><div class="perk-icon">⚡</div> Respuesta en menos de 24 horas</div>
-        <div class="perk"><div class="perk-icon">💰</div> Precios accesibles y transparentes</div>
-        <div class="perk"><div class="perk-icon">✏️</div> Correcciones ilimitadas incluidas</div>
-        <div class="perk"><div class="perk-icon">🔒</div> Entrega en tiempo garantizada</div>
+        <div class="perk"><div class="perk-icon">⚡</div><span id="dw-perk1"> Respuesta en menos de 24 horas</span></div>
+        <div class="perk"><div class="perk-icon">💰</div><span id="dw-perk2"> Precios accesibles y transparentes</span></div>
+        <div class="perk"><div class="perk-icon">✏️</div><span id="dw-perk3"> Correcciones ilimitadas incluidas</span></div>
+        <div class="perk"><div class="perk-icon">🔒</div><span id="dw-perk4"> Entrega en tiempo garantizada</span></div>
         <div class="perk"><div class="perk-icon">📞</div> + (52) 1 5620949215</div>
       </div>
     </div>
     <div class="contact-form reveal-right">
-      <div class="form-group"><label class="form-label">Tu nombre *</label><input class="form-input" id="fname" type="text" placeholder="Ej: María García"></div>
-      <div class="form-group"><label class="form-label">Tipo de negocio *</label><input class="form-input" id="fbusiness" type="text" placeholder="Ej: Restaurante, Clínica, Tienda..."></div>
-      <div class="form-group"><label class="form-label">Tu WhatsApp *</label><input class="form-input" id="fphone" type="tel" placeholder="+52 55 1234 5678"></div>
-      <div class="form-group"><label class="form-label">¿Qué necesitas?</label><textarea class="form-input" id="fmsg" rows="4" placeholder="Cuéntame sobre tu proyecto..."></textarea></div>
-      <button class="wa-btn" onclick="sendWhatsApp()">💬 Enviar por WhatsApp</button>
+      <div class="form-group"><label class="form-label" id="dw-fl1">Tu nombre *</label><input class="form-input" id="fname" type="text" placeholder="Ej: María García"></div>
+      <div class="form-group"><label class="form-label" id="dw-fl2">Tipo de negocio *</label><input class="form-input" id="fbusiness" type="text" placeholder="Ej: Restaurante, Clínica, Tienda..."></div>
+      <div class="form-group"><label class="form-label" id="dw-fl3">Tu WhatsApp *</label><input class="form-input" id="fphone" type="tel" placeholder="+52 55 1234 5678"></div>
+      <div class="form-group"><label class="form-label" id="dw-fl4">¿Qué necesitas?</label><textarea class="form-input" id="fmsg" rows="4" placeholder="Cuéntame sobre tu proyecto..."></textarea></div>
+      <button class="wa-btn" id="dw-wa-btn" onclick="sendWhatsApp()">💬 Enviar por WhatsApp</button>
     </div>
   </div>
 </section>
 
-<footer><p>© 2025 DevsIA Web · Hecho con ❤️ y mucho ☕ · Todos los derechos reservados</p></footer>
+<footer><p id="dw-footer">© 2025 DevsIA Web · Hecho con ❤️ y mucho ☕ · Todos los derechos reservados</p></footer>
 
 <div class="wa-float">
-  <div class="wa-tooltip">¿Hablamos por WhatsApp? 💬</div>
+  <div class="wa-tooltip" id="dw-wa-tooltip">¿Hablamos por WhatsApp? 💬</div>
   <a class="wa-float-btn" href="https://wa.me/5215620949215?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20una%20p%C3%A1gina%20web" target="_blank">💬</a>
 </div>
 
@@ -1233,10 +1245,126 @@ function closeService(){
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeDemo();closeService();}});
 </script>
 
+<!-- LANG TOGGLE -->
+<script>
+const DW_T = {
+  es: {
+    tabs: ['Inicio','Portafolio','Servicios','Contacto'],
+    badge: '✨ Disponible para proyectos',
+    heroH1: 'Diseño páginas web modernas que hacen <span class="gradient">crecer tu negocio</span>',
+    heroSub: 'Páginas rápidas, profesionales y optimizadas para conseguir más clientes desde internet.',
+    cta1: '🚀 Ver portafolio',
+    scrollHint: 'Sobre mí', carouselHint: '👆 Toca para ver el portafolio completo',
+    fbadge2: '🚀 +50 proyectos',
+    aboutTag: 'Sobre mí', aboutH2: 'Creo páginas que trabajan <span class="grad">para ti</span>',
+    aboutP1: 'Me especializo en crear páginas web modernas, rápidas y atractivas que ayudan a los negocios a conseguir más clientes en internet. Cada proyecto es diseñado con atención al detalle y enfocado en resultados reales.',
+    aboutP2: 'Trabajo contigo desde el primer concepto hasta el lanzamiento, asegurando que tu presencia digital refleje la calidad de tu negocio.',
+    stat1: 'Proyectos', stat2: '% Satisfacción', stat3: 'Años exp.',
+    portTag: 'Trabajos', portH2: 'Portafolio de demos', portSub: 'Haz clic en cualquier card para ver la página demo completa.',
+    svcTag: 'Lo que hago', svcH2: 'Servicios disponibles', svcSub: 'Haz clic en cualquier servicio para ver más detalles.',
+    svcMore: 'Ver más →',
+    s1n:'Diseño de páginas web', s1d:'Páginas modernas y atractivas adaptadas a tu marca y negocio.',
+    s2n:'Landing pages', s2d:'Páginas de aterrizaje para convertir visitantes en clientes.',
+    s3n:'Tiendas online', s3d:'E-commerce con carrito, pagos seguros y gestión de inventario.',
+    s4n:'Optimización móvil', s4d:'Tu página perfecta en celular, tablet y computadora.',
+    s5n:'Integración WhatsApp', s5d:'Botones flotantes y formularios que envían a WhatsApp.',
+    s6n:'Formularios de contacto', s6d:'Formularios que envían cotizaciones directo a tu correo.',
+    s7n:'Hosting y dominio', s7d:'Configuración completa de dominio y hospedaje seguro.',
+    s8n:'SEO básico', s8d:'Optimización para que Google encuentre tu negocio primero.',
+    ctTag: 'Hablemos', ctH2: '¿Listo para empezar?', ctSub: 'Cuéntame sobre tu proyecto y te respondo en menos de 24 horas.',
+    ciTag: 'Contacto directo', ciH3: 'Hablemos sobre tu proyecto',
+    ciP: 'Respondo rápido por WhatsApp. Sin compromisos — solo soluciones concretas para tu negocio.',
+    perk1: ' Respuesta en menos de 24 horas', perk2: ' Precios accesibles y transparentes',
+    perk3: ' Correcciones ilimitadas incluidas', perk4: ' Entrega en tiempo garantizada',
+    fl1: 'Tu nombre *', fl2: 'Tipo de negocio *', fl3: 'Tu WhatsApp *', fl4: '¿Qué necesitas?',
+    waBtn: '💬 Enviar por WhatsApp', waTooltip: '¿Hablamos por WhatsApp? 💬',
+    footer: '© 2025 DevsIA Web · Hecho con ❤️ y mucho ☕ · Todos los derechos reservados',
+    back: 'Volver a Devsia',
+  },
+  en: {
+    tabs: ['Home','Portfolio','Services','Contact'],
+    badge: '✨ Available for projects',
+    heroH1: 'I design modern websites that help <span class="gradient">grow your business</span>',
+    heroSub: 'Fast, professional websites optimized to get you more clients from the internet.',
+    cta1: '🚀 See portfolio',
+    scrollHint: 'About me', carouselHint: '👆 Tap to see the full portfolio',
+    fbadge2: '🚀 +50 projects',
+    aboutTag: 'About me', aboutH2: 'I build websites that work <span class="grad">for you</span>',
+    aboutP1: 'I specialize in creating modern, fast, and attractive websites that help businesses get more clients online. Every project is designed with attention to detail and focused on real results.',
+    aboutP2: 'I work with you from the first concept to launch, ensuring your digital presence reflects the quality of your business.',
+    stat1: 'Projects', stat2: '% Satisfaction', stat3: 'Years exp.',
+    portTag: 'Work', portH2: 'Demo portfolio', portSub: 'Click any card to see the full demo page.',
+    svcTag: 'What I do', svcH2: 'Available services', svcSub: 'Click on any service to see more details.',
+    svcMore: 'See more →',
+    s1n:'Website design', s1d:'Modern, attractive pages tailored to your brand and business.',
+    s2n:'Landing pages', s2d:'Landing pages to convert visitors into clients.',
+    s3n:'Online stores', s3d:'E-commerce with cart, secure payments and inventory management.',
+    s4n:'Mobile optimization', s4d:'Your site looking perfect on phone, tablet and desktop.',
+    s5n:'WhatsApp integration', s5d:'Floating buttons and forms that send to WhatsApp.',
+    s6n:'Contact forms', s6d:'Forms that send quotes directly to your email.',
+    s7n:'Hosting & domain', s7d:'Complete domain and secure hosting setup.',
+    s8n:'Basic SEO', s8d:'Optimization so Google finds your business first.',
+    ctTag: "Let's talk", ctH2: 'Ready to get started?', ctSub: "Tell me about your project and I'll reply within 24 hours.",
+    ciTag: 'Direct contact', ciH3: "Let's talk about your project",
+    ciP: 'I reply fast on WhatsApp. No commitments — just concrete solutions for your business.',
+    perk1: ' Reply within 24 hours', perk2: ' Affordable and transparent pricing',
+    perk3: ' Unlimited revisions included', perk4: ' Guaranteed on-time delivery',
+    fl1: 'Your name *', fl2: 'Business type *', fl3: 'Your WhatsApp *', fl4: 'What do you need?',
+    waBtn: '💬 Send via WhatsApp', waTooltip: 'Chat on WhatsApp? 💬',
+    footer: '© 2025 DevsIA Web · Made with ❤️ and lots of ☕ · All rights reserved',
+    back: 'Back to Devsia',
+  }
+};
+const DW_FLAGS = { es: '/imagenes/español.webp', en: '/imagenes/ingles.png' };
+let dwLang = 'es';
+
+function applyDwLang(lang) {
+  dwLang = lang;
+  const T = DW_T[lang];
+  const set = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
+  const setH = (id, val) => { const el = document.getElementById(id); if(el) el.innerHTML = val; };
+  const setPH = (id, val) => { const el = document.getElementById(id); if(el) el.placeholder = val; };
+
+  document.querySelectorAll('.nav-tab').forEach((btn, i) => { if(T.tabs[i]) btn.textContent = T.tabs[i]; });
+  document.querySelectorAll('.mobile-tab').forEach((div, i) => { if(T.tabs[i]) div.textContent = T.tabs[i]; });
+
+  set('dw-hero-badge', T.badge); setH('dw-hero-h1', T.heroH1); set('dw-hero-sub', T.heroSub);
+  set('dw-cta1', T.cta1); set('dw-scroll-hint', T.scrollHint); set('dw-carousel-hint', T.carouselHint);
+  set('dw-fbadge2', T.fbadge2);
+  set('dw-about-tag', T.aboutTag); setH('dw-about-h2', T.aboutH2);
+  set('dw-about-p1', T.aboutP1); set('dw-about-p2', T.aboutP2);
+  set('dw-stat1', T.stat1); set('dw-stat2', T.stat2); set('dw-stat3', T.stat3);
+
+  set('dw-port-tag', T.portTag); set('dw-port-h2', T.portH2); set('dw-port-sub', T.portSub);
+
+  set('dw-svc-tag', T.svcTag); set('dw-svc-h2', T.svcH2); set('dw-svc-sub', T.svcSub);
+  for(let i=1;i<=8;i++){
+    const n=T[`s${i}n`], d=T[`s${i}d`];
+    set(`dw-s${i}-name`, n); set(`dw-s${i}-desc`, d); set(`dw-s${i}-tag`, T.svcMore);
+  }
+
+  set('dw-ct-tag', T.ctTag); set('dw-ct-h2', T.ctH2); set('dw-ct-sub', T.ctSub);
+  set('dw-ci-tag', T.ciTag); set('dw-ci-h3', T.ciH3); set('dw-ci-p', T.ciP);
+  set('dw-perk1', T.perk1); set('dw-perk2', T.perk2); set('dw-perk3', T.perk3); set('dw-perk4', T.perk4);
+  set('dw-fl1', T.fl1); set('dw-fl2', T.fl2); set('dw-fl3', T.fl3); set('dw-fl4', T.fl4);
+  setPH('fname', lang==='en'?'E.g.: John Smith':'Ej: María García');
+  setPH('fbusiness', lang==='en'?'E.g.: Restaurant, Clinic...':'Ej: Restaurante, Clínica, Tienda...');
+  setPH('fmsg', lang==='en'?'Tell me about your project...':'Cuéntame sobre tu proyecto...');
+  set('dw-wa-btn', T.waBtn); set('dw-wa-tooltip', T.waTooltip);
+  set('dw-footer', T.footer); set('dw-back-span', T.back);
+
+  const nextLang = lang === 'es' ? 'en' : 'es';
+  const cur = document.getElementById('dwFlagCur'); const nxt = document.getElementById('dwFlagNext');
+  if(cur) cur.src = DW_FLAGS[lang]; if(nxt) nxt.src = DW_FLAGS[nextLang];
+  document.documentElement.lang = lang;
+}
+window.toggleDwLang = function() { applyDwLang(dwLang === 'es' ? 'en' : 'es'); };
+</script>
+
 <!-- BOTÓN VOLVER AL PORTFOLIO -->
 <a href="../../index.html" class="back-to-portfolio" title="Volver a Devsia">
   <i class="fas fa-arrow-left"></i>
-  <span>Volver a Devsia</span>
+  <span id="dw-back-span">Volver a Devsia</span>
 </a>
 
 <style>

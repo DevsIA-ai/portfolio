@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invitaciones Digitales · Devsia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Great+Vibes&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --gold:#c9a96e; --gold-light:#e8d5b0; --gold-dark:#9a7a4a;
+    --cream:#faf7f2; --dark:#1e1410; --text-muted:#7a6e68;
+    --serif:'Cormorant Garamond',Georgia,serif;
+    --script:'Great Vibes',cursive;
+    --sans:'Montserrat',sans-serif;
+  }
+  body{
+    font-family:var(--sans); background:var(--cream); color:#2a2220;
+    min-height:100vh; padding:5rem 1.5rem;
+  }
+  .wrap{ max-width:980px; margin:0 auto; text-align:center; }
+  .back{
+    display:inline-flex; align-items:center; gap:.4rem; text-decoration:none;
+    color:var(--text-muted); font-size:.75rem; letter-spacing:.05em; margin-bottom:2.5rem;
+    transition:color .25s;
+  }
+  .back:hover{ color:var(--gold-dark); }
+  .eyebrow{ font-size:.62rem; letter-spacing:.5em; text-transform:uppercase; color:var(--gold); display:block; margin-bottom:1rem; }
+  h1{ font-family:var(--serif); font-weight:300; font-size:clamp(2.2rem,5vw,3.4rem); }
+  h1 em{ font-style:italic; color:var(--gold-dark); }
+  .sub{ font-family:var(--serif); font-style:italic; color:var(--text-muted); font-size:1.1rem; margin-top:1rem; max-width:560px; margin-left:auto; margin-right:auto; }
+  .grid{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:1.75rem; margin-top:3.5rem;
+  }
+  .card{
+    position:relative; border-radius:14px; overflow:hidden; min-height:280px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.75rem;
+    text-decoration:none; color:#fff; padding:2rem 1.5rem;
+    box-shadow:0 18px 40px rgba(0,0,0,.14);
+    transition:transform .35s, box-shadow .35s;
+  }
+  .card:hover{ transform:translateY(-6px); box-shadow:0 26px 55px rgba(0,0,0,.22); }
+  .card.disabled{ cursor:default; opacity:.72; }
+  .card.disabled:hover{ transform:none; box-shadow:0 18px 40px rgba(0,0,0,.14); }
+  .card-web{ background:linear-gradient(160deg,#3a2a20,#5a4a42); }
+  .card-video{ background:linear-gradient(160deg,#1f2a3a,#2f4a5a); }
+  .card-imagen{ background:linear-gradient(160deg,#2a1f3a,#4a2f5a); }
+  .card-icon{ font-size:2.4rem; opacity:.85; }
+  .card-tag{ font-size:.56rem; letter-spacing:.35em; text-transform:uppercase; opacity:.75; }
+  .card-title{ font-family:var(--serif); font-style:italic; font-weight:300; font-size:1.9rem; }
+  .card-desc{ font-size:.78rem; color:rgba(255,255,255,.75); max-width:220px; line-height:1.5; }
+  footer{ margin-top:4rem; font-size:.7rem; color:var(--text-muted); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="back" href="../index.html">&larr; Volver al portafolio</a>
+    <span class="eyebrow">Devsia · Invitaciones</span>
+    <h1>Invitaciones <em>Digitales</em></h1>
+    <p class="sub">Elige el formato de invitación que mejor se adapte a tu evento.</p>
+
+    <div class="grid">
+      <a class="card card-web" href="Invitaciones Web/index.html">
+        <i class="card-icon">🌐</i>
+        <span class="card-tag">Disponible</span>
+        <span class="card-title">Invitación Web</span>
+        <span class="card-desc">Sitio interactivo personalizado con fotos, música, cuenta regresiva y confirmación de asistencia.</span>
+      </a>
+      <div class="card card-video disabled">
+        <i class="card-icon">🎬</i>
+        <span class="card-tag">Próximamente</span>
+        <span class="card-title">Video Invitación</span>
+        <span class="card-desc">Video animado personalizado para compartir por WhatsApp y redes sociales.</span>
+      </div>
+      <div class="card card-imagen disabled">
+        <i class="card-icon">🖼️</i>
+        <span class="card-tag">Próximamente</span>
+        <span class="card-title">Imagen Invitación</span>
+        <span class="card-desc">Diseño digital estático, listo para imprimir o compartir en un solo archivo.</span>
+      </div>
+    </div>
+
+    <footer>Cada formato incluye diseño personalizado según el estilo de tu evento.</footer>
+  </div>
+</body>
+</html>
