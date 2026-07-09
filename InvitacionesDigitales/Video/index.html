@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Video Invitación · Devsia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Great+Vibes&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --gold:#c9a96e; --gold-light:#e8d5b0; --gold-dark:#9a7a4a;
+    --cream:#faf7f2; --dark:#1e1410; --text-muted:#7a6e68;
+    --serif:'Cormorant Garamond',Georgia,serif;
+    --script:'Great Vibes',cursive;
+    --sans:'Montserrat',sans-serif;
+  }
+  body{
+    font-family:var(--sans); background:var(--cream); color:#2a2220;
+    min-height:100vh; padding:5rem 1.5rem 4rem;
+  }
+  .wrap{ max-width:1100px; margin:0 auto; text-align:center; }
+  .back{
+    display:inline-flex; align-items:center; gap:.4rem; text-decoration:none;
+    color:var(--text-muted); font-size:.75rem; letter-spacing:.05em; margin-bottom:2.5rem;
+    transition:color .25s;
+  }
+  .back:hover{ color:var(--gold-dark); }
+  .eyebrow{ font-size:.62rem; letter-spacing:.5em; text-transform:uppercase; color:var(--gold); display:block; margin-bottom:1rem; }
+  h1{ font-family:var(--serif); font-weight:300; font-size:clamp(2.2rem,5vw,3.4rem); }
+  h1 em{ font-style:italic; color:var(--gold-dark); }
+  .sub{ font-family:var(--serif); font-style:italic; color:var(--text-muted); font-size:1.1rem; margin-top:1rem; max-width:560px; margin-left:auto; margin-right:auto; }
+
+  .category{ margin-top:4rem; text-align:left; }
+  .category-title{
+    font-family:var(--serif); font-style:italic; font-weight:300; font-size:1.6rem;
+    color:var(--gold-dark); display:flex; align-items:center; gap:1rem;
+  }
+  .category-title::after{ content:''; flex:1; height:1px; background:linear-gradient(90deg,var(--gold-light),transparent); }
+
+  .orient-label{
+    font-size:.62rem; letter-spacing:.3em; text-transform:uppercase; color:var(--text-muted);
+    margin-top:1.75rem;
+  }
+  .orient-label:first-of-type{ margin-top:1.75rem; }
+
+  .grid{
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr));
+    gap:1.5rem; margin-top:.85rem;
+  }
+  .vcard{
+    background:#fff; border-radius:14px; overflow:hidden;
+    box-shadow:0 14px 32px rgba(0,0,0,.12);
+    transition:transform .3s, box-shadow .3s;
+  }
+  .vcard:hover{ transform:translateY(-4px); box-shadow:0 20px 44px rgba(0,0,0,.18); }
+  .vcard video{
+    width:100%; object-fit:contain; display:block; background:#111;
+  }
+  .vcard--v video{ aspect-ratio:9/16; }
+  .vcard--h video{ aspect-ratio:16/9; }
+  .vcard-label{
+    padding:.7rem .9rem; font-family:var(--serif); font-size:.92rem; color:#3a2e28;
+    text-align:center; border-top:1px solid #f1e7d6;
+  }
+
+  footer{ margin-top:4.5rem; font-size:.7rem; color:var(--text-muted); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="back" href="../">&larr; Volver a Invitaciones Digitales</a>
+    <span class="eyebrow">Devsia · Invitaciones</span>
+    <h1>Video <em>Invitación</em></h1>
+    <p class="sub">Videos personalizados listos para compartir por WhatsApp y redes sociales. Elige el estilo que más se parezca a tu evento.</p>
+
+    <div class="category">
+      <div class="category-title">Guerreras K-pop</div>
+
+      <div class="orient-label">Vertical</div>
+      <div class="grid">
+        <div class="vcard vcard--v">
+          <video controls preload="none" poster="GUERRERA KPOP 4.jpg"><source src="GUERRERA KPOP 4.mp4" type="video/mp4"></video>
+          <div class="vcard-label">Guerrera K-pop</div>
+        </div>
+        <div class="vcard vcard--v">
+          <video controls preload="none" poster="guerreras KPOP 3.jpg"><source src="guerreras KPOP 3.mp4" type="video/mp4"></video>
+          <div class="vcard-label">Guerreras K-pop</div>
+        </div>
+        <div class="vcard vcard--v">
+          <video controls preload="none" poster="muestra kpop.jpg"><source src="muestra kpop.mp4" type="video/mp4"></video>
+          <div class="vcard-label">Muestra K-pop</div>
+        </div>
+      </div>
+
+      <div class="orient-label">Horizontal</div>
+      <div class="grid">
+        <div class="vcard vcard--h">
+          <video controls preload="none" poster="KPOP horizontal.jpg"><source src="KPOP horizontal.mp4" type="video/mp4"></video>
+          <div class="vcard-label">K-pop</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="category">
+      <div class="category-title">Ídolos del Deporte</div>
+
+      <div class="orient-label">Vertical</div>
+      <div class="grid">
+        <div class="vcard vcard--v">
+          <video controls preload="none" poster="Messi.jpg"><source src="Messi.mp4" type="video/mp4"></video>
+          <div class="vcard-label">Messi</div>
+        </div>
+        <div class="vcard vcard--v">
+          <video controls preload="none" poster="CR7.jpg"><source src="CR7.mp4" type="video/mp4"></video>
+          <div class="vcard-label">Cristiano Ronaldo</div>
+        </div>
+      </div>
+
+      <div class="orient-label">Horizontal</div>
+      <div class="grid">
+        <div class="vcard vcard--h">
+          <video controls preload="none" poster="Cr7 2 horizontal.jpg"><source src="Cr7 2 horizontal.mp4" type="video/mp4"></video>
+          <div class="vcard-label">Cristiano Ronaldo II</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="category">
+      <div class="category-title">Bautizo</div>
+      <div class="grid">
+        <div class="vcard vcard--v">
+          <video controls preload="none" poster="bautizo.jpg"><source src="bautizo.mp4" type="video/mp4"></video>
+          <div class="vcard-label">Bautizo</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="category">
+      <div class="category-title">Personajes Animados</div>
+
+      <div class="orient-label">Vertical</div>
+      <div class="grid">
+        <div class="vcard vcard--v">
+          <video controls preload="none" poster="Bluey.jpg"><source src="Bluey.mp4" type="video/mp4"></video>
+          <div class="vcard-label">Bluey</div>
+        </div>
+        <div class="vcard vcard--v">
+          <video controls preload="none" poster="Gabby y su casa de muñecas.jpg"><source src="Gabby y su casa de muñecas.mp4" type="video/mp4"></video>
+          <div class="vcard-label">Gabby y su Casa de Muñecas</div>
+        </div>
+        <div class="vcard vcard--v">
+          <video controls preload="none" poster="MARIO bross.jpg"><source src="MARIO bross.mp4" type="video/mp4"></video>
+          <div class="vcard-label">Mario Bros</div>
+        </div>
+        <div class="vcard vcard--v">
+          <video controls preload="none" poster="MARIOS bross  2.jpg"><source src="MARIOS bross  2.mp4" type="video/mp4"></video>
+          <div class="vcard-label">Mario Bros II</div>
+        </div>
+        <div class="vcard vcard--v">
+          <video controls preload="none" poster="buzz.jpg"><source src="buzz.mp4" type="video/mp4"></video>
+          <div class="vcard-label">Buzz Lightyear</div>
+        </div>
+        <div class="vcard vcard--v">
+          <video controls preload="none" poster="buzz 2.jpg"><source src="buzz 2.mp4" type="video/mp4"></video>
+          <div class="vcard-label">Buzz Lightyear II</div>
+        </div>
+      </div>
+
+      <div class="orient-label">Horizontal</div>
+      <div class="grid">
+        <div class="vcard vcard--h">
+          <video controls preload="none" poster="Hot wheels horizontal.jpg"><source src="Hot wheels horizontal.mp4" type="video/mp4"></video>
+          <div class="vcard-label">Hot Wheels</div>
+        </div>
+        <div class="vcard vcard--h">
+          <video controls preload="none" poster="bob esponja horizontal.jpg"><source src="bob esponja horizontal.mp4" type="video/mp4"></video>
+          <div class="vcard-label">Bob Esponja</div>
+        </div>
+      </div>
+    </div>
+
+    <footer>Cada video se personaliza con el nombre, fecha y datos de tu evento.</footer>
+  </div>
+
+  <script>
+    var videos = document.querySelectorAll('.vcard video');
+    videos.forEach(function(v){
+      v.addEventListener('play', function(){
+        videos.forEach(function(other){
+          if(other !== v) other.pause();
+        });
+      });
+    });
+  </script>
+</body>
+</html>
