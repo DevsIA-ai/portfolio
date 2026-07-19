@@ -3,13 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Generar Invitación · Valentina &amp; Mateo</title>
+<title>Generar Invitación Doble · Boda &amp; XV Años</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
   :root {
     --gold:#c9a96e; --gold-dark:#9a7a4a; --gold-light:#e8d5b0;
+    --rose:#d88fa8; --rose-dark:#a85770; --rose-light:#f3d9e2;
     --cream:#faf6ef; --dark:#1a0f08; --text:#2c1a0e;
     --text-muted:#7a6652; --serif:'Cormorant Garamond',serif;
     --script:'Great Vibes',cursive; --sans:'Montserrat',sans-serif;
@@ -18,7 +19,7 @@
 
   body {
     font-family:var(--sans);
-    background:linear-gradient(155deg,#0e0804 0%,#1c1008 55%,#0a0603 100%);
+    background:linear-gradient(155deg,#140b16 0%,#241118 45%,#1c1008 100%);
     min-height:100vh;
     display:flex; flex-direction:column; align-items:center; justify-content:center;
     padding:2rem 1rem;
@@ -39,16 +40,16 @@
   }
   .card-hr {
     width:40px; height:1px; margin:.6rem auto;
-    background:linear-gradient(90deg,transparent,var(--gold),transparent);
+    background:linear-gradient(90deg,transparent,var(--gold),var(--rose),transparent);
   }
   .card-title {
     font-family:var(--script);
-    font-size:clamp(2rem,6vw,2.8rem);
+    font-size:clamp(1.9rem,6vw,2.5rem);
     color:var(--text); line-height:1.1;
     margin-bottom:.2rem;
   }
   .card-sub {
-    font-size:.52rem; letter-spacing:.38em; text-transform:uppercase;
+    font-size:.52rem; letter-spacing:.3em; text-transform:uppercase;
     color:var(--text-muted); margin-bottom:2rem;
   }
 
@@ -77,14 +78,14 @@
 
   .btn-generar {
     width:100%; padding:.85rem;
-    background:var(--gold);
+    background:linear-gradient(90deg,var(--gold),var(--rose));
     border:none; border-radius:50px;
     color:#fff; font-family:var(--sans);
     font-size:.6rem; letter-spacing:.3em; text-transform:uppercase;
     cursor:pointer; margin-top:.4rem;
-    transition:background .3s, transform .15s;
+    transition:filter .3s, transform .15s;
   }
-  .btn-generar:hover { background:var(--gold-dark); }
+  .btn-generar:hover { filter:brightness(.92); }
   .btn-generar:active { transform:scale(.98); }
 
   /* RESULTADO */
@@ -141,9 +142,9 @@
   .btn-copy:hover { background:rgba(201,169,110,.1); }
   .btn-copy.copied { background:rgba(201,169,110,.15); color:var(--gold); }
   .btn-open {
-    background:var(--gold); color:#fff;
+    background:linear-gradient(90deg,var(--gold),var(--rose)); color:#fff;
   }
-  .btn-open:hover { background:var(--gold-dark); }
+  .btn-open:hover { filter:brightness(.92); }
   .btn-copy:active, .btn-open:active { transform:scale(.97); }
 
   @media(max-width:480px){
@@ -157,10 +158,10 @@
 <a href="../../Web/" style="display:block;margin-bottom:1.5rem;text-align:center;font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.55);text-decoration:none">← Ver más invitaciones</a>
 
 <div class="card">
-  <p class="card-eyebrow">✦ &nbsp;Generador de Invitaciones &nbsp;✦</p>
+  <p class="card-eyebrow">✦ &nbsp;Generador de Invitación Doble &nbsp;✦</p>
   <div class="card-hr"></div>
-  <h1 class="card-title">Valentina &amp; Mateo</h1>
-  <p class="card-sub">16 · 10 · 2027</p>
+  <h1 class="card-title">Boda &amp; XV Años</h1>
+  <p class="card-sub">Un mismo día · Dos celebraciones</p>
 
   <div class="form-group">
     <label>Nombre de la familia</label>
@@ -255,7 +256,6 @@
     if(urlGenerada) window.open(urlGenerada, '_blank');
   }
 
-  // Permitir Enter en el campo de familia
   document.getElementById('inputFamilia').addEventListener('keydown', function(e){
     if(e.key === 'Enter') generar();
   });

@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invitación Doble · Boda &amp; XV Años</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --gold:#c9a96e; --gold-dark:#9a7a4a; --gold-light:#e8d5b0;
+    --rose:#d88fa8; --rose-dark:#a85770; --rose-light:#f3d9e2;
+    --cream:#faf6ef; --text:#2c1a0e; --text-muted:#7a6652;
+    --serif:'Cormorant Garamond',serif;
+    --script:'Great Vibes',cursive;
+    --sans:'Montserrat',sans-serif;
+  }
+  *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ height:100%; }
+  body{
+    font-family:var(--sans);
+    background:#0d0906;
+    overflow:hidden;
+  }
+
+  /* ======================== SOBRE COMPARTIDO ======================== */
+  #env-overlay{
+    position:fixed; inset:0; z-index:100;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:2rem 1rem;
+    background:linear-gradient(150deg,#140b16 0%,#241118 38%,#1c1008 100%);
+    transition:opacity .6s ease;
+  }
+  #env-overlay.hide{ opacity:0; pointer-events:none; }
+
+  .env-scene{
+    display:flex; flex-direction:column; align-items:center;
+    gap:1.1rem;
+    perspective:1400px;
+  }
+
+  .env-hint{
+    font-size:.6rem; letter-spacing:.4em; text-transform:uppercase;
+    color:rgba(232,213,176,.55); margin-bottom:1.6rem;
+  }
+
+  .env-box{
+    width:clamp(265px,84vw,355px);
+    position:relative; cursor:pointer; user-select:none;
+  }
+  .env-box.open{ cursor:default; }
+
+  .env-body-rect{
+    position:relative; padding-top:63%;
+    background:#f9f5ee;
+    border:1px solid rgba(201,169,110,.3);
+    border-radius:5px; overflow:hidden;
+    box-shadow:0 30px 70px rgba(0,0,0,.6), 0 0 0 1px rgba(201,169,110,.12);
+  }
+  .env-top-flap{
+    position:absolute; top:0; left:-1px; right:-1px; height:55%;
+    background:linear-gradient(120deg,#ede3d0 0%,#ede3d0 48%,#f3dde3 52%,#f3dde3 100%);
+    clip-path:polygon(0 0,100% 0,50% 90%);
+    transform-origin:top center; transform:rotateX(0deg);
+    transition:transform .88s cubic-bezier(.4,0,.2,1);
+    backface-visibility:hidden; z-index:4;
+  }
+  .env-box.open .env-top-flap{ transform:rotateX(-180deg); }
+  .env-side-l{
+    position:absolute; left:0; bottom:0; width:55%; height:62%;
+    background:#e6dac6; clip-path:polygon(0 0,0 100%,100% 100%); z-index:1;
+  }
+  .env-side-r{
+    position:absolute; right:0; bottom:0; width:55%; height:62%;
+    background:#eccfd8; clip-path:polygon(100% 0,0 100%,100% 100%); z-index:1;
+  }
+  .env-bottom-v{
+    position:absolute; bottom:0; left:0; right:0; height:60%;
+    background:#eae0cc; clip-path:polygon(0 100%,50% 2%,100% 100%); z-index:1;
+  }
+  .env-seal{
+    position:absolute; top:54%; left:50%; transform:translate(-50%,-50%);
+    width:58px; height:58px;
+    background:linear-gradient(120deg,var(--gold) 0%,var(--gold-dark) 46%,var(--rose-dark) 54%,var(--rose) 100%);
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--serif); font-style:italic; font-size:.72rem;
+    color:#fff; letter-spacing:.03em;
+    box-shadow:0 4px 20px rgba(60,30,40,.55);
+    z-index:5;
+    transition:opacity .3s .15s, transform .3s .15s;
+  }
+  .env-box.open .env-seal{ opacity:0; transform:translate(-50%,-50%) scale(.45); }
+
+  .env-footer-script{
+    font-family:var(--script); font-size:clamp(1.5rem,5vw,2rem);
+    background:linear-gradient(90deg,var(--gold-light),var(--rose-light));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    margin-top:1.3rem; text-align:center;
+  }
+  .env-footer-sub{
+    font-size:.56rem; letter-spacing:.3em; text-transform:uppercase;
+    color:rgba(232,213,176,.55); margin-top:.5rem; text-align:center;
+  }
+
+  /* ======================== TARJETA (tras abrir) ======================== */
+  #envCard{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    padding:1.5rem;
+    opacity:0; pointer-events:none;
+    transition:opacity .5s ease;
+  }
+  #envCard.show{ opacity:1; pointer-events:all; }
+  .env-card-inner{
+    background:#fff;
+    border:1px solid rgba(201,169,110,.3);
+    border-radius:8px;
+    padding:2.3rem 1.9rem 1.9rem;
+    text-align:center; max-width:380px; width:100%;
+    box-shadow:0 32px 80px rgba(0,0,0,.6);
+    transform:translateY(18px);
+    transition:transform .5s ease;
+  }
+  #envCard.show .env-card-inner{ transform:translateY(0); }
+  .env-card-eyebrow{
+    font-size:.5rem; letter-spacing:.4em; text-transform:uppercase;
+    color:var(--gold-dark); margin-bottom:.5rem;
+  }
+  .env-card-hr{
+    width:38px; height:1px; margin:.5rem auto;
+    background:linear-gradient(90deg,transparent,var(--gold),var(--rose),transparent);
+  }
+  .env-card-title{
+    font-family:var(--script); font-size:clamp(1.5rem,5vw,1.9rem);
+    color:var(--text); line-height:1.15;
+  }
+  .env-card-sub{
+    font-size:.56rem; letter-spacing:.24em; text-transform:uppercase;
+    color:var(--text-muted); margin-top:.3rem;
+  }
+  .env-family-label{
+    font-size:.46rem; letter-spacing:.4em; text-transform:uppercase;
+    color:var(--text-muted); margin-top:1rem;
+  }
+  .env-family-name{
+    font-family:var(--script); font-size:clamp(1.4rem,5vw,1.8rem);
+    color:var(--gold-dark); line-height:1.15; margin-bottom:.3rem;
+  }
+  .env-badges-row{
+    display:flex; align-items:center; justify-content:center;
+    flex-wrap:wrap; gap:.6rem; margin:.5rem 0 .3rem;
+  }
+  .env-boletos-badge{
+    display:inline-flex; align-items:baseline; gap:.35rem;
+    border:1px solid var(--gold-light); border-radius:50px;
+    padding:.3rem 1rem;
+  }
+  .env-boletos-num{ font-family:var(--serif); font-size:1.3rem; font-weight:300; color:var(--gold-dark); }
+  .env-boletos-lbl{ font-size:.5rem; letter-spacing:.16em; text-transform:uppercase; color:var(--text-muted); }
+  .env-card-text{
+    font-family:var(--serif); font-size:.8rem; color:var(--text-muted);
+    line-height:1.7; margin:.5rem 0 1.1rem;
+  }
+  .env-choice-row{ display:flex; gap:.7rem; }
+  .env-choice-btn{
+    flex:1; padding:.75rem .5rem; border:none; border-radius:50px;
+    color:#fff; font-family:var(--sans); font-size:.55rem;
+    letter-spacing:.16em; text-transform:uppercase; cursor:pointer;
+    transition:transform .15s, box-shadow .25s;
+  }
+  .env-choice-btn:active{ transform:scale(.96); }
+  .env-choice-boda{ background:var(--gold); }
+  .env-choice-boda:hover{ background:var(--gold-dark); }
+  .env-choice-xv{ background:var(--rose); }
+  .env-choice-xv:hover{ background:var(--rose-dark); }
+
+  @media(max-width:480px){
+    .env-choice-row{ flex-direction:column; }
+  }
+
+  /* ======================== VISOR (iframe con la invitación activa) ======================== */
+  #frame-loading{
+    position:fixed; inset:0; z-index:20;
+    display:flex; align-items:center; justify-content:center;
+    background:#0d0906; color:rgba(255,255,255,.5);
+    font-family:var(--serif); font-style:italic; font-size:1rem; letter-spacing:.03em;
+    transition:opacity .35s ease;
+  }
+  #frame-loading.hide{ opacity:0; pointer-events:none; }
+
+  #frame-wrap{
+    position:fixed; inset:0; z-index:10;
+    opacity:0; transition:opacity .45s ease;
+  }
+  #frame-wrap.ready{ opacity:1; }
+  #inv-frame{ width:100%; height:100%; border:none; display:block; background:#0d0906; }
+
+  /* ======================== SWITCH FLOTANTE ======================== */
+  #side-switch{
+    position:fixed; bottom:1.2rem; left:50%; transform:translateX(-50%) translateY(30px);
+    z-index:60; display:flex; gap:.4rem;
+    background:rgba(15,10,8,.55); backdrop-filter:blur(10px);
+    padding:.35rem; border-radius:50px;
+    border:1px solid rgba(255,255,255,.16);
+    box-shadow:0 14px 34px rgba(0,0,0,.4);
+    opacity:0; pointer-events:none;
+    transition:opacity .4s ease, transform .4s ease;
+  }
+  #side-switch.show{ opacity:1; pointer-events:all; transform:translateX(-50%) translateY(0); }
+  .side-btn{
+    padding:.58rem 1.15rem; border:none; border-radius:50px;
+    font-family:var(--sans); font-size:.54rem; letter-spacing:.16em; text-transform:uppercase;
+    cursor:pointer; background:transparent; color:rgba(255,255,255,.65);
+    transition:background .25s, color .25s; white-space:nowrap;
+  }
+  .side-btn:hover{ color:#fff; }
+  .side-btn.side-boda.active{ background:var(--gold); color:#fff; }
+  .side-btn.side-xv.active{ background:var(--rose); color:#fff; }
+
+  @media(max-width:480px){
+    .side-btn{ font-size:.48rem; padding:.5rem .85rem; }
+    #side-switch{ bottom:.85rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ======================== SOBRE ======================== -->
+<div id="env-overlay">
+  <div class="env-scene" id="envScene">
+    <p class="env-hint">· Toca para abrir ·</p>
+
+    <div class="env-box" id="envBox" onclick="openEnvelope()">
+      <div class="env-body-rect">
+        <div class="env-top-flap"></div>
+        <div class="env-side-l"></div>
+        <div class="env-side-r"></div>
+        <div class="env-bottom-v"></div>
+        <div class="env-seal">✦</div>
+      </div>
+    </div>
+
+    <p class="env-footer-script">Boda &amp; XV Años</p>
+    <p class="env-footer-sub">Un mismo día · Dos celebraciones</p>
+  </div>
+
+  <!-- Tarjeta con datos de la familia y elección de lado (oculta hasta abrir el sobre) -->
+  <div id="envCard">
+    <div class="env-card-inner">
+      <p class="env-card-eyebrow">✦ &nbsp;Invitación Doble &nbsp;✦</p>
+      <div class="env-card-hr"></div>
+      <p class="env-card-title">Boda &amp; XV Años</p>
+      <p class="env-card-sub">Un mismo día · Dos celebraciones</p>
+      <p class="env-family-label">Familia</p>
+      <h3 class="env-family-name" id="envFamily">Estimados Invitados</h3>
+      <div class="env-badges-row">
+        <div class="env-boletos-badge">
+          <span class="env-boletos-num" id="envBoletosNum">1</span>
+          <span class="env-boletos-lbl" id="envBoletosLbl">boleto</span>
+        </div>
+        <div class="env-boletos-badge" id="envMesaBadge" style="display:none">
+          <span class="env-boletos-lbl">Mesa #</span>
+          <span class="env-boletos-num" id="envMesaNum"></span>
+        </div>
+      </div>
+      <p class="env-card-text">Están invitados a ambas celebraciones. Elijan cuál quieren ver primero — podrán cambiar de una a otra en cualquier momento.</p>
+      <div class="env-choice-row">
+        <button class="env-choice-btn env-choice-boda" onclick="elegirLado('boda')">Ver Boda ✦</button>
+        <button class="env-choice-btn env-choice-xv" onclick="elegirLado('xv')">Ver XV Años ✦</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== VISOR ======================== -->
+<p id="frame-loading">Cargando invitación…</p>
+<div id="frame-wrap">
+  <iframe id="inv-frame" title="Invitación" allow="autoplay"></iframe>
+</div>
+
+<!-- ======================== SWITCH ======================== -->
+<div id="side-switch">
+  <button type="button" class="side-btn side-boda" onclick="showSide('boda')">✦ Boda</button>
+  <button type="button" class="side-btn side-xv" onclick="showSide('xv')">✦ XV Años</button>
+</div>
+
+<script>
+  const p = new URLSearchParams(window.location.search);
+  const inv = {
+    fam:   p.get('f') || p.get('familia') || '',
+    boletos: p.get('b') || p.get('boletos') || '1',
+    mesa:  p.get('m') || p.get('mesa') || ''
+  };
+
+  (function(){
+    const n = parseInt(inv.boletos, 10) || 1;
+    document.getElementById('envFamily').textContent = inv.fam || 'Estimados Invitados';
+    document.getElementById('envBoletosNum').textContent = n;
+    document.getElementById('envBoletosLbl').textContent = n === 1 ? 'boleto' : 'boletos';
+    if(inv.mesa){
+      document.getElementById('envMesaNum').textContent = inv.mesa;
+      document.getElementById('envMesaBadge').style.display = 'inline-flex';
+    }
+  })();
+
+  function openEnvelope(){
+    const box = document.getElementById('envBox');
+    if(box.classList.contains('open')) return;
+    box.classList.add('open');
+    setTimeout(function(){
+      const scene = document.getElementById('envScene');
+      scene.style.transition = 'opacity .4s ease';
+      scene.style.opacity = '0';
+      scene.style.pointerEvents = 'none';
+      setTimeout(function(){
+        document.getElementById('envCard').classList.add('show');
+      }, 380);
+    }, 720);
+  }
+
+  function buildFrameUrl(base){
+    const params = new URLSearchParams();
+    if(inv.fam) params.set('f', inv.fam);
+    params.set('b', inv.boletos);
+    if(inv.mesa) params.set('m', inv.mesa);
+    params.set('skip', '1');
+    return base + '?' + params.toString();
+  }
+
+  const SIDES = {
+    boda: '../../Boda/con-generador/index.html',
+    xv:   '../../XvAnos/con-generador/index.html'
+  };
+
+  let currentSide = null;
+  function showSide(side){
+    if(currentSide === side) return;
+    currentSide = side;
+
+    document.querySelectorAll('.side-btn').forEach(function(b){ b.classList.remove('active'); });
+    document.querySelector('.side-' + side).classList.add('active');
+    document.getElementById('side-switch').classList.add('show');
+
+    const frame = document.getElementById('inv-frame');
+    const wrap = document.getElementById('frame-wrap');
+    const loading = document.getElementById('frame-loading');
+
+    wrap.classList.remove('ready');
+    loading.classList.remove('hide');
+
+    frame.onload = function(){
+      loading.classList.add('hide');
+      wrap.classList.add('ready');
+    };
+    frame.src = buildFrameUrl(SIDES[side]);
+  }
+
+  function elegirLado(side){
+    const ov = document.getElementById('env-overlay');
+    ov.classList.add('hide');
+    setTimeout(function(){ ov.remove(); }, 650);
+    showSide(side);
+  }
+</script>
+</body>
+</html>

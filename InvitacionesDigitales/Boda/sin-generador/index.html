@@ -132,11 +132,33 @@ body { font-family: var(--sans); background: var(--cream); color: var(--text); o
   width:100%; height:100%; object-fit:cover;
   z-index:0; pointer-events:none;
 }
+#hero-image {
+  position:absolute; inset:0;
+  width:100%; height:100%; object-fit:cover;
+  z-index:0; pointer-events:none;
+  display:none;
+}
 #hero-overlay {
   position:absolute; inset:0; z-index:1; pointer-events:none;
   background: linear-gradient(160deg,rgba(15,9,6,.62) 0%,rgba(35,20,12,.50) 60%,rgba(20,10,5,.68) 100%);
 }
-#hero > *:not(#hero-video):not(#hero-overlay):not(.hero-scroll):not(.petal-float) { position:relative; z-index:2; }
+#hero > *:not(#hero-video):not(#hero-image):not(#hero-overlay):not(.hero-scroll):not(.petal-float) { position:relative; z-index:2; }
+
+/* Selector de fondo del hero (video / imagen / sin fondo) — barra debajo del hero, no lo interrumpe */
+.hero-bg-switch-bar {
+  background:#1e1410;
+  display:flex; justify-content:center; gap:.5rem;
+  padding:1rem 1rem 1.3rem;
+}
+.hero-bg-btn {
+  padding:.5rem 1.1rem; border:none; border-radius:50px;
+  background:transparent; border:1px solid rgba(201,169,110,.35);
+  color:rgba(255,255,255,.62);
+  font-family:var(--sans); font-size:.52rem; letter-spacing:.16em; text-transform:uppercase;
+  cursor:pointer; transition:background .25s, color .25s, border-color .25s; white-space:nowrap;
+}
+.hero-bg-btn:hover { color:#fff; border-color:var(--gold); }
+.hero-bg-btn.active { background:var(--gold); color:#fff; border-color:var(--gold); }
 .petal-float {
   position:absolute; z-index:2;
   font-size:1.5rem; opacity:.15;
@@ -740,7 +762,7 @@ body.env-open { overflow:hidden; }
   font-family:var(--serif); font-style:italic; font-size:.78rem;
   color:#fff; letter-spacing:.04em;
   box-shadow:0 4px 20px rgba(154,122,74,.55);
-  z-index:3;
+  z-index:5;
   transition:opacity .3s .15s, transform .3s .15s;
 }
 .env-box.open .env-seal {
@@ -857,6 +879,7 @@ body.env-open { overflow:hidden; }
 <!-- ======================== HERO ======================== -->
 <section id="hero">
   <video id="hero-video" src="../salida.mp4" autoplay muted loop playsinline></video>
+  <img id="hero-image" src="../fotos collage/6d0d97ae-5781-4254-9efa-581758e69641.jfif" alt="">
   <div id="hero-overlay"></div>
 
   <!-- Pétalos flotantes -->
@@ -890,6 +913,13 @@ body.env-open { overflow:hidden; }
     <span>Desplázate</span>
   </div>
 </section>
+
+<!-- Selector de fondo del hero (debajo, no interrumpe el hero) -->
+<div class="hero-bg-switch-bar">
+  <button type="button" class="hero-bg-btn active" data-mode="video" onclick="setHeroBg('video')">Video</button>
+  <button type="button" class="hero-bg-btn" data-mode="imagen" onclick="setHeroBg('imagen')">Imagen</button>
+  <button type="button" class="hero-bg-btn" data-mode="ninguno" onclick="setHeroBg('ninguno')">Sin fondo</button>
+</div>
 
 <!-- ======================== COUNTDOWN ======================== -->
 <section id="countdown">
@@ -1291,6 +1321,14 @@ body.env-open { overflow:hidden; }
 /* ---- ENVELOPE ---- */
 (function(){
   document.body.classList.add('env-open');
+
+  // Si viene embebida desde la Invitación Doble, se omite este sobre propio
+  const p = new URLSearchParams(window.location.search);
+  if(p.get('skip') === '1'){
+    const ov = document.getElementById('env-overlay');
+    if(ov) ov.remove();
+    document.body.classList.remove('env-open');
+  }
 })();
 
 function openEnvelope(){
@@ -1315,6 +1353,28 @@ function cerrarSobre(){
   document.body.classList.remove('env-open');
   setTimeout(function(){ ov.remove(); }, 750);
   if(!playing) toggleMusic();
+}
+
+/* ---- HERO BACKGROUND SWITCH ---- */
+function setHeroBg(mode){
+  const video = document.getElementById('hero-video');
+  const image = document.getElementById('hero-image');
+  document.querySelectorAll('.hero-bg-btn').forEach(function(b){
+    b.classList.toggle('active', b.dataset.mode === mode);
+  });
+  if(mode === 'video'){
+    image.style.display = 'none';
+    video.style.display = '';
+    video.play().catch(function(){});
+  } else if(mode === 'imagen'){
+    video.pause();
+    video.style.display = 'none';
+    image.style.display = 'block';
+  } else {
+    video.pause();
+    video.style.display = 'none';
+    image.style.display = 'none';
+  }
 }
 
 /* ---- COUNTDOWN ---- */

@@ -180,10 +180,14 @@
     font-family:'Cormorant Garamond',serif; font-style:italic;
     font-size: 24px; color: var(--seagreen); margin-bottom: 14px;
   }
+  .fam-badges-row {
+    display:flex; align-items:center; justify-content:center;
+    flex-wrap:wrap; gap:10px; margin-bottom:18px;
+  }
   .fam-boletos {
     display:inline-flex; align-items:baseline; gap:6px;
     border:1px solid rgba(46,196,182,0.4); border-radius:50px;
-    padding:5px 16px; margin-bottom:18px;
+    padding:5px 16px;
   }
   .fam-boletos-num { font-family:'Cormorant Garamond',serif; font-size:22px; color:var(--ocean-deep); }
   .fam-boletos-lbl { font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--ocean-mid); }
@@ -631,10 +635,6 @@
       <polygon points="10,80 10,250 190,165" fill="rgba(255,255,255,0.06)"></polygon>
       <polygon points="370,80 370,250 190,165" fill="rgba(0,0,0,0.1)"></polygon>
       <polygon points="10,250 370,250 190,165" fill="rgba(255,255,255,0.04)"></polygon>
-      <!-- seal -->
-      <circle cx="190" cy="200" r="20" fill="#5ab8e0" opacity="0.2"></circle>
-      <circle cx="190" cy="200" r="15" fill="#2a6a9a"></circle>
-      <text x="190" y="205" text-anchor="middle" font-size="16" fill="#2ec4b6">⚓</text>
       <!-- flap -->
       <g class="env-flap-group">
         <polygon points="10,80 370,80 190,195" fill="url(#envFlap)"></polygon>
@@ -642,6 +642,10 @@
         <polyline points="10,80 190,195 370,80" fill="none" stroke="#a8dff0" stroke-width="1" opacity="0.2"></polyline>
       </g>
       <rect x="10" y="80" width="360" height="170" rx="6" fill="none" stroke="#a8dff0" stroke-width="1.5" opacity="0.25"></rect>
+      <!-- seal -->
+      <circle cx="190" cy="200" r="20" fill="#5ab8e0" opacity="0.2"></circle>
+      <circle cx="190" cy="200" r="15" fill="#2a6a9a"></circle>
+      <text x="190" y="205" text-anchor="middle" font-size="16" fill="#2ec4b6">⚓</text>
       <!-- wax seal on flap -->
       <circle cx="190" cy="150" r="17" fill="#f5c842" opacity="0.9"></circle>
       <text x="190" y="156" text-anchor="middle" font-size="14" fill="#2a6a9a">🐬</text>
@@ -656,9 +660,15 @@
     <p class="fam-date">14 · 08 · 2027</p>
     <p class="fam-label">Familia</p>
     <p class="fam-name" id="envFamily">Estimados Invitados</p>
-    <div class="fam-boletos">
-      <span class="fam-boletos-num" id="envBoletosNum">1</span>
-      <span class="fam-boletos-lbl" id="envBoletosLbl">boleto</span>
+    <div class="fam-badges-row">
+      <div class="fam-boletos">
+        <span class="fam-boletos-num" id="envBoletosNum">1</span>
+        <span class="fam-boletos-lbl" id="envBoletosLbl">boleto</span>
+      </div>
+      <div class="fam-boletos" id="envMesaBadge" style="display:none">
+        <span class="fam-boletos-lbl">Mesa #</span>
+        <span class="fam-boletos-num" id="envMesaNum"></span>
+      </div>
     </div>
     <button class="fam-btn" onclick="verInvitacion()">Ver Invitación ✦</button>
   </div>
@@ -865,9 +875,14 @@
   const p = new URLSearchParams(window.location.search);
   const fam = p.get('f') || p.get('familia') || 'Estimados Invitados';
   const n   = parseInt(p.get('b') || p.get('boletos') || '1', 10);
+  const mesa = p.get('m') || p.get('mesa') || '';
   document.getElementById('envFamily').textContent = fam;
   document.getElementById('envBoletosNum').textContent = n;
   document.getElementById('envBoletosLbl').textContent = n === 1 ? 'boleto' : 'boletos';
+  if(mesa){
+    document.getElementById('envMesaNum').textContent = mesa;
+    document.getElementById('envMesaBadge').style.display = 'inline-flex';
+  }
 })();
 
 // ══ Music ══
